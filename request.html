@@ -701,8 +701,41 @@ tbody tr:hover { background:var(--soft); }
 }
 </style>
 
+<style>
+#page-loader {
+    position: fixed;
+    inset: 0;
+    background: #f5f7fb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    gap: 18px;
+}
+.loader-spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #e2e8f0;
+    border-top-color: #0f4c81;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-text {
+    font-family: Cairo, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f4c81;
+}
+</style>
+    
 </head>
 <body>
+    <div id="page-loader">
+    <div class="loader-spinner"></div>
+    <div class="loader-text">جاري تحميل الأداة...</div>
+</div>
 <div class="container">
 
 <div class="brand-bar">
@@ -1096,12 +1129,18 @@ function showPage(page) {
     }
 
     if (page === 'companies') {
-        syncClientInfo();
-        document.getElementById('companiesPage').classList.add('active');
-        updateProgress('companies');
-        applySoftFilterFromClient();
-        return;
+    syncClientInfo();
+    document.getElementById('companiesPage').classList.add('active');
+    updateProgress('companies');
+    applySoftFilterFromClient();
+
+    if (!companiesTableLoaded) {
+        renderTable();
+        companiesTableLoaded = true;
     }
+
+    return;
+}
 
     if (page === 'upload') {
         if (selectedCompanies.size < MIN_SELECTION) {
@@ -1893,15 +1932,25 @@ body { margin: 0; background: #e5e7eb; font-family: 'Cairo', Arial, sans-serif; 
 
 
 
+let companiesTableLoaded = false;
+
 document.addEventListener('DOMContentLoaded', function () {
   populateFilters();
-  renderTable();
   updateProgress('client');
 
   document.getElementById('searchInput').addEventListener('input', renderTable);
   document.getElementById('industryFilter').addEventListener('change', renderTable);
   document.getElementById('sizeFilter').addEventListener('change', renderTable);
   document.getElementById('ownershipFilter').addEventListener('change', renderTable);
+
+  setTimeout(function () {
+    const loader = document.getElementById('page-loader');
+    if (loader) {
+      loader.style.opacity = '0';
+      loader.style.transition = 'opacity 0.3s';
+      setTimeout(() => loader.remove(), 300);
+    }
+  }, 150);
 });
 
 
