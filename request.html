@@ -1474,12 +1474,18 @@ async function submitSelection() {
     const uploadStatus = document.getElementById('uploadStatus');
     const finalSubmitBtn = document.getElementById('finalSubmitBtn');
 
+    if (!document.getElementById('dataConsent').checked) {
+    alert('يرجى الموافقة على سياسة استخدام البيانات قبل إرسال الطلب.');
+    return;
+}
+
     if (selectedCompanies.size < MIN_SELECTION) {
         minWarning.style.display = 'inline-block';
         alert('يجب اختيار 7 شركات على الأقل لاعتماد الطلب.');
         showPage('companies');
         return;
     }
+    
 
     if (!validateClientInfo()) {
         showPage('client');
