@@ -1536,7 +1536,9 @@ async function submitSelection() {
         selectedCount: selectedCompanies.size,
         selectedCompanies: [...selectedCompanies],
         selectedCompanyDetails: selectedCompanyDetails,
-        employeesFile: employeesFilePayload
+        employeesFile: employeesFilePayload,
+dataConsent: document.getElementById('dataConsent').checked ? 'Yes' : 'No',
+dataConsentText: 'تخضع البيانات المستمدة من هذه الخدمة للمعالجة الإحصائية المجمعة وغير المعرّفة (Anonymized & Aggregated)، وذلك لأغراض الدراسات والبحوث السوقية، مع الالتزام التام بحماية هوية العميل وسرية بياناته الفردية.'
     };
 
     if (finalSubmitBtn) {
