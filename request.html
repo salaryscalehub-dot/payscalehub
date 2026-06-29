@@ -631,7 +631,7 @@ function reset() {
   Object.assign(state, {
     step:1, company:{name:'',count:'',sector:'',city:''},
     liaison:{name:'',title:'',phone:'',email:''},
-    selected:[], filters:{sector:'all',size:'all',ownership:'all'},
+    benchmarkType:'market', benchmarkSectors:[],
     fileName:'', consent:false, submitted:false, reqNum:'', loading:false
   });
   render();
