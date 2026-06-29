@@ -608,17 +608,28 @@ function submit() {
 
   // Google Apps Script call
   const reqNum = 'REQ-' + Date.now().toString().slice(-6);
-  const apiUrl = 'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec?data=' + encodeURIComponent(JSON.stringify(payload));
-  
-  const img = new Image();
-  img.src = apiUrl;
-  
-  setTimeout(() => {
+  const callbackName = 'cb_' + Date.now();
+  window[callbackName] = function(res) {
+    document.getElementById('jsonp_script').remove();
+    delete window[callbackName];
     state.loading = false;
-    state.submitted = true;
-    state.reqNum = reqNum;
+    if (res.success) { state.submitted = true; state.reqNum = res.reqNum; }
+    else { showErr('حدث خطأ، يرجى المحاولة مرة أخرى.'); }
     render();
-  }, 3000);
+  };
+
+  const script = document.createElement('script');
+  script.id = 'jsonp_script';
+  script.src = 'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec?callback=' + callbackName + '&data=' + encodeURIComponent(JSON.stringify(payload));
+  document.body.appendChild(script);
+
+  setTimeout(() => {
+    if (state.loading) {
+      state.loading = false;
+      showErr('انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى.');
+      render();
+    }
+  }, 10000);
 }
 
 function reset() {
