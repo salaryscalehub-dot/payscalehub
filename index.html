@@ -777,6 +777,130 @@ border-radius:0 0 20px 20px;
   .screenshot-placeholder{height:245px;min-height:245px!important;}
 }
 
+
+
+/* === PayScale Hub visual identity preview overrides === */
+:root{
+  --ink:#16223f;
+  --navy:#16223f;
+  --blue:#16223f;
+  --blue2:#223457;
+  --teal:#c0995c;
+  --green:#3f8f5f;
+  --gold:#c0995c;
+  --bg:#f6f1e9;
+  --card:#fffdfa;
+  --text:#16223f;
+  --muted:#5a6076;
+  --border:#e9e0cf;
+  --soft:#fbf7f0;
+  --shadow:0 18px 44px -30px rgba(22,34,63,.28);
+  --shadow2:0 24px 56px -30px rgba(22,34,63,.34);
+}
+body{
+  font-family:'Noto Sans Arabic',sans-serif;
+  background:#f6f1e9;
+  color:#16223f;
+}
+body:before{
+  background:
+    radial-gradient(circle at 12% 10%,rgba(192,153,92,.14),transparent 28%),
+    radial-gradient(circle at 88% 0%,rgba(22,34,63,.08),transparent 32%);
+}
+header{
+  background:rgba(246,241,233,.92);
+  border-bottom:1px solid #e9e0cf;
+}
+.nav{min-height:68px;}
+.brand strong{color:#16223f;font-size:22px;letter-spacing:-.4px;}
+.brand span{color:#7a7f8f;font-size:13px;}
+.nav a{color:#5a6076;}
+.nav a:hover{color:#16223f;}
+.cta{
+  background:#16223f;
+  color:#fff!important;
+  border-radius:12px;
+  padding:12px 22px;
+  box-shadow:0 14px 28px rgba(22,34,63,.18);
+}
+.cta:hover{background:#1e2f56;box-shadow:0 18px 34px rgba(22,34,63,.24);}
+.secondary{
+  border-color:rgba(192,153,92,.45);
+  color:#fff;
+  background:rgba(192,153,92,.12);
+  border-radius:12px;
+}
+.secondary:hover{background:rgba(192,153,92,.20);}
+.hero{
+  background:
+    linear-gradient(105deg,rgba(22,34,63,.98) 0%,rgba(22,34,63,.94) 55%,rgba(192,153,92,.78) 130%),
+    linear-gradient(180deg,#16223f,#16223f);
+  padding:96px 0 86px;
+}
+.eyebrow{
+  background:rgba(192,153,92,.14);
+  border:1px solid rgba(192,153,92,.38);
+  color:#f6dfb5;
+  letter-spacing:.04em;
+  border-radius:999px;
+}
+.hero h1{color:#fff;letter-spacing:-.9px;}
+.hero p{color:rgba(255,255,255,.82);}
+.laptop{filter:drop-shadow(0 28px 44px rgba(0,0,0,.30));}
+.laptop-screen{
+  background:#0f172a;
+  border-color:#111827;
+  box-shadow:inset 0 0 0 1px rgba(192,153,92,.16);
+}
+.screen-kpi strong{color:#c0995c;}
+.bar{background:linear-gradient(180deg,#c0995c,#8e6f3f);}
+.hero-pill{
+  background:rgba(255,255,255,.09);
+  border-color:rgba(192,153,92,.22);
+  border-radius:14px;
+}
+.hero-pill svg{stroke:#c0995c;}
+section{background:#f6f1e9;}
+section[style*="var(--soft)"]{background:#fbf7f0!important;}
+.section-title h2{color:#16223f;}
+.section-title p{color:#5a6076;}
+.card,.step,.platform-page-card,.price-card,.compare{
+  background:#fffdfa;
+  border-color:#ece3d3;
+  border-radius:18px;
+  box-shadow:0 18px 44px -30px rgba(22,34,63,.28);
+}
+.card:hover,.platform-page-card:hover{border-color:#d8cbb0;}
+.icon-box{
+  background:#faf6ee;
+  border-color:#e3d9c7;
+  border-radius:12px;
+}
+.icon-box svg{stroke:#c0995c;}
+.step:before{background:#16223f;color:#fff;border-radius:12px;}
+.price-card:before{background:#c0995c;}
+.price{color:#16223f;}
+.badge{
+  background:#fff7ec;
+  color:#7a6040;
+  border-color:#f0dfc2;
+}
+.screenshot-frame{background:linear-gradient(180deg,#faf6ee,#f1e6d3)!important;}
+.screenshot-placeholder img{border-color:#16223f!important;box-shadow:0 24px 42px rgba(22,34,63,.20)!important;}
+.screenshot-placeholder:after{background:linear-gradient(180deg,#d8cbb0,#b3aa97)!important;}
+.compare-table th{background:#16223f;}
+.compare-table th:nth-child(2){background:#c0995c;color:#16223f;}
+.compare-table td:nth-child(2){background:#fff7ec!important;color:#16223f;box-shadow:inset 4px 0 0 #c0995c;}
+.yes{color:#3f8f5f;}
+.partial{color:#9a6b25;}
+.final-cta{
+  background:linear-gradient(105deg,rgba(22,34,63,.98),rgba(22,34,63,.93));
+  border:1px solid rgba(192,153,92,.24);
+}
+.contact-card{border-color:rgba(192,153,92,.22);}
+.contact-card svg{stroke:#c0995c;}
+footer{background:#16223f;}
+
 </style>
 </head>
 <body>
@@ -1136,5 +1260,6 @@ border-radius:0 0 20px 20px;
   revealItems.forEach(item => observer.observe(item));
 </script>
 
+<div style="position:fixed;left:16px;bottom:16px;z-index:9999;background:#c0995c;color:#16223f;padding:8px 12px;border-radius:999px;font:700 12px sans-serif;box-shadow:0 10px 26px rgba(22,34,63,.18)">Preview فقط — لم يتم تعديل GitHub</div>
 </body>
 </html>
