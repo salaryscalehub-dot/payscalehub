@@ -228,7 +228,7 @@ const state = {
   liaison: {name:'', title:'', phone:'', email:''},
   benchmarkType: 'market',
   benchmarkSectors: [],
-  fileName: '',
+  
   consent: false,
   submitted: false,
   reqNum: '',
@@ -570,9 +570,49 @@ function suggest() {
 }
 
 function onFile(input) {
-  if (input.files && input.files[0]) { state.fileName = input.files[0].name; render(); }
+  if (!input.files || !input.files[0]) return;
+
+  const file = input.files[0];
+
+  if (!file.name.toLowerCase().endsWith('.csv')) {
+    showErr('يرجى رفع ملف بصيغة CSV فقط.');
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const text = String(e.target.result || '').replace(/^\uFEFF/, '');
+    const lines = text
+      .split(/\r?\n/)
+      .filter(function(line) {
+        return line.trim() !== '';
+      });
+
+    if (lines.length < 2) {
+      showErr('ملف الموظفين لا يحتوي على بيانات كافية. يرجى التأكد من وجود صف عناوين وصف واحد على الأقل.');
+      return;
+    }
+
+    state.fileName = file.name;
+    state.employeesCsvText = text;
+    state.employeesRecordsCount = lines.length - 1;
+
+    render();
+  };
+
+  reader.onerror = function() {
+    showErr('تعذر قراءة ملف الموظفين. يرجى المحاولة مرة أخرى.');
+  };
+
+  reader.readAsText(file, 'UTF-8');
 }
-function clearFile() { state.fileName = ''; render(); }
+function clearFile() {
+  state.fileName = '';
+  state.employeesCsvText = '';
+  state.employeesRecordsCount = 0;
+  render();
+}
 
 function downloadTemplate() {
   dl('employees_template.csv', '\uFEFFEmployee ID,Employee Name,Job Title,Department,Nationality,Basic Salary,Other Allowances (Optional)\n');
@@ -614,7 +654,9 @@ function submit() {
     },
     benchmarkType: state.benchmarkType,
     benchmarkSectors: state.benchmarkSectors,
-    fileName: state.fileName
+    fileName: state.fileName,
+    employeesCsvText: state.employeesCsvText,
+    employeesRecordsCount: state.employeesRecordsCount
   };
 
   const callbackName = 'payScaleHubCallback_' + Date.now();
@@ -677,7 +719,7 @@ function reset() {
     step:1, company:{name:'',count:'',sector:'',city:''},
     liaison:{name:'',title:'',phone:'',email:''},
     benchmarkType:'market', benchmarkSectors:[],
-    fileName:'', consent:false, submitted:false, reqNum:'', loading:false
+    fileName:'', employeesCsvText:'', employeesRecordsCount:0, consent:false, submitted:false, reqNum:'', loading:false
   });
   render();
   window.scrollTo({top:0, behavior:'smooth'});
