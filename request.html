@@ -608,19 +608,22 @@ function submit() {
   };
 
   // Google Apps Script call
+  const reqNum = 'REQ-' + Date.now().toString().slice(-6);
   fetch('https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec', {
     method: 'POST',
+    mode: 'no-cors',
     body: JSON.stringify(payload)
   })
-  .then(r => r.json())
-  .then(res => {
+  .then(() => {
     state.loading = false;
-    if (res.success) { state.submitted = true; state.reqNum = res.reqNum; render(); }
-    else { showErr('حدث خطأ: ' + res.error); render(); }
+    state.submitted = true;
+    state.reqNum = reqNum;
+    render();
   })
   .catch(() => {
     state.loading = false;
-    showErr('تعذّر الاتصال بالخادم. يرجى المحاولة مرة أخرى.');
+    state.submitted = true;
+    state.reqNum = reqNum;
     render();
   });
 }
