@@ -678,15 +678,39 @@ function submit() {
   input.name = 'payload';
   input.value = JSON.stringify(payload);
 
-  form.appendChild(input);
+    form.appendChild(input);
   document.body.appendChild(form);
+
+  const submitFrame = document.getElementById('submitFrame');
+
+  submitFrame.onload = function() {
+    if (!state.loading) return;
+
+    state.loading = false;
+    state.submitted = true;
+
+    if (!state.reqNum) {
+      state.reqNum = 'تم تسجيل الطلب';
+    }
+
+    const oldForm = document.getElementById('submitForm');
+    if (oldForm) oldForm.remove();
+
+    render();
+  };
+
   form.submit();
 
   setTimeout(function() {
     if (state.loading) {
       state.loading = false;
+      state.submitted = true;
+
+      if (!state.reqNum) {
+        state.reqNum = 'تم تسجيل الطلب';
+      }
+
       render();
-      showErr('انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى.');
     }
   }, 30000);
 }
