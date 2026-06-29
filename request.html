@@ -591,47 +591,75 @@ function dl(name, content) {
 }
 
 function submit() {
-  if (!state.consent) { showErr('يرجى الموافقة على الإقرار قبل إرسال الطلب.'); return; }
-  state.loading = true; render();
+  if (!state.consent) {
+    showErr('يرجى الموافقة على الإقرار قبل إرسال الطلب.');
+    return;
+  }
 
-  const selCos = COMPANIES.filter(c => state.selected.includes(c.id));
+  state.loading = true;
+  render();
+
   const payload = {
-    company: { ...state.company, sectorAr: SECTORS[state.company.sector] || state.company.sector },
-    liaison: { ...state.liaison },
-    selectedNames: selCos.map(c => c.name),
-    selectedCompanies: selCos.map(c => ({
-      name: c.name, sectorAr: SECTORS[c.sector]||c.sector,
-      employees: fmt(c.employees), ownerAr: OWNERS[c.owner]||c.owner
-    })),
+    company: {
+      name: state.company.name,
+      count: state.company.count,
+      sector: state.company.sector,
+      city: state.company.city
+    },
+    liaison: {
+      name: state.liaison.name,
+      title: state.liaison.title,
+      phone: state.liaison.phone,
+      email: state.liaison.email
+    },
+    benchmarkType: state.benchmarkType,
+    benchmarkSectors: state.benchmarkSectors,
     fileName: state.fileName
   };
 
-  // Google Apps Script call
-  const reqNum = 'REQ-' + Date.now().toString().slice(-6);
   const callbackName = 'cb_' + Date.now();
+
   window[callbackName] = function(res) {
-    document.getElementById('jsonp_script').remove();
+    const oldScript = document.getElementById('jsonp_script');
+    if (oldScript) oldScript.remove();
+
     delete window[callbackName];
     state.loading = false;
-    if (res.success) { state.submitted = true; state.reqNum = res.reqNum; }
-    else { showErr('حدث خطأ، يرجى المحاولة مرة أخرى.'); }
-    render();
+
+    if (res && res.success) {
+      state.submitted = true;
+      state.reqNum = res.reqNum || '';
+      render();
+    } else {
+      render();
+      showErr('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مرة أخرى.');
+    }
   };
+
+  const oldScript = document.getElementById('jsonp_script');
+  if (oldScript) oldScript.remove();
 
   const script = document.createElement('script');
   script.id = 'jsonp_script';
-  script.src = 'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec?callback=' + callbackName + '&data=' + encodeURIComponent(JSON.stringify(payload));
+  script.src =
+    'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec' +
+    '?callback=' + callbackName +
+    '&data=' + encodeURIComponent(JSON.stringify(payload));
+
   document.body.appendChild(script);
 
-  setTimeout(() => {
+  setTimeout(function() {
     if (state.loading) {
-      state.loading = false;
-      showErr('انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى.');
-      render();
-    }
-  }, 10000);
-}
+      const timeoutScript = document.getElementById('jsonp_script');
+      if (timeoutScript) timeoutScript.remove();
 
+      delete window[callbackName];
+      state.loading = false;
+      render();
+      showErr('انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى.');
+    }
+  }, 15000);
+}
 function reset() {
   Object.assign(state, {
     step:1, company:{name:'',count:'',sector:'',city:''},
