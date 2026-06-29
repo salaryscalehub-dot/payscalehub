@@ -617,7 +617,7 @@ function submit() {
     fileName: state.fileName
   };
 
-  const callbackName = 'cb_' + Date.now();
+  const callbackName = 'payScaleHubCallback_' + Date.now();
 
   window[callbackName] = function(res) {
     const oldScript = document.getElementById('jsonp_script');
@@ -632,7 +632,7 @@ function submit() {
       render();
     } else {
       render();
-      showErr('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مرة أخرى.');
+      showErr('وصل الرد من الخادم، لكن لم يتم حفظ الطلب. يرجى المحاولة مرة أخرى.');
     }
   };
 
@@ -641,10 +641,21 @@ function submit() {
 
   const script = document.createElement('script');
   script.id = 'jsonp_script';
+
+  script.onerror = function() {
+    delete window[callbackName];
+    state.loading = false;
+    render();
+    showErr('تعذر الاتصال بالخادم. يرجى المحاولة مرة أخرى.');
+  };
+
+  const apiUrl = 'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec';
+
   script.src =
-    'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec' +
-    '?callback=' + callbackName +
-    '&data=' + encodeURIComponent(JSON.stringify(payload));
+    apiUrl +
+    '?callback=' + encodeURIComponent(callbackName) +
+    '&data=' + encodeURIComponent(JSON.stringify(payload)) +
+    '&t=' + Date.now();
 
   document.body.appendChild(script);
 
@@ -658,8 +669,9 @@ function submit() {
       render();
       showErr('انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى.');
     }
-  }, 15000);
+  }, 30000);
 }
+  
 function reset() {
   Object.assign(state, {
     step:1, company:{name:'',count:'',sector:'',city:''},
