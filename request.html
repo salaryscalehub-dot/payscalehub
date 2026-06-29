@@ -431,8 +431,7 @@ function renderStep3() {
 // ── Step 4 ─────────────────────────────────────────────────
 function renderStep4() {
   const c = state.company, l = state.liaison;
-  const selCos = COMPANIES.filter(co => state.selected.includes(co.id));
-  const tags = selCos.map(co => `<span class="co-tag">${co.name}</span>`).join('');
+  const tags = state.benchmarkSectors.map(s => `<span class="co-tag">${s}</span>`).join('');
   return `<div style="max-width:760px;margin:0 auto" class="anim-pop">
     <div class="card">
       <h2>مراجعة واعتماد الطلب</h2>
@@ -446,7 +445,7 @@ function renderStep4() {
         <div class="sum-card"><div class="sum-key">ملف الموظفين</div><div class="sum-val">${state.fileName||'لم يُرفع'}</div></div>
       </div>
       <div class="companies-list">
-        <h3>شركات المقارنة المختارة (${state.selected.length})</h3>
+        <h3>${state.benchmarkType === 'market' ? 'مجالات المقارنة المختارة' : 'مقارنة بشركات بعينها'} (${state.benchmarkSectors.length})</h3>
         <div class="co-tags">${tags}</div>
       </div>
       <div class="consent-row" onclick="toggleConsent()">
