@@ -655,63 +655,62 @@ function submit() {
     benchmarkType: state.benchmarkType,
     benchmarkSectors: state.benchmarkSectors,
     fileName: state.fileName,
-    employeesCsvText: state.employeesCsvText,
-    employeesRecordsCount: state.employeesRecordsCount
+    employeesCsvText: state.employeesCsvText || '',
+    employeesRecordsCount: state.employeesRecordsCount || 0
   };
 
-  const callbackName = 'payScaleHubCallback_' + Date.now();
+  window.removeEventListener('message', handleSubmitMessage);
 
-  window[callbackName] = function(res) {
-    const oldScript = document.getElementById('jsonp_script');
-    if (oldScript) oldScript.remove();
+  window.addEventListener('message', handleSubmitMessage);
 
-    delete window[callbackName];
-    state.loading = false;
+  const oldForm = document.getElementById('submitForm');
+  if (oldForm) oldForm.remove();
 
-    if (res && res.success) {
-      state.submitted = true;
-      state.reqNum = res.reqNum || '';
-      render();
-    } else {
-      render();
-      showErr('وصل الرد من الخادم، لكن لم يتم حفظ الطلب. يرجى المحاولة مرة أخرى.');
-    }
-  };
+  const form = document.createElement('form');
+  form.id = 'submitForm';
+  form.method = 'POST';
+  form.action = 'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec';
+  form.target = 'submitFrame';
+  form.style.display = 'none';
 
-  const oldScript = document.getElementById('jsonp_script');
-  if (oldScript) oldScript.remove();
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(payload);
 
-  const script = document.createElement('script');
-  script.id = 'jsonp_script';
-
-  script.onerror = function() {
-    delete window[callbackName];
-    state.loading = false;
-    render();
-    showErr('تعذر الاتصال بالخادم. يرجى المحاولة مرة أخرى.');
-  };
-
-  const apiUrl = 'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec';
-
-  script.src =
-    apiUrl +
-    '?callback=' + encodeURIComponent(callbackName) +
-    '&data=' + encodeURIComponent(JSON.stringify(payload)) +
-    '&t=' + Date.now();
-
-  document.body.appendChild(script);
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
 
   setTimeout(function() {
     if (state.loading) {
-      const timeoutScript = document.getElementById('jsonp_script');
-      if (timeoutScript) timeoutScript.remove();
-
-      delete window[callbackName];
       state.loading = false;
       render();
       showErr('انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى.');
     }
   }, 30000);
+}
+
+function handleSubmitMessage(event) {
+  const res = event.data;
+
+  if (!res || typeof res !== 'object') return;
+
+  state.loading = false;
+
+  const oldForm = document.getElementById('submitForm');
+  if (oldForm) oldForm.remove();
+
+  window.removeEventListener('message', handleSubmitMessage);
+
+  if (res.success) {
+    state.submitted = true;
+    state.reqNum = res.reqNum || '';
+    render();
+  } else {
+    render();
+    showErr('حدث خطأ أثناء حفظ الطلب: ' + (res.error || 'يرجى المحاولة مرة أخرى.'));
+  }
 }
   
 function reset() {
@@ -719,7 +718,13 @@ function reset() {
     step:1, company:{name:'',count:'',sector:'',city:''},
     liaison:{name:'',title:'',phone:'',email:''},
     benchmarkType:'market', benchmarkSectors:[],
-    fileName:'', employeesCsvText:'', employeesRecordsCount:0, consent:false, submitted:false, reqNum:'', loading:false
+    fileName:'',
+    employeesCsvText:'',
+    employeesRecordsCount:0,
+    consent:false,
+    submitted:false,
+    reqNum:'',
+    loading:false
   });
   render();
   window.scrollTo({top:0, behavior:'smooth'});
@@ -740,7 +745,8 @@ if (typeof google !== 'undefined' && google.script) {
   render();
 }
 
-
+<iframe name="submitFrame" id="submitFrame" style="display:none;"></iframe>
+  
 </script>
 </body>
 </html>
