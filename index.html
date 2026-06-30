@@ -579,6 +579,52 @@
     .yes{color:var(--green);font-weight:800}
     .no{color:#dc2626;font-weight:800}
     .partial{color:var(--gold);font-weight:800}
+    .compare-main{
+  display:block;
+  font-weight:800;
+  margin-bottom:10px;
+  color:#16223f;
+}
+
+.compare-features{
+  display:grid;
+  gap:8px;
+  margin-top:8px;
+}
+
+.compare-feature{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12.5px;
+  line-height:1.6;
+  color:#5a6076;
+  font-weight:600;
+}
+
+.compare-feature .mark{
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:900;
+  flex:0 0 auto;
+}
+
+.compare-feature.yes .mark{
+  background:#eaf3ec;
+  color:#2f6f4a;
+  border:1px solid #cfe6d6;
+}
+
+.compare-feature.no .mark{
+  background:#fbeae6;
+  color:#b5462f;
+  border:1px solid #f0ccc2;
+}
 
     .final-cta{
       background:
@@ -1183,12 +1229,42 @@ footer{background:#16223f;}
             <td class="partial">العميل يختارها مباشرة</td>
             <td class="partial">غالبًا محدودة</td>
           </tr>
-          <tr>
-            <td>منصة تفاعلية</td>
-            <td>منصة تفاعلية مكتملة ومؤتمتة بشكل كامل</td>
-            <td class="partial">غالبًا تقرير ثابت</td>
-            <td class="no">غالبًا تقرير ثابت</td>
-          </tr>
+         <tr>
+  <td>منصة تفاعلية</td>
+
+  <td>
+    <span class="compare-main">منصة تفاعلية مكتملة ومؤتمتة بشكل كامل</span>
+    <div class="compare-features">
+      <div class="compare-feature yes"><span class="mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
+      <div class="compare-feature yes"><span class="mark">✓</span><span>منصة تفاعلية.</span></div>
+      <div class="compare-feature yes"><span class="mark">✓</span><span>سيناريوهات التطبيق.</span></div>
+      <div class="compare-feature yes"><span class="mark">✓</span><span>احتساب الأثر المالي للتطبيق.</span></div>
+      <div class="compare-feature yes"><span class="mark">✓</span><span>بناء سلم رواتب.</span></div>
+    </div>
+  </td>
+
+  <td>
+    <span class="compare-main">غالباً تقرير ثابت</span>
+    <div class="compare-features">
+      <div class="compare-feature yes"><span class="mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
+      <div class="compare-feature no"><span class="mark">×</span><span>منصة تفاعلية.</span></div>
+      <div class="compare-feature no"><span class="mark">×</span><span>سيناريوهات التطبيق.</span></div>
+      <div class="compare-feature no"><span class="mark">×</span><span>احتساب الأثر المالي للتطبيق.</span></div>
+      <div class="compare-feature no"><span class="mark">×</span><span>بناء سلم رواتب.</span></div>
+    </div>
+  </td>
+
+  <td>
+    <span class="compare-main">غالباً تقرير ثابت</span>
+    <div class="compare-features">
+      <div class="compare-feature yes"><span class="mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
+      <div class="compare-feature no"><span class="mark">×</span><span>منصة تفاعلية.</span></div>
+      <div class="compare-feature no"><span class="mark">×</span><span>سيناريوهات التطبيق.</span></div>
+      <div class="compare-feature no"><span class="mark">×</span><span>احتساب الأثر المالي للتطبيق.</span></div>
+      <div class="compare-feature no"><span class="mark">×</span><span>بناء سلم رواتب.</span></div>
+    </div>
+  </td>
+</tr>
           <tr>
             <td>بناء سلم رواتب</td>
             <td>جزء أساسي من الخدمة</td>
