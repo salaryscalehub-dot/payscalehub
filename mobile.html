@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#16223f">
+  <title>PayScale Hub | بناء سلم الرواتب</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    :root{
+      --navy:#16223f;
+      --navy-2:#223457;
+      --gold:#c0995c;
+      --green:#15803d;
+      --green-dark:#166534;
+      --bg:#f6f1e9;
+      --soft:#fbf7f0;
+      --card:#fffdfa;
+      --text:#16223f;
+      --muted:#5a6076;
+      --border:#e9e0cf;
+      --danger:#b42318;
+      --shadow:0 18px 44px -30px rgba(22,34,63,.32);
+      --shadow-strong:0 26px 64px -34px rgba(22,34,63,.44);
+      --radius:18px;
+    }
+
+    html{
+      scroll-behavior:smooth;
+      scroll-padding-top:96px;
+    }
+
+    body{
+      margin:0;
+      min-width:280px;
+      overflow-x:hidden;
+      font-family:'Noto Sans Arabic',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.8;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 8% 3%,rgba(192,153,92,.15),transparent 24%),
+        radial-gradient(circle at 96% 14%,rgba(22,34,63,.08),transparent 26%);
+    }
+
+    img{
+      max-width:100%;
+    }
+
+    button,
+    a{
+      font:inherit;
+    }
+
+    a{
+      text-decoration:none;
+    }
+
+    .mobile-container{
+      width:100%;
+      max-width:640px;
+      margin-inline:auto;
+      padding-inline:18px;
+    }
+
+    /* Header */
+    .mobile-header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      padding-top:env(safe-area-inset-top);
+      background:rgba(246,241,233,.95);
+      border-bottom:1px solid rgba(233,224,207,.92);
+      backdrop-filter:blur(16px);
+    }
+
+    .header-main{
+      min-height:70px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .brand{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      line-height:1.45;
+    }
+
+    .brand strong{
+      color:var(--navy);
+      font-size:18px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .brand span{
+      color:#7a7f8f;
+      font-size:10.5px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    .menu-toggle{
+      width:44px;
+      height:44px;
+      flex:0 0 44px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:var(--card);
+      color:var(--navy);
+      cursor:pointer;
+      box-shadow:var(--shadow);
+    }
+
+    .menu-toggle svg{
+      width:23px;
+      height:23px;
+      stroke:currentColor;
+    }
+
+    .mobile-menu{
+      display:none;
+      padding:0 0 14px;
+    }
+
+    .mobile-menu.open{
+      display:block;
+    }
+
+    .mobile-menu-links{
+      display:grid;
+      gap:7px;
+      padding:10px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:var(--shadow-strong);
+    }
+
+    .mobile-menu-links > a{
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      padding:9px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .mobile-menu-links > a:hover{
+      background:var(--soft);
+      color:var(--navy);
+    }
+
+    .menu-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-top:4px;
+    }
+
+    .button{
+      min-height:48px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:11px 16px;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-size:14px;
+      font-weight:800;
+      text-align:center;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .button-primary{
+      background:var(--navy);
+      color:#fff;
+      box-shadow:0 14px 28px rgba(22,34,63,.2);
+    }
+
+    .button-login{
+      background:var(--green);
+      color:#fff;
+      box-shadow:0 14px 28px rgba(21,128,61,.18);
+    }
+
+    .button-light{
+      background:rgba(255,255,255,.07);
+      border-color:rgba(255,255,255,.28);
+      color:#fff;
+    }
+
+    .button:active{
+      transform:scale(.98);
+    }
+
+    /* Hero */
+    .hero{
+      position:relative;
+      overflow:hidden;
+      color:#fff;
+      background:
+        linear-gradient(160deg,rgba(22,34,63,.99) 0%,rgba(22,34,63,.96) 57%,rgba(192,153,92,.78) 150%);
+      padding:48px 0 42px;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      left:-90px;
+      bottom:-110px;
+      width:240px;
+      height:240px;
+      border-radius:50%;
+      border:1px solid rgba(192,153,92,.24);
+      box-shadow:0 0 0 30px rgba(192,153,92,.04),0 0 0 65px rgba(192,153,92,.025);
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:1;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      max-width:100%;
+      margin-bottom:16px;
+      padding:7px 12px;
+      border:1px solid rgba(192,153,92,.38);
+      border-radius:999px;
+      background:rgba(192,153,92,.13);
+      color:#f6dfb5;
+      font-size:11.5px;
+      font-weight:700;
+      direction:ltr;
+      overflow-wrap:anywhere;
+    }
+
+    .hero h1{
+      margin:0 0 16px;
+      color:#fff;
+      font-size:clamp(30px,8.5vw,42px);
+      line-height:1.42;
+      font-weight:800;
+      letter-spacing:-.6px;
+    }
+
+    .hero p{
+      margin:0;
+      color:rgba(255,255,255,.82);
+      font-size:15px;
+      line-height:1.95;
+    }
+
+    .hero-actions{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:24px;
+    }
+
+    .product-preview{
+      margin-top:30px;
+    }
+
+    .laptop{
+      width:100%;
+      filter:drop-shadow(0 24px 34px rgba(0,0,0,.28));
+    }
+
+    .laptop-screen{
+      min-height:210px;
+      padding:12px;
+      border:7px solid #101827;
+      border-bottom-width:12px;
+      border-radius:17px 17px 8px 8px;
+      background:#0b1220;
+      box-shadow:inset 0 0 0 1px rgba(192,153,92,.14);
+    }
+
+    .screen-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:11px;
+      color:#dbe4f0;
+      font-size:9.5px;
+      font-weight:700;
+      direction:ltr;
+    }
+
+    .screen-dots{
+      display:flex;
+      gap:4px;
+    }
+
+    .screen-dots span{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:#94a3b8;
+    }
+
+    .screen-layout{
+      display:grid;
+      grid-template-columns:72px minmax(0,1fr);
+      gap:8px;
+      min-height:164px;
+      direction:ltr;
+    }
+
+    .screen-side,
+    .screen-kpi,
+    .screen-chart{
+      background:#111827;
+      border:1px solid rgba(255,255,255,.07);
+    }
+
+    .screen-side{
+      padding:10px 8px;
+      border-radius:9px;
+    }
+
+    .screen-side div{
+      height:6px;
+      margin-bottom:9px;
+      border-radius:99px;
+      background:rgba(255,255,255,.17);
+    }
+
+    .screen-main{
+      min-width:0;
+      display:grid;
+      gap:8px;
+    }
+
+    .screen-kpis{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:6px;
+    }
+
+    .screen-kpi{
+      min-width:0;
+      padding:7px 5px;
+      border-radius:9px;
+      text-align:center;
+    }
+
+    .screen-kpi strong{
+      display:block;
+      color:var(--gold);
+      font-size:12px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .screen-kpi span{
+      display:block;
+      color:#cbd5e1;
+      font-size:7px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .screen-chart{
+      height:112px;
+      padding:12px 9px 0;
+      border-radius:10px;
+      display:flex;
+      align-items:flex-end;
+      gap:6px;
+    }
+
+    .bar{
+      flex:1;
+      min-width:0;
+      min-height:20px;
+      border-radius:4px 4px 0 0;
+      background:linear-gradient(180deg,#c0995c,#8e6f3f);
+    }
+
+    .laptop-base{
+      width:106%;
+      height:17px;
+      margin-inline:-3%;
+      position:relative;
+      border-radius:0 0 24px 24px;
+      background:linear-gradient(180deg,#d0d5dd,#98a2b3);
+    }
+
+    .laptop-base::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:50%;
+      width:82px;
+      height:6px;
+      border-radius:0 0 8px 8px;
+      background:#e4e7ec;
+      transform:translateX(-50%);
+    }
+
+    .hero-pills{
+      display:grid;
+      gap:9px;
+      margin-top:24px;
+    }
+
+    .hero-pill{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+      padding:13px;
+      border:1px solid rgba(192,153,92,.22);
+      border-radius:14px;
+      background:rgba(255,255,255,.08);
+      color:rgba(255,255,255,.8);
+      font-size:12px;
+    }
+
+    .hero-pill svg{
+      width:23px;
+      height:23px;
+      flex:0 0 23px;
+      stroke:var(--gold);
+    }
+
+    .hero-pill strong{
+      display:block;
+      margin-bottom:2px;
+      color:#fff;
+      font-size:12.5px;
+      font-weight:800;
+    }
+
+    /* Shared sections */
+    .section{
+      padding:58px 0;
+    }
+
+    .section-soft{
+      background:var(--soft);
+    }
+
+    .section-title{
+      margin-bottom:26px;
+      text-align:center;
+    }
+
+    .section-title h2{
+      margin:0 0 9px;
+      color:var(--navy);
+      font-size:clamp(25px,7vw,31px);
+      line-height:1.45;
+      font-weight:800;
+    }
+
+    .section-title p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.85;
+    }
+
+    .stack{
+      display:grid;
+      gap:14px;
+    }
+
+    .card{
+      padding:22px 19px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:var(--card);
+      box-shadow:var(--shadow);
+    }
+
+    .icon-box{
+      width:46px;
+      height:46px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:15px;
+      border:1px solid #e3d9c7;
+      border-radius:12px;
+      background:#faf6ee;
+    }
+
+    .icon-box svg{
+      width:25px;
+      height:25px;
+      stroke:var(--gold);
+    }
+
+    .card h3{
+      margin:0 0 9px;
+      color:var(--navy);
+      font-size:17px;
+      line-height:1.55;
+      font-weight:800;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-size:13.5px;
+      line-height:1.85;
+    }
+
+    /* Report cards */
+    .report-card{
+      overflow:hidden;
+      padding:0;
+    }
+
+    .screenshot-frame{
+      min-height:220px;
+      padding:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg,#faf6ee,#f1e6d3);
+      border-bottom:1px solid var(--border);
+    }
+
+    .screenshot-laptop{
+      width:100%;
+    }
+
+    .screenshot-display{
+      position:relative;
+      min-height:178px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .screenshot-display img{
+      width:100%;
+      height:auto;
+      max-height:225px;
+      display:block;
+      object-fit:contain;
+      object-position:center;
+      border:7px solid var(--navy);
+      border-bottom-width:12px;
+      border-radius:14px 14px 7px 7px;
+      background:#fff;
+      box-shadow:0 19px 30px rgba(22,34,63,.18);
+    }
+
+    .screenshot-display::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-11px;
+      width:80%;
+      height:13px;
+      transform:translateX(-50%);
+      border-radius:0 0 18px 18px;
+      background:linear-gradient(180deg,#d8cbb0,#b3aa97);
+      box-shadow:0 8px 16px rgba(22,34,63,.11);
+    }
+
+    .report-body{
+      padding:21px 18px 22px;
+    }
+
+    .report-body h3{
+      margin:0 0 8px;
+      color:var(--navy);
+      font-size:17px;
+      line-height:1.55;
+      font-weight:800;
+    }
+
+    .report-body p{
+      margin:0;
+      color:var(--muted);
+      font-size:13.5px;
+    }
+
+    /* Process */
+    .step{
+      position:relative;
+      padding:20px 72px 20px 18px;
+    }
+
+    .step-number{
+      position:absolute;
+      top:20px;
+      right:18px;
+      width:40px;
+      height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:11px;
+      background:var(--navy);
+      color:#fff;
+      font-weight:800;
+    }
+
+    /* Price */
+    .price-card{
+      position:relative;
+      overflow:hidden;
+      padding:26px 22px;
+    }
+
+    .price-card::before{
+      content:"";
+      position:absolute;
+      top:0;
+      right:0;
+      width:5px;
+      height:100%;
+      background:var(--gold);
+    }
+
+    .badge{
+      display:inline-flex;
+      margin-bottom:13px;
+      padding:6px 11px;
+      border:1px solid #f0dfc2;
+      border-radius:999px;
+      background:#fff7ec;
+      color:#7a6040;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .price-card h2{
+      margin:0 0 8px;
+      color:var(--navy);
+      font-size:25px;
+      font-weight:800;
+    }
+
+    .price-description{
+      margin:0;
+      color:var(--muted);
+      font-size:13.5px;
+    }
+
+    .price-box{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid var(--border);
+    }
+
+    .old-price{
+      color:#98a2b3;
+      font-size:18px;
+      font-weight:700;
+      text-decoration:line-through;
+    }
+
+    .price{
+      margin-top:2px;
+      color:var(--navy);
+      font-size:36px;
+      line-height:1.35;
+      font-weight:800;
+    }
+
+    .vat{
+      color:var(--muted);
+      font-size:12.5px;
+    }
+
+    /* Comparison mobile cards */
+    .comparison-list{
+      display:grid;
+      gap:14px;
+    }
+
+    .comparison-card{
+      overflow:hidden;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:var(--card);
+      box-shadow:var(--shadow);
+    }
+
+    .comparison-card h3{
+      margin:0;
+      padding:15px 17px;
+      border-bottom:1px solid var(--border);
+      background:var(--navy);
+      color:#fff;
+      font-size:15.5px;
+      line-height:1.55;
+      font-weight:800;
+    }
+
+    .comparison-rows{
+      display:grid;
+    }
+
+    .comparison-row{
+      padding:15px 17px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .comparison-row:last-child{
+      border-bottom:none;
+    }
+
+    .comparison-row.ours{
+      background:#fff7ec;
+      box-shadow:inset -4px 0 0 var(--gold);
+    }
+
+    .provider{
+      display:block;
+      margin-bottom:4px;
+      color:var(--muted);
+      font-size:11.5px;
+      font-weight:700;
+    }
+
+    .comparison-value{
+      display:block;
+      color:var(--navy);
+      font-size:13.5px;
+      line-height:1.75;
+      font-weight:800;
+    }
+
+    .comparison-value.yes{
+      color:#287348;
+    }
+
+    .comparison-value.partial{
+      color:#8b6429;
+    }
+
+    .feature-list{
+      display:grid;
+      gap:8px;
+      margin-top:11px;
+    }
+
+    .feature{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .feature-mark{
+      width:20px;
+      height:20px;
+      flex:0 0 20px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:2px;
+      border-radius:50%;
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .feature.yes .feature-mark{
+      border:1px solid #cfe6d6;
+      background:#eaf3ec;
+      color:#2f6f4a;
+    }
+
+    .feature.no .feature-mark{
+      border:1px solid #f0ccc2;
+      background:#fbeae6;
+      color:var(--danger);
+    }
+
+    /* Final CTA */
+    .final-wrap{
+      padding:0 0 58px;
+    }
+
+    .final-cta{
+      padding:35px 20px;
+      border:1px solid rgba(192,153,92,.24);
+      border-radius:22px;
+      background:linear-gradient(145deg,rgba(22,34,63,.99),rgba(22,34,63,.93));
+      color:#fff;
+      text-align:center;
+      box-shadow:var(--shadow-strong);
+    }
+
+    .final-cta h2{
+      margin:0 0 10px;
+      color:#fff;
+      font-size:26px;
+      line-height:1.5;
+      font-weight:800;
+    }
+
+    .final-cta > p{
+      margin:0 0 22px;
+      color:rgba(255,255,255,.8);
+      font-size:13.5px;
+    }
+
+    .final-cta .button{
+      width:100%;
+    }
+
+    .contact-list{
+      display:grid;
+      gap:10px;
+      margin-top:22px;
+    }
+
+    .contact-card{
+      min-width:0;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px;
+      border:1px solid rgba(192,153,92,.22);
+      border-radius:14px;
+      background:rgba(255,255,255,.08);
+      text-align:right;
+    }
+
+    .contact-icon{
+      width:40px;
+      height:40px;
+      flex:0 0 40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:10px;
+      background:rgba(255,255,255,.08);
+    }
+
+    .contact-icon svg{
+      width:21px;
+      height:21px;
+      stroke:var(--gold);
+    }
+
+    .contact-card div:last-child{
+      min-width:0;
+    }
+
+    .contact-card strong{
+      display:block;
+      color:#fff;
+      font-size:12.5px;
+      font-weight:800;
+    }
+
+    .contact-card a{
+      display:inline-block;
+      max-width:100%;
+      color:#fff;
+      font-size:12px;
+      font-weight:700;
+      direction:ltr;
+      overflow-wrap:anywhere;
+    }
+
+    /* Footer */
+    footer{
+      padding:24px 0 calc(24px + env(safe-area-inset-bottom));
+      background:var(--navy);
+      color:rgba(255,255,255,.74);
+      text-align:center;
+      font-size:11.5px;
+    }
+
+    .footer-lines{
+      display:grid;
+      gap:5px;
+    }
+
+    /* Reveal */
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .65s ease,transform .65s ease;
+    }
+
+    .reveal.visible{
+      opacity:1;
+      transform:none;
+    }
+
+    /* Larger phones and small tablets */
+    @media (min-width:480px){
+      .mobile-container{
+        padding-inline:24px;
+      }
+
+      .hero-actions{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .hero-pills{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+
+      .hero-pill{
+        display:block;
+        padding:13px 10px;
+        text-align:center;
+      }
+
+      .hero-pill svg{
+        margin-bottom:7px;
+      }
+
+      .contact-list{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    /* Keep the dedicated page readable if opened on a tablet */
+    @media (min-width:700px){
+      .mobile-container{
+        max-width:760px;
+      }
+
+      .stack.two-columns{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .hero{
+        padding-top:58px;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      html{
+        scroll-behavior:auto;
+      }
+
+      *,
+      *::before,
+      *::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.01ms!important;
+      }
+
+      .reveal{
+        opacity:1;
+        transform:none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="mobile-header">
+    <div class="mobile-container">
+      <div class="header-main">
+        <div class="brand">
+          <strong>PayScale Hub</strong>
+          <span>مقارنة سوقية + بناء سلم رواتب</span>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="mobileMenu">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mobile-menu" id="mobileMenu">
+        <nav class="mobile-menu-links" aria-label="القائمة الرئيسية">
+          <a href="#service">الخدمة</a>
+          <a href="#report">شكل التقرير</a>
+          <a href="#process">آلية العمل</a>
+          <a href="#price">السعر</a>
+          <a href="#compare">المقارنة</a>
+
+          <div class="menu-actions">
+            <a class="button button-login" href="login.html">تسجيل الدخول</a>
+            <a class="button button-primary" href="request.html" target="_blank" rel="noopener">اطلب الخدمة</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="mobile-container hero-content">
+        <span class="eyebrow">Salary Benchmarking + Salary Scale Builder</span>
+
+        <h1>منصة SaaS لتطوير سلم رواتب مبني على السوق.</h1>
+
+        <p>
+          ليست مجرد دراسة مقارنة رواتب، بل تجربة رقمية تمكّن العميل من اختيار شركات المقارنة،
+          ورفع بيانات موظفيه، واستعراض النتائج، ومحاكاة وبناء سلم رواتب مناسب داخل منصة تفاعلية.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="request.html" target="_blank" rel="noopener">ابدأ طلب الخدمة</a>
+          <a class="button button-light" href="#process">كيف تعمل الخدمة؟</a>
+        </div>
+
+        <div class="product-preview reveal">
+          <div class="laptop">
+            <div class="laptop-screen">
+              <div class="screen-top">
+                <span>PayScale Hub Dashboard</span>
+                <div class="screen-dots"><span></span><span></span><span></span></div>
+              </div>
+
+              <div class="screen-layout">
+                <div class="screen-side">
+                  <div style="width:80%"></div>
+                  <div style="width:62%"></div>
+                  <div style="width:72%"></div>
+                  <div style="width:52%"></div>
+                  <div style="width:66%"></div>
+                </div>
+
+                <div class="screen-main">
+                  <div class="screen-kpis">
+                    <div class="screen-kpi"><strong>38%</strong><span>Below P50</span></div>
+                    <div class="screen-kpi"><strong>124</strong><span>Impacted</span></div>
+                    <div class="screen-kpi"><strong>P50</strong><span>Target</span></div>
+                  </div>
+
+                  <div class="screen-chart">
+                    <span class="bar" style="height:52%"></span>
+                    <span class="bar" style="height:72%"></span>
+                    <span class="bar" style="height:44%"></span>
+                    <span class="bar" style="height:88%"></span>
+                    <span class="bar" style="height:64%"></span>
+                    <span class="bar" style="height:78%"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+        </div>
+
+        <div class="hero-pills reveal">
+          <div class="hero-pill">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-5"/></svg>
+            <div><strong>دراسة سوقية حقيقية</strong><span>بيانات موثوقة ومحدثة.</span></div>
+          </div>
+
+          <div class="hero-pill">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/><path d="M8 5v14M16 5v14"/></svg>
+            <div><strong>منصة تفاعلية</strong><span>تجربة استخدام سهلة.</span></div>
+          </div>
+
+          <div class="hero-pill">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-9"/></svg>
+            <div><strong>قرارات مبنية على بيانات</strong><span>تحليل واضح للإدارة.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="service">
+      <div class="mobile-container">
+        <div class="section-title reveal">
+          <h2>ما الذي تقدمه الخدمة؟</h2>
+          <p>حل متكامل يجمع بين الاستشارة والمنصة الرقمية لبناء سلم رواتب عملي.</p>
+        </div>
+
+        <div class="stack two-columns">
+          <article class="card reveal">
+            <div class="icon-box">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-9"/><path d="M19 7l-3 3-3-2-4 5"/></svg>
+            </div>
+            <h3>دراسة مقارنة سوقية</h3>
+            <p>تحليل الرواتب الأساسية مقارنةً بشركات مرجعية يختارها العميل من قاعدة بيانات السوق.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon-box">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 3v4"/><path d="M6 9h12"/><path d="M6 9l-3 6h6L6 9z"/><path d="M18 9l-3 6h6l-3-6z"/><path d="M12 7v14"/><path d="M8 21h8"/></svg>
+            </div>
+            <h3>توزين الوظائف وبناء نظام التصنيف الوظيفي</h3>
+            <p>قد يتم عقد اجتماع مع العميل لمراجعة المسميات الوظيفية وتوزينها وبناء تصنيف وظيفي واضح قبل تنفيذ التحليل.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon-box">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19h16"/><path d="M6 17V9h3v8"/><path d="M11 17V5h3v12"/><path d="M16 17v-6h3v6"/></svg>
+            </div>
+            <h3>منصة لبناء سلم رواتب احترافي سوقي</h3>
+            <p>يدخل العميل للمنصة بكلمة سر ويستعرض النتائج ويبني سلم رواتب احترافي مبني على التموضع السوقي المطلوب.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon-box">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 6v6l4 2"/><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v6h-6"/></svg>
+            </div>
+            <h3>ميزة إضافية خلال سنة</h3>
+            <p>يمكن للعميل طلب توزين وظيفة محددة مستحدثة خلال سنة من تنفيذ الدراسة، كميزة إضافية لدعم تحديث السلم والتصنيف الوظيفي.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="report">
+      <div class="mobile-container">
+        <div class="section-title reveal">
+          <h2>شكل التقرير والمنصة</h2>
+          <p>أربع صفحات تفاعلية تساعد العميل على فهم النتائج وبناء سلم رواتب عملي.</p>
+        </div>
+
+        <div class="stack">
+          <article class="card report-card reveal">
+            <div class="screenshot-frame">
+              <div class="screenshot-laptop">
+                <div class="screenshot-display">
+                  <img src="./images/report-preview-1.jpg" alt="لوحة المؤشرات التنفيذية">
+                </div>
+              </div>
+            </div>
+            <div class="report-body">
+              <h3>1. لوحة المؤشرات التنفيذية</h3>
+              <p>تعطي الإدارة قراءة سريعة عن تنافسية الرواتب، ونسبة الموظفين الأقل من السوق، والعائلات الوظيفية الأعلى مخاطرة، وموقع الشركة العام مقارنةً بمستويات السوق.</p>
+            </div>
+          </article>
+
+          <article class="card report-card reveal">
+            <div class="screenshot-frame">
+              <div class="screenshot-laptop">
+                <div class="screenshot-display">
+                  <img src="./images/report-preview-2.jpg" alt="صفحة بيانات الموظفين">
+                </div>
+              </div>
+            </div>
+            <div class="report-body">
+              <h3>2. صفحة بيانات الموظفين</h3>
+              <p>تمكّن العميل من استعراض الموظفين بعد ربطهم بنتائج السوق، مع البحث والتصفية حسب العائلة الوظيفية والجنسية والدرجة، وتوضيح موقع كل موظف مقارنةً بالسوق.</p>
+            </div>
+          </article>
+
+          <article class="card report-card reveal">
+            <div class="screenshot-frame">
+              <div class="screenshot-laptop">
+                <div class="screenshot-display">
+                  <img src="./images/report-preview-3.jpg" alt="محاكي الأثر المالي">
+                </div>
+              </div>
+            </div>
+            <div class="report-body">
+              <h3>3. محاكي الأثر المالي</h3>
+              <p>يساعد العميل على تحديد التموضع السوقي المستقبلي لكل عائلة وظيفية، ومعرفة عدد الموظفين المتأثرين وقيمة الأثر المالي الشهري قبل اتخاذ قرار الزيادة.</p>
+            </div>
+          </article>
+
+          <article class="card report-card reveal">
+            <div class="screenshot-frame">
+              <div class="screenshot-laptop">
+                <div class="screenshot-display">
+                  <img src="./images/report-preview-4.jpg" alt="صفحة بناء سلم الرواتب">
+                </div>
+              </div>
+            </div>
+            <div class="report-body">
+              <h3>4. صفحة بناء سلم الرواتب</h3>
+              <p>تتيح للعميل بناء سلالم رواتب مقترحة حسب الجنسيات أو الشرائح المعتمدة، وتحديد عدد الخطوات ونطاق السلم والتموضع السوقي، ثم طباعة أو تصدير السلم المقترح.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="mobile-container">
+        <div class="section-title reveal">
+          <h2>آلية العمل</h2>
+          <p>رحلة تجمع بين إدخال بيانات العميل، وتنفيذ الدراسة، ثم تمكينه من استخدام المنصة.</p>
+        </div>
+
+        <div class="stack">
+          <article class="card step reveal">
+            <span class="step-number">1</span>
+            <h3>تقديم الطلب</h3>
+            <p>يدخل العميل معلومات الشركة، ويختار شركات المقارنة، ويرفع ملف الموظفين والرواتب.</p>
+          </article>
+
+          <article class="card step reveal">
+            <span class="step-number">2</span>
+            <h3>مراجعة وتوزين المسميات</h3>
+            <p>نراجع البيانات وقد نعقد اجتماعًا لتوزين المسميات الوظيفية والتأكد من جاهزية المقارنة.</p>
+          </article>
+
+          <article class="card step reveal">
+            <span class="step-number">3</span>
+            <h3>تنفيذ الدراسة</h3>
+            <p>يتم تنفيذ المقارنة السوقية وتجهيز نتائج الرواتب داخل المنصة.</p>
+          </article>
+
+          <article class="card step reveal">
+            <span class="step-number">4</span>
+            <h3>دخول العميل للمنصة</h3>
+            <p>يستلم العميل بيانات الدخول، ويستعرض النتائج، ويبني سلم الرواتب المقترح.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="price">
+      <div class="mobile-container">
+        <article class="card price-card reveal">
+          <span class="badge">عرض إطلاق الخدمة</span>
+          <h2>سعر الخدمة</h2>
+          <p class="price-description">
+            تشمل الخدمة طلب المقارنة، ومعالجة بيانات الموظفين، وتنفيذ الدراسة،
+            وإتاحة دخول العميل للمنصة لاستعراض النتائج وبناء سلم الرواتب.
+          </p>
+
+          <div class="price-box">
+            <div class="old-price">25,000 ريال</div>
+            <div class="price">20,000 ريال</div>
+            <div class="vat">غير شامل ضريبة القيمة المضافة.</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="compare">
+      <div class="mobile-container">
+        <div class="section-title reveal">
+          <h2>مقارنتنا مع الشركات المنافسة</h2>
+          <p>تم تحويل جدول المقارنة إلى بطاقات واضحة تناسب شاشة الجوال دون تمرير أفقي.</p>
+        </div>
+
+        <div class="comparison-list">
+          <article class="comparison-card reveal">
+            <h3>التكلفة</h3>
+            <div class="comparison-rows">
+              <div class="comparison-row ours">
+                <span class="provider">خدمتنا</span>
+                <span class="comparison-value">20,000 ريال</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">شركات الاستشارات العالمية</span>
+                <span class="comparison-value">50,000 - 70,000 ريال</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">دراسات الرواتب التقليدية</span>
+                <span class="comparison-value">50,000 - 70,000 ريال</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-card reveal">
+            <h3>اختيار شركات المقارنة</h3>
+            <div class="comparison-rows">
+              <div class="comparison-row ours">
+                <span class="provider">خدمتنا</span>
+                <span class="comparison-value yes">العميل يختارها مباشرة</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">شركات الاستشارات العالمية</span>
+                <span class="comparison-value partial">العميل يختارها مباشرة</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">دراسات الرواتب التقليدية</span>
+                <span class="comparison-value partial">غالبًا محدودة</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-card reveal">
+            <h3>المنصة التفاعلية</h3>
+            <div class="comparison-rows">
+              <div class="comparison-row ours">
+                <span class="provider">خدمتنا</span>
+                <span class="comparison-value">منصة تفاعلية مكتملة ومؤتمتة بشكل كامل</span>
+                <div class="feature-list">
+                  <div class="feature yes"><span class="feature-mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
+                  <div class="feature yes"><span class="feature-mark">✓</span><span>منصة تفاعلية.</span></div>
+                  <div class="feature yes"><span class="feature-mark">✓</span><span>سيناريوهات التطبيق.</span></div>
+                  <div class="feature yes"><span class="feature-mark">✓</span><span>احتساب الأثر المالي للتطبيق.</span></div>
+                  <div class="feature yes"><span class="feature-mark">✓</span><span>بناء سلم رواتب.</span></div>
+                </div>
+              </div>
+
+              <div class="comparison-row">
+                <span class="provider">شركات الاستشارات العالمية</span>
+                <span class="comparison-value">غالبًا تقرير ثابت</span>
+                <div class="feature-list">
+                  <div class="feature yes"><span class="feature-mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
+                  <div class="feature no"><span class="feature-mark">×</span><span>منصة تفاعلية.</span></div>
+                  <div class="feature no"><span class="feature-mark">×</span><span>سيناريوهات التطبيق.</span></div>
+                  <div class="feature no"><span class="feature-mark">×</span><span>احتساب الأثر المالي للتطبيق.</span></div>
+                  <div class="feature no"><span class="feature-mark">×</span><span>بناء سلم رواتب.</span></div>
+                </div>
+              </div>
+
+              <div class="comparison-row">
+                <span class="provider">دراسات الرواتب التقليدية</span>
+                <span class="comparison-value">غالبًا تقرير ثابت</span>
+                <div class="feature-list">
+                  <div class="feature yes"><span class="feature-mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
+                  <div class="feature no"><span class="feature-mark">×</span><span>منصة تفاعلية.</span></div>
+                  <div class="feature no"><span class="feature-mark">×</span><span>سيناريوهات التطبيق.</span></div>
+                  <div class="feature no"><span class="feature-mark">×</span><span>احتساب الأثر المالي للتطبيق.</span></div>
+                  <div class="feature no"><span class="feature-mark">×</span><span>بناء سلم رواتب.</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-card reveal">
+            <h3>بناء سلم رواتب</h3>
+            <div class="comparison-rows">
+              <div class="comparison-row ours">
+                <span class="provider">خدمتنا</span>
+                <span class="comparison-value yes">جزء أساسي من الخدمة</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">شركات الاستشارات العالمية</span>
+                <span class="comparison-value partial">يتطلب نطاقًا إضافيًا</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">دراسات الرواتب التقليدية</span>
+                <span class="comparison-value partial">حسب نطاق التعاقد</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-card reveal">
+            <h3>سرعة التنفيذ</h3>
+            <div class="comparison-rows">
+              <div class="comparison-row ours">
+                <span class="provider">خدمتنا</span>
+                <span class="comparison-value yes">5 أيام عمل</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">شركات الاستشارات العالمية</span>
+                <span class="comparison-value">21 يوم عمل</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">دراسات الرواتب التقليدية</span>
+                <span class="comparison-value">غالبًا أكثر من 30 يوم عمل</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-card reveal">
+            <h3>ملاءمة الشركات المتوسطة</h3>
+            <div class="comparison-rows">
+              <div class="comparison-row ours">
+                <span class="provider">خدمتنا</span>
+                <span class="comparison-value yes">مصممة لهذا الغرض</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">شركات الاستشارات العالمية</span>
+                <span class="comparison-value partial">قد تكون أكبر من احتياج العميل</span>
+              </div>
+              <div class="comparison-row">
+                <span class="provider">دراسات الرواتب التقليدية</span>
+                <span class="comparison-value partial">تختلف حسب جودة الدراسة</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="final-wrap">
+      <div class="mobile-container">
+        <section class="final-cta reveal">
+          <h2>جاهز تبدأ بناء سلم الرواتب؟</h2>
+          <p>
+            ابدأ بطلب الخدمة، واختر منهجية المقارنة، وارفع بيانات الموظفين.
+            بعدها ننفذ الدراسة ونمنحك دخولًا للمنصة لاستعراض النتائج وبناء سلم الرواتب.
+          </p>
+
+          <a class="button button-primary" href="request.html" target="_blank" rel="noopener">اطلب الخدمة الآن</a>
+
+          <div class="contact-list">
+            <div class="contact-card">
+              <div class="contact-icon">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+              </div>
+              <div>
+                <strong>التواصل عبر البريد</strong>
+                <a href="mailto:info@payscalehub.com">info@payscalehub.com</a>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-icon">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M6 4h4l2 5-3 2a12 12 0 0 0 4 4l2-3 5 2v4c0 1-1 2-2 2A16 16 0 0 1 4 6c0-1 1-2 2-2z"/></svg>
+              </div>
+              <div>
+                <strong>الهاتف / واتساب</strong>
+                <a href="https://wa.me/966561584191" target="_blank" rel="noopener">0561584191</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="mobile-container footer-lines">
+      <div>© 2026 PayScale Hub. جميع الحقوق محفوظة.</div>
+      <div>مقارنة رواتب + منصة بناء سلم رواتب.</div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'إغلاق القائمة' : 'فتح القائمة');
+    });
+
+    document.querySelectorAll('#mobileMenu a[href^="#"]').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'فتح القائمة');
+      });
+    });
+
+    const revealItems = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      revealItems.forEach(item => observer.observe(item));
+    } else {
+      revealItems.forEach(item => item.classList.add('visible'));
+    }
+  </script>
+
+</body>
+</html>
