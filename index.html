@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <script>
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
-  const showDesktop = new URLSearchParams(window.location.search).get("desktop") === "1";
-
-  if (isMobile && !showDesktop) {
-    window.location.replace("mobile.html");
-  }
-</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script>
+    (function () {
+      const showDesktop =
+        new URLSearchParams(window.location.search).get("desktop") === "1";
+
+      const isMobile =
+        /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        window.matchMedia("(max-width: 900px)").matches ||
+        screen.width <= 900;
+
+      if (isMobile && !showDesktop) {
+        window.location.replace("/mobile.html");
+      }
+    })();
+  </script>
   <title>PayScale Hub | بناء سلم الرواتب</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
