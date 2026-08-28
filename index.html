@@ -1,1381 +1,1236 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <script>
-    (function () {
-      const showDesktop =
-        new URLSearchParams(window.location.search).get("desktop") === "1";
-
-      const isMobile =
-        /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-        window.matchMedia("(max-width: 900px)").matches ||
-        screen.width <= 900;
-
-      if (isMobile && !showDesktop) {
-        window.location.replace("/mobile.html");
-      }
-    })();
-  </script>
-  <title>PayScale Hub | بناء سلم الرواتب</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e2b4a">
+  <title>PayScale Hub | حلول رقمية للموارد البشرية</title>
   <style>
     *{box-sizing:border-box}
     :root{
-      --ink:#101828;
-      --navy:#111827;
-      --blue:#123c69;
-      --blue2:#174f85;
-      --teal:#0f766e;
-      --green:#15803d;
-      --gold:#a16207;
-      --bg:#f6f8fb;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#667085;
-      --border:#e4e7ec;
-      --soft:#f9fafb;
-      --shadow:0 10px 28px rgba(16,24,40,.07);
-      --shadow2:0 24px 58px rgba(16,24,40,.12);
+      --navy:#102f55;
+      --navy-dark:#0b223b;
+      --gold:#c69a4a;
+      --gold-2:#d8ad5d;
+      --cream:#f7f3ec;
+      --paper:#fffdf9;
+      --text:#26384f;
+      --muted:#6b7480;
+      --border:#e6ded2;
+      --green:#2f7d3d;
+      --orange:#c97f34;
+      --shadow:0 22px 52px -34px rgba(16,47,85,.30);
     }
 
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:smooth;scroll-padding-top:86px}
     body{
       margin:0;
-      font-family:'Noto Sans Arabic',sans-serif;
-      background:#f6f8fb;
-      color:var(--text);
-      line-height:1.85;
+      min-width:320px;
       overflow-x:hidden;
+      color:var(--text);
+      background:linear-gradient(180deg,#fbfaf7 0%,var(--cream) 100%);
+      font-family:"Avenir Arabic Heavy","Avenir Arabic","Avenir Next Arabic","Noto Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;
+      line-height:1.85;
     }
-    body:before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
+
+    a{text-decoration:none;color:inherit}
+    .container{width:min(1210px,calc(100% - 40px));margin:auto}
+
+    /* Full-screen hero */
+    .hero{
+      position:relative;
+      min-height:790px;
+      overflow:hidden;
+      color:#fff;
       background:
-        radial-gradient(circle at 12% 10%,rgba(18,60,105,.055),transparent 28%),
-        radial-gradient(circle at 90% 0%,rgba(15,118,110,.055),transparent 28%);
-      z-index:-1;
+        linear-gradient(90deg,rgba(7,23,40,.18) 0%,rgba(7,23,40,.35) 43%,rgba(7,23,40,.91) 100%),
+        linear-gradient(180deg,rgba(6,20,35,.12),rgba(6,20,35,.28)),
+        url("images/hero/city-skyline.png") center/cover no-repeat;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0;
+      height:210px;
+      background:linear-gradient(to top,rgba(7,23,40,.84),transparent);
+      pointer-events:none;
     }
 
-    .container{max-width:1180px;margin:auto;padding:0 28px}
-
-    header{
-      background:rgba(255,255,255,.92);
-      border-bottom:1px solid var(--border);
-      position:sticky;
-      top:0;
-      z-index:20;
-      backdrop-filter:blur(14px);
-    }
-    .nav{
+    .hero-header{
+      position:relative;
+      z-index:10;
+      min-height:92px;
       display:flex;
+      align-items:center;
       justify-content:space-between;
-      align-items:center;
-      min-height:78px;
       gap:24px;
+      border-bottom:1px solid rgba(255,255,255,.10);
     }
-    .brand{display:flex;flex-direction:column}
-    .brand strong{
-      font-size:21px;
-      font-weight:800;
-      color:var(--ink);
-      letter-spacing:-.2px;
-    }
-    .brand span{
-      color:var(--muted);
-      font-weight:600;
-      font-size:13px;
-    }
-    .nav-links{
+    .brand{
       display:flex;
-      align-items:center;
-      gap:2px;
-      flex-wrap:wrap;
+      flex-direction:column;
+      line-height:1.35;
     }
+    .brand strong{
+      font-size:27px;
+      color:#fff;
+      font-weight:900;
+      letter-spacing:-.3px;
+    }
+    .brand strong span{color:var(--gold-2)}
+    .brand small{font-size:10px;color:rgba(255,255,255,.72);font-weight:700}
+    .nav{display:flex;align-items:center;gap:5px}
     .nav a{
-      text-decoration:none;
-      color:#344054;
-      font-weight:600;
-      margin:0 8px;
-      font-size:14px;
-      transition:.2s;
+      padding:10px 12px;
+      border-radius:9px;
+      color:rgba(255,255,255,.82);
+      font-size:13px;
+      font-weight:800;
     }
-    .nav a:hover{color:var(--blue)}
-    .cta{
+    .nav a:hover,.nav a.active{color:#fff;background:rgba(255,255,255,.08)}
+    .header-actions{display:flex;align-items:center;gap:10px}
+
+    .btn{
+      min-height:48px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      background:#123c69;
-      color:white!important;
-      padding:12px 20px;
-      border-radius:8px;
-      font-weight:800;
-      text-decoration:none;
-      box-shadow:0 10px 18px rgba(18,60,105,.18);
-      transition:.22s ease;
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .cta:hover{
-      background:#0f2f52;
-      transform:translateY(-2px);
-      box-shadow:0 16px 28px rgba(18,60,105,.22);
-    }
-
-.login-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  background:#15803d;
-  color:#fff!important;
-  border:1px solid #15803d;
-  padding:12px 20px;
-  border-radius:12px;
-  font-weight:800;
-  text-decoration:none;
-  box-shadow:0 10px 20px rgba(21,128,61,.20);
-  transition:.22s ease;
-}
-
-.login-btn:hover{
-  background:#166534;
-  border-color:#166534;
-  color:#fff!important;
-  transform:translateY(-2px);
-  box-shadow:0 16px 28px rgba(21,128,61,.28);
-}
-    
-    .hero{
-      background:
-        linear-gradient(100deg,rgba(17,24,39,.97) 0%,rgba(18,60,105,.94) 52%,rgba(15,118,110,.86) 100%),
-        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80');
-      background-size:cover;
-      background-position:center;
-      color:white;
-      padding:104px 0 92px;
-      position:relative;
-      overflow:hidden;
-    }
-    .hero:after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0));
-      pointer-events:none;
-    }
-    .hero-grid{
-      position:relative;
-      z-index:1;
-      display:grid;
-      grid-template-columns:1fr .92fr;
-      gap:62px;
-      align-items:center;
-    }
-    .eyebrow{
-      display:inline-flex;
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.22);
-      color:#e6fffb;
-      padding:7px 12px;
-      border-radius:8px;
-      font-weight:700;
-      margin-bottom:20px;
+      gap:9px;
+      padding:12px 19px;
+      border:1px solid transparent;
+      border-radius:10px;
       font-size:13px;
+      font-weight:900;
+      transition:.2s ease;
+    }
+    .btn svg{width:18px;height:18px;stroke:currentColor}
+    .btn-gold{
+      color:#102f55;
+      background:linear-gradient(135deg,#d9ad5a,#c4913c);
+      box-shadow:0 15px 28px rgba(198,154,74,.22);
+    }
+    .btn-outline{
+      color:#fff;
+      border-color:rgba(255,255,255,.50);
+      background:rgba(8,28,47,.20);
+      backdrop-filter:blur(8px);
+    }
+    .btn:hover{transform:translateY(-2px)}
+
+    .hero-content-wrap{
+      position:relative;
+      z-index:5;
+      min-height:560px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .hero-content{
+      width:min(680px,100%);
+      margin-right:0;
+      margin-left:auto;
+      padding-top:18px;
+      text-align:right;
+    }
+    .hero-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 15px;
+      border:1px solid rgba(216,173,93,.55);
+      border-radius:999px;
+      background:rgba(9,31,53,.42);
+      color:#e7bf74;
+      font-size:12px;
+      font-weight:800;
+      backdrop-filter:blur(8px);
+    }
+    .hero-badge::before{
+      content:"";
+      width:7px;height:7px;border-radius:50%;
+      background:var(--gold-2);
+      box-shadow:0 0 0 5px rgba(216,173,93,.12);
     }
     .hero h1{
-      font-size:44px;
-      line-height:1.32;
-      margin:0 0 22px;
-      font-weight:800;
-      letter-spacing:-.8px;
-      max-width:720px;
+      margin:22px 0 16px;
+      font-size:clamp(47px,5.6vw,76px);
+      line-height:1.22;
+      font-weight:900;
+      letter-spacing:-1.2px;
+      text-shadow:0 6px 22px rgba(0,0,0,.26);
+    }
+    .hero h1 span{
+      display:block;
+      margin-top:5px;
+      color:#d7a94f;
     }
     .hero p{
+      max-width:650px;
+      margin:0;
+      color:rgba(255,255,255,.82);
       font-size:18px;
-      margin:0 0 32px;
-      color:rgba(255,255,255,.86);
-      max-width:720px;
-      font-weight:400;
+      line-height:2;
+      text-shadow:0 2px 12px rgba(0,0,0,.24);
     }
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .secondary{
-      display:inline-flex;
-      color:white;
-      border:1px solid rgba(255,255,255,.35);
-      padding:12px 20px;
-      border-radius:8px;
-      font-weight:700;
-      text-decoration:none;
-      background:rgba(255,255,255,.04);
-      transition:.2s;
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:13px;
+      margin-top:31px;
     }
-    .secondary:hover{background:rgba(255,255,255,.10)}
-
-    .hero-card.laptop-showcase{
-      background:transparent;
-      border:none;
-      box-shadow:none;
-      padding:0;
-      backdrop-filter:none;
-      perspective:900px;
-    }
-    .hero-card.laptop-showcase:before{display:none}
-    .laptop-wrap{
-      min-height:360px;
+    .hero-note{
       display:flex;
       align-items:center;
-      justify-content:center;
-    }
-    .laptop{
-      width:min(560px,100%);
-      filter:drop-shadow(0 30px 44px rgba(0,0,0,.36));
-      transform:rotateY(-7deg) rotateX(2deg);
-    }
-    .laptop-screen{
-      background:#0b1220;
-      border:9px solid #0f172a;
-      border-bottom-width:15px;
-      border-radius:20px 20px 10px 10px;
-      padding:16px;
-      min-height:292px;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
-    }
-    .screen-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:14px;
-      color:#dbeafe;
-      font-size:12px;
-      font-weight:700;
-    }
-    .screen-dots{display:flex;gap:5px}
-    .screen-dots span{width:7px;height:7px;border-radius:50%;background:#94a3b8}
-    .screen-layout{
-      display:grid;
-      grid-template-columns:118px 1fr;
-      gap:12px;
-      min-height:230px;
-    }
-    .screen-side{
-      background:#111827;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:12px;
-      padding:12px;
-    }
-    .screen-side div{
-      height:8px;
-      border-radius:99px;
-      background:rgba(255,255,255,.18);
-      margin-bottom:12px;
-    }
-    .screen-main{display:grid;gap:12px}
-    .screen-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .screen-kpi{
-      background:#111827;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:12px;
-      padding:10px;
-      color:white;
-    }
-    .screen-kpi strong{display:block;font-size:16px;color:#7dd3fc;font-weight:800}
-    .screen-kpi span{font-size:10px;color:#cbd5e1}
-    .screen-chart{
-      background:#111827;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;
-      padding:16px;
-      height:140px;
-      display:flex;
-      align-items:end;
-      gap:9px;
-    }
-    .bar{
-      flex:1;
-      background:linear-gradient(180deg,#38bdf8,#0f766e);
-      border-radius:5px 5px 0 0;
-      min-height:28px;
-      opacity:.9;
-    }
-    .laptop-base{
-      width:108%;
-      height:26px;
-      margin:auto;
-      background:linear-gradient(180deg,#d0d5dd,#98a2b3);
-      border-radius:0 0 34px 34px;
-      position:relative;
-    }
-    .laptop-base:before{
-      content:"";
-      position:absolute;
-      top:0;
-      left:50%;
-      transform:translateX(-50%);
-      width:110px;
-      height:8px;
-      border-radius:0 0 10px 10px;
-      background:#e4e7ec;
-    }
-    .hero-pill-row{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-top:20px;
-    }
-    .hero-pill{
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:12px;
-      padding:12px;
-      display:flex;
-      gap:9px;
-      align-items:flex-start;
-      color:rgba(255,255,255,.84);
+      gap:8px;
+      margin-top:21px;
+      color:rgba(255,255,255,.68);
       font-size:12px;
     }
-    .hero-pill svg{width:22px;height:22px;stroke:#99f6e4;flex:0 0 auto}
-    .hero-pill strong{display:block;color:white;font-size:12px;font-weight:800}
+    .hero-note svg{width:17px;height:17px;stroke:#d7a94f}
 
-    section{padding:86px 0}
-    .section-title{
-      margin:0 auto 44px;
-      max-width:780px;
-      text-align:center;
-    }
-    .section-title h2{
-      font-size:32px;
-      line-height:1.35;
-      margin:0 0 12px;
-      font-weight:800;
-      letter-spacing:-.5px;
-      color:var(--ink);
-    }
-    .section-title p{
-      color:var(--muted);
-      margin:0;
-      font-size:16px;
-      font-weight:400;
-    }
-
-    .cards{
+    .hero-features{
+      position:relative;
+      z-index:6;
       display:grid;
       grid-template-columns:repeat(4,1fr);
-      gap:20px;
+      padding:21px 0 25px;
+      border-top:1px solid rgba(255,255,255,.13);
+      background:rgba(5,22,38,.34);
+      backdrop-filter:blur(8px);
     }
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:28px;
-      box-shadow:var(--shadow);
-      transition:.22s ease;
-    }
-    .card:hover{
-      transform:translateY(-4px);
-      box-shadow:var(--shadow2);
-      border-color:#cbd5e1;
-    }
-    .card h3{
-      margin:0 0 12px;
-      font-size:19px;
-      line-height:1.45;
-      color:var(--ink);
-      font-weight:800;
-    }
-    .card p{
-      margin:0;
-      color:var(--muted);
-      font-size:14.5px;
-    }
-    .icon-box{
-      width:48px;
-      height:48px;
-      border-radius:12px;
-      background:#f0fdfa;
-      border:1px solid #ccfbf1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      margin-bottom:18px;
-    }
-    .icon-box svg{width:26px;height:26px;stroke:#0f766e}
-
-    .steps{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:20px;
-      counter-reset:step;
-    }
-    .step{
-      background:white;
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:28px;
-      box-shadow:var(--shadow);
-      position:relative;
-    }
-    .step:before{
-      counter-increment:step;
-      content:counter(step);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:40px;
-      height:40px;
-      border-radius:10px;
-      background:#123c69;
-      color:white;
-      font-weight:800;
-      margin-bottom:18px;
-    }
-    .step h3{margin:0 0 10px;font-size:18px;font-weight:800;color:var(--ink)}
-    .step p{margin:0;color:var(--muted);font-size:14.5px}
-
-    .price-card{
-      background:white;
-      border:1px solid var(--border);
-      border-radius:22px;
-      padding:38px;
-      box-shadow:var(--shadow2);
-      display:grid;
-      grid-template-columns:1fr .65fr;
-      gap:30px;
-      align-items:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .price-card:before{
-      content:"";
-      position:absolute;
-      right:0;
-      top:0;
-      width:7px;
-      height:100%;
-      background:linear-gradient(180deg,#123c69,#0f766e);
-    }
-    .price{font-size:44px;font-weight:800;color:#123c69;line-height:1.2}
-    .old-price{text-decoration:line-through;color:#98a2b3;font-size:21px;font-weight:700}
-    .vat{color:var(--muted);font-size:14px}
-    .badge{
-      display:inline-block;
-      background:#ecfdf3;
-      color:#027a48;
-      border:1px solid #abefc6;
-      border-radius:8px;
-      padding:7px 12px;
-      font-weight:800;
-      margin-bottom:14px;
-      font-size:13px;
-    }
-
-    .platform-gallery{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:28px;
-      margin-top:36px;
-    }
-    .platform-page-card{
-      background:white;
-      border:1px solid var(--border);
-      border-radius:22px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      transition:.22s ease;
-    }
-    .platform-page-card:hover{transform:translateY(-5px);box-shadow:var(--shadow2)}
-    .screenshot-frame{
-      background:#eef2f6;
-      padding:14px;
-      border-bottom:1px solid var(--border);
-    }
-    .browser-bar{
-      height:30px;
-      background:#111827;
-      border-radius:12px 12px 0 0;
-      display:flex;
-      align-items:center;
-      gap:6px;
-      padding:0 12px;
-    }
-    .browser-dot{width:8px;height:8px;border-radius:50%;background:#98a2b3}
-    .screenshot-placeholder{
-      min-height:270px;
-      background:white;
-      border:1px solid #d0d5dd;
-      border-top:none;
-      border-radius:0 0 14px 14px;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-    }
-    .screenshot-placeholder img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .mock-screen{
-      width:91%;
-      height:214px;
-      display:grid;
-      gap:12px;
-      grid-template-columns:1fr 1fr;
-      align-items:stretch;
-    }
-    .mock-panel{
-      background:#f9fafb;
-      border:1px solid #e4e7ec;
-      border-radius:12px;
-      padding:12px;
-    }
-    .mock-line{
-      height:9px;
-      background:#d0d5dd;
-      border-radius:99px;
-      margin-bottom:9px;
-    }
-    .mock-line.short{width:55%}
-    .mock-line.medium{width:75%}
-    .mock-chart{
-      height:92px;
-      border-radius:12px;
-      background:linear-gradient(135deg,#123c69,#0f766e);
-      opacity:.9;
-      margin-top:8px;
-    }
-    .mock-table-lines{display:grid;gap:7px;margin-top:10px}
-    .mock-table-lines span{height:8px;border-radius:99px;background:#e4e7ec}
-    .platform-page-body{padding:26px}
-    .platform-page-body h3{
-      margin:0 0 10px;
-      color:var(--ink);
-      font-size:21px;
-      font-weight:800;
-    }
-    .platform-page-body p{
-      margin:0;
-      color:var(--muted);
-      font-size:14.5px;
-    }
-    .wide-card{grid-column:auto}
-    .screenshot-note{
-      background:#fffaeb;
-      border:1px solid #fedf89;
-      color:#93370d;
-      padding:14px 18px;
-      border-radius:12px;
-      font-weight:700;
-      margin-top:22px;
-      font-size:14px;
-    }
-
-    .compare{
-      overflow:auto;
-      background:white;
-      border:1px solid var(--border);
-      border-radius:22px;
-      box-shadow:var(--shadow2);
-      padding:8px;
-    }
-    table.compare-table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      min-width:850px;
-      overflow:hidden;
-      border-radius:16px;
-    }
-    .compare-table th{
-      background:#111827;
-      color:white;
-      padding:17px 18px;
-      text-align:right;
-      font-size:14px;
-      font-weight:800;
-    }
-    .compare-table th:nth-child(2){background:#166534}
-    .compare-table td{
-      border-bottom:1px solid var(--border);
-      padding:17px 18px;
-      color:var(--muted);
-      font-size:14.5px;
-      background:white;
-    }
-    .compare-table tr:nth-child(even) td{background:#f9fafb}
-    .compare-table td:first-child{font-weight:800;color:var(--ink)}
-    .compare-table td:nth-child(2){
-      background:#f0fdf4!important;
-      color:#166534;
-      font-weight:800;
-      box-shadow:inset 4px 0 0 #22c55e;
-    }
-    .compare-table tr:last-child td{border-bottom:none}
-    .yes{color:var(--green);font-weight:800}
-    .no{color:#dc2626;font-weight:800}
-    .partial{color:var(--gold);font-weight:800}
-    .compare-main{
-  display:block;
-  font-weight:800;
-  margin-bottom:10px;
-  color:#16223f;
-}
-
-.compare-features{
-  display:grid;
-  gap:8px;
-  margin-top:8px;
-}
-
-.compare-feature{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:12.5px;
-  line-height:1.6;
-  color:#5a6076;
-  font-weight:600;
-}
-
-.compare-feature .mark{
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:900;
-  flex:0 0 auto;
-}
-
-.compare-feature.yes .mark{
-  background:#eaf3ec;
-  color:#2f6f4a;
-  border:1px solid #cfe6d6;
-}
-
-.compare-feature.no .mark{
-  background:#fbeae6;
-  color:#b5462f;
-  border:1px solid #f0ccc2;
-}
-
-    .final-cta{
-      background:
-        linear-gradient(100deg,rgba(17,24,39,.97),rgba(18,60,105,.96)),
-        url('https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1500&q=80');
-      background-size:cover;
-      background-position:center;
-      color:white;
-      text-align:center;
-      padding:70px 28px;
-      border-radius:24px;
-      margin-bottom:70px;
-      box-shadow:var(--shadow2);
-    }
-    .final-cta h2{
-      font-size:34px;
-      line-height:1.35;
-      margin:0 0 12px;
-      font-weight:800;
-    }
-    .final-cta p{
-      margin:0 auto 28px;
-      max-width:780px;
-      color:rgba(255,255,255,.86);
-      font-size:16px;
-    }
-    .contact-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:16px;
-      margin-top:28px;
-      max-width:760px;
-      margin-right:auto;
-      margin-left:auto;
-    }
-    .contact-card{
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:14px;
-      padding:18px;
-      color:white;
+    .hero-feature{
       display:flex;
       align-items:center;
       gap:14px;
-      text-align:right;
-      backdrop-filter:blur(8px);
+      padding:4px 22px;
+      border-left:1px solid rgba(255,255,255,.17);
     }
-    .contact-card .contact-icon{
-      width:42px;
-      height:42px;
+    .hero-feature:last-child{border-left:none}
+    .hero-feature svg{
+      width:33px;height:33px;flex:0 0 33px;
+      stroke:#d7a94f;
+    }
+    .hero-feature strong{
+      display:block;
+      color:#fff;
+      font-size:13px;
+    }
+    .hero-feature span{
+      display:block;
+      margin-top:2px;
+      color:rgba(255,255,255,.65);
+      font-size:10.5px;
+    }
+
+    .menu-toggle{
+      display:none;
+      width:44px;height:44px;
+      align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,.35);
       border-radius:10px;
-      background:rgba(255,255,255,.10);
+      background:rgba(8,28,47,.22);
+      color:#fff;
+    }
+    .menu-toggle svg{width:22px;height:22px;stroke:currentColor}
+    .mobile-menu{display:none}
+
+    /* Main content */
+    .section{padding:84px 0}
+    .section-heading{
+      max-width:790px;
+      margin:0 auto 38px;
+      text-align:center;
+    }
+    .section-heading .eyebrow{
+      display:inline-flex;
+      margin-bottom:10px;
+      padding:7px 14px;
+      border:1px solid rgba(198,154,74,.25);
+      border-radius:999px;
+      color:#92703b;
+      background:rgba(198,154,74,.08);
+      font-size:12px;
+      font-weight:800;
+    }
+    .section-heading h2{
+      margin:0 0 10px;
+      color:var(--navy);
+      font-size:clamp(31px,4vw,45px);
+      line-height:1.35;
+      font-weight:900;
+    }
+    .section-heading p{margin:0;color:var(--muted);font-size:15px}
+
+    .groups{display:grid;gap:48px}
+    .group-title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:17px;
+      padding-bottom:12px;
+      border-bottom:1px solid var(--border);
+    }
+    .group-title h3{margin:0;color:var(--navy);font-size:24px;font-weight:900}
+    .group-title small{display:block;margin-top:2px;color:var(--muted);font-size:11px;direction:ltr}
+    .group-title p{margin:0;color:var(--muted);font-size:12.5px;text-align:left}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .cards.four{grid-template-columns:repeat(4,1fr)}
+    .product-card{
+      display:flex;
+      min-height:510px;
+      overflow:hidden;
+      flex-direction:column;
+      border-radius:25px;
+      background:var(--paper);
+      box-shadow:
+        16px 24px 34px rgba(16,47,85,.13),
+        7px 12px 18px rgba(16,47,85,.07);
+      transition:.25s ease;
+    }
+    .product-card:hover{transform:translateY(-7px)}
+    .product-card.ready{border:2px solid rgba(63,143,82,.82)}
+    .product-card.soon{border:2px solid rgba(40,71,109,.84)}
+    .status{
+      height:46px;
+      flex:0 0 46px;
       display:flex;
       align-items:center;
       justify-content:center;
-      flex:0 0 auto;
+      gap:8px;
+      color:#fff;
+      font-size:17px;
+      font-weight:900;
     }
-    .contact-card svg{width:22px;height:22px;stroke:#99f6e4}
-    .contact-card strong{display:block;font-size:15px;margin-bottom:4px;font-weight:800}
-    .contact-card a{color:white;font-weight:800;text-decoration:none;direction:ltr;display:inline-block}
-
-    footer{
-      background:#111827;
-      color:white;
-      padding:28px 0;
+    .ready .status{background:linear-gradient(135deg,#2f7f42,#4c9a5e)}
+    .soon .status{background:linear-gradient(135deg,#b86e2a,#ca823d)}
+    .status i{
+      width:22px;height:22px;
+      display:grid;place-items:center;
+      border:2px solid currentColor;
+      border-radius:50%;
+      font-style:normal;
+      font-size:12px;
+    }
+    .image-slot{
+      height:215px;
+      background:
+        radial-gradient(circle at 50% 42%,rgba(198,154,74,.07),transparent 41%),
+        linear-gradient(180deg,#fcfaf6 0%,#f7f2ea 100%);
+      border-bottom:1px solid #eee6db;
+    }
+    .product-content{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:22px 23px 24px;
+      text-align:center;
+    }
+    .product-content h4{
+      margin:0;
+      color:var(--navy);
+      font-size:23px;
+      line-height:1.35;
+      font-weight:900;
+    }
+    .product-content .en{
+      margin-top:7px;
+      color:#3f5874;
+      direction:ltr;
+      font-family:"Avenir Next","Segoe UI",Arial,sans-serif;
       font-size:14px;
     }
-    .footer-inner{
+    .product-content p{
+      margin:17px 0 20px;
+      color:#5b6470;
+      font-size:12.5px;
+      line-height:1.9;
+    }
+    .product-link{
+      width:85%;
+      min-height:44px;
+      margin-top:auto;
       display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      border:1.5px solid;
+      border-radius:10px;
+      font-size:13px;
+      font-weight:900;
+    }
+    .ready .product-link{color:var(--green);border-color:#55a46a}
+    .soon .product-link{color:var(--navy);border-color:#3b5d83}
+
+    .why{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:25px;
+    }
+    .why-main{
+      padding:35px;
+      border-radius:24px;
+      color:#fff;
+      background:
+        radial-gradient(circle at 20% 20%,rgba(198,154,74,.15),transparent 27%),
+        linear-gradient(135deg,#344a61,#293d52);
+      box-shadow:var(--shadow);
+    }
+    .why-main h2{margin:0 0 12px;font-size:31px;line-height:1.45}
+    .why-main p{margin:0;color:rgba(255,255,255,.74);font-size:14px;line-height:2}
+    .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .benefit{
+      padding:22px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(255,253,250,.96);
+      box-shadow:var(--shadow);
+    }
+    .benefit h3{margin:0 0 6px;color:var(--navy);font-size:15px}
+    .benefit p{margin:0;color:var(--muted);font-size:11.5px;line-height:1.85}
+
+    .journey{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+      padding:22px;
+      border:1px solid var(--border);
+      border-radius:22px;
+      background:rgba(255,253,250,.94);
+      box-shadow:var(--shadow);
+    }
+    .journey-step{display:flex;align-items:center;gap:14px;padding:11px}
+    .step-icon{
+      width:58px;height:58px;flex:0 0 58px;
+      display:grid;place-items:center;
+      border-radius:50%;
+      color:var(--navy);
+      background:#f3ece2;
+      font-weight:900;
+    }
+    .journey-step strong{display:block;color:var(--navy);font-size:12.5px}
+    .journey-step span{font-size:10.5px;color:var(--muted)}
+
+    .cta-panel{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      padding:35px 37px;
+      border-radius:24px;
+      color:#fff;
+      background:
+        radial-gradient(circle at 18% 18%,rgba(198,154,74,.13),transparent 27%),
+        linear-gradient(135deg,#354b62,#293e53);
+      box-shadow:var(--shadow);
+    }
+    .cta-panel h2{margin:0 0 6px;font-size:27px}
+    .cta-panel p{margin:0;color:rgba(255,255,255,.72);font-size:13px}
+    .cta-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    footer{
+      padding:30px 0;
+      background:#2c4055;
+      color:rgba(255,255,255,.72);
+      font-size:12px;
+    }
+    .footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+
+    .products-section{padding-top:80px}
+    
+    
+    .products-topbar{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 210px;
+      align-items:center;
+      gap:18px;
+      margin:0 0 22px;
+      direction:rtl;
+    }
+    .category-tabs{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:12px;
+      width:100%;
+      direction:rtl;
+    }
+    .category-tab{
+      width:100%;
+      min-height:46px;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid #d8dfe7;
+      border-radius:999px;
+      background:#fff;
+      color:var(--navy);
+      font:inherit;
+      font-size:12px;
+      line-height:1.4;
+      font-weight:900;
+      text-align:center;
+      cursor:pointer;
+      transition:.2s ease;
+      white-space:normal;
+    }
+    .category-tab:hover{
+      transform:translateY(-1px);
+      border-color:#b9c6d3;
+    }
+    .category-tab.active{
+      color:#fff;
+      border-color:var(--navy);
+      background:var(--navy);
+      box-shadow:0 10px 22px rgba(16,47,85,.14);
+    }
+    .products-layout{display:block;}
+    .status-filter{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      direction:rtl;
+      white-space:nowrap;
+    }
+    
+    
+    
+    
+
+    .status-filter label{
+      color:var(--navy);
+      font-size:12px;
+      font-weight:900;
+    }
+    .status-filter select{
+      width:135px;
+      min-height:46px;
+      padding:9px 12px;
+      border:1px solid #d8dfe7;
+      border-radius:12px;
+      background:#fff;
+      color:var(--navy);
+      font:inherit;
+      font-size:12px;
+      font-weight:800;
+      cursor:pointer;
+      outline:none;
+    }
+    .status-filter select:focus{
+      border-color:var(--navy);
+      box-shadow:0 0 0 3px rgba(16,47,85,.08);
+    }
+
+    .compact-products-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:18px;
+      width:100%;
+      direction:rtl;
+    }
+    .compact-card{
+      display:flex;
+      min-height:390px;
+      overflow:hidden;
+      flex-direction:column;
+      border-radius:18px;
+      background:var(--paper);
+      box-shadow:
+        12px 18px 26px rgba(16,47,85,.10),
+        5px 9px 14px rgba(16,47,85,.05);
+      transition:.22s ease;
+    }
+    .compact-card:hover{transform:translateY(-5px)}
+    .compact-card.ready{border:1.6px solid rgba(63,143,82,.78)}
+    .compact-card.soon{border:1.6px solid rgba(40,71,109,.80)}
+    .compact-status{
+      height:40px;
+      flex:0 0 40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      color:#fff;
+      font-size:14px;
+      font-weight:900;
+    }
+    .compact-card.ready .compact-status{background:linear-gradient(135deg,#2f7f42,#4c9a5e)}
+    .compact-card.soon .compact-status{background:linear-gradient(135deg,#b86e2a,#ca823d)}
+    .compact-status span{
+      width:18px;height:18px;
+      display:grid;place-items:center;
+      border:1.5px solid currentColor;
+      border-radius:50%;
+      font-size:10px;
+    }
+    .compact-image-slot{
+      height:125px;
+      background:
+        radial-gradient(circle at 50% 43%,rgba(198,154,74,.07),transparent 41%),
+        linear-gradient(180deg,#fcfaf6 0%,#f7f2ea 100%);
+      border-bottom:1px solid #eee6db;
+    }
+
+    .compact-image-slot{
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 12px 4px;
+    }
+    .compact-image-slot img{
+      width:88%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      filter:drop-shadow(7px 10px 10px rgba(16,47,85,.13));
+    }
+
+    .compact-content{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:17px 18px 19px;
+      text-align:center;
+    }
+    .compact-content h3{
+      margin:0;
+      color:var(--navy);
+      font-size:16px;
+      line-height:1.4;
+      font-weight:900;
+    }
+    .compact-en{
+      margin-top:7px;
+      color:var(--navy);
+      direction:ltr;
+      font-family:"Avenir Next","Segoe UI",Arial,sans-serif;
+      font-size:16px;
+      line-height:1.4;
+      font-weight:800;
+      text-align:center;
+    }
+    .compact-points{
+      width:100%;
+      margin:14px 0 17px;
+      padding:0 18px 0 0;
+      color:#626b75;
+      font-size:11px;
+      line-height:1.9;
+      text-align:right;
+      list-style-position:outside;
+    }
+    .compact-points li{
+      margin-bottom:4px;
+      padding-right:2px;
+    }
+    .compact-points li::marker{
+      color:var(--gold);
+    }
+    .compact-link{
+      width:88%;
+      min-height:39px;
+      margin-top:auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      border:1.4px solid;
+      border-radius:9px;
+      background:transparent;
+      font:inherit;
+      font-size:12px;
+      font-weight:900;
+    }
+    .compact-card.ready .compact-link{color:var(--green);border-color:#55a46a;cursor:pointer}
+    .compact-card.soon .compact-link{color:var(--navy);border-color:#3b5d83;cursor:default}
+    .compact-card.hidden{display:none}
+
+
+    .contact-section{
+      padding-bottom:92px;
+    }
+    .contact-showcase{
+      padding:54px 34px 42px;
+      border-radius:30px;
+      text-align:center;
+      color:#fff;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(198,154,74,.16), transparent 24%),
+        linear-gradient(135deg,#1b2c4a 0%, #223760 54%, #1f2f52 100%);
+      box-shadow:0 26px 60px -34px rgba(16,47,85,.48);
+    }
+    .contact-showcase h2{
+      margin:0 0 12px;
+      color:#fff;
+      font-size:clamp(30px,4vw,55px);
+      line-height:1.35;
+      font-weight:900;
+    }
+    .contact-showcase p{
+      max-width:820px;
+      margin:0 auto;
+      color:rgba(255,255,255,.85);
+      font-size:16px;
+      line-height:2;
+    }
+    .contact-cards{
+      margin-top:28px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      max-width:760px;
+      margin-inline:auto;
+    }
+    .contact-card{
+      display:flex;
+      flex-direction:row-reverse;
+      align-items:center;
       justify-content:space-between;
       gap:18px;
-      flex-wrap:wrap;
-      color:rgba(255,255,255,.78);
+      padding:22px 20px;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:18px;
+      background:rgba(255,255,255,.12);
+      backdrop-filter:blur(8px);
+      text-align:right;
     }
 
-    .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
-    .reveal.is-visible{opacity:1;transform:translateY(0)}
-
-    
-.screenshot-frame{
-background:#e9eef5;
-padding:20px;
-}
-.browser-bar{display:none;}
-.screenshot-placeholder{
-background:transparent;
-border:none;
-min-height:320px;
-}
-.screenshot-placeholder img{
-width:100%;
-height:260px;
-object-fit:cover;
-border-radius:14px 14px 6px 6px;
-border:10px solid #111827;
-border-bottom:16px solid #111827;
-box-shadow:0 20px 40px rgba(0,0,0,.18);
-}
-.screenshot-placeholder:after{
-content:"";
-display:block;
-width:110%;
-height:18px;
-margin:-2px auto 0;
-background:linear-gradient(180deg,#d1d5db,#9ca3af);
-border-radius:0 0 20px 20px;
-}
-
-@media(max-width:1050px){
-      .cards{grid-template-columns:repeat(2,1fr)}
-      .hero-grid{grid-template-columns:1fr}
+    .contact-card{
+      color:inherit;
+      text-decoration:none;
+      cursor:pointer;
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
     }
-    @media(max-width:900px){
-      .container{padding:0 20px}
-      .nav{align-items:flex-start;flex-direction:column;padding:16px 0}
-      .nav-links{display:flex;flex-wrap:wrap;gap:8px}
-      .nav a{margin:0}
-      .hero{padding:70px 0}
-      .hero h1{font-size:34px}
-      .hero p{font-size:16px}
-      .cards,.steps,.platform-gallery,.contact-grid,.price-card,.hero-pill-row{grid-template-columns:1fr}
-      .wide-card{grid-column:auto}
-      section{padding:62px 0}
-      .section-title h2{font-size:27px}
+    .contact-card:hover{
+      transform:translateY(-3px);
+      background:rgba(255,255,255,.17);
+      border-color:rgba(216,173,93,.42);
     }
-  
-/* Clean product screenshot gallery - no cropping */
-.platform-gallery{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:28px;
-  align-items:stretch;
-}
-.platform-page-card{
-  display:flex;
-  flex-direction:column;
-}
-.screenshot-frame{
-  background:linear-gradient(180deg,#eef3f8,#e6edf5)!important;
-  padding:24px!important;
-  min-height:345px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.browser-bar{
-  display:none!important;
-}
-.screenshot-placeholder{
-  width:100%;
-  min-height:280px!important;
-  height:280px;
-  background:transparent!important;
-  border:none!important;
-  border-radius:0!important;
-  overflow:visible!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  position:relative!important;
-}
-.screenshot-placeholder img{
-  display:block!important;
-  width:100%!important;
-  height:100%!important;
-  object-fit:contain!important;
-  object-position:center!important;
-  background:#ffffff!important;
-  border:10px solid #111827!important;
-  border-bottom:18px solid #111827!important;
-  border-radius:18px 18px 8px 8px!important;
-  box-shadow:0 24px 42px rgba(16,24,40,.18)!important;
-  padding:0!important;
-}
-.screenshot-placeholder:after{
-  content:""!important;
-  position:absolute!important;
-  bottom:-15px!important;
-  left:50%!important;
-  transform:translateX(-50%)!important;
-  width:82%!important;
-  height:18px!important;
-  background:linear-gradient(180deg,#d0d5dd,#98a2b3)!important;
-  border-radius:0 0 24px 24px!important;
-  box-shadow:0 12px 22px rgba(16,24,40,.12)!important;
-}
-.screenshot-placeholder .mock-screen{
-  display:none!important;
-}
-.platform-page-body{
-  flex:1;
-}
-@media(max-width:900px){
-  .platform-gallery{grid-template-columns:1fr;}
-  .screenshot-frame{min-height:300px;}
-  .screenshot-placeholder{height:245px;min-height:245px!important;}
-}
+
+    .contact-card-icon{
+      width:46px;
+      height:46px;
+      flex:0 0 46px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      background:rgba(255,255,255,.12);
+      color:var(--gold);
+    }
+    .contact-card-icon svg{
+      width:21px;
+      height:21px;
+      stroke:currentColor;
+    }
+    .contact-card-content{
+      flex:1;
+    }
+    .contact-card-content strong{
+      display:block;
+      color:#fff;
+      font-size:14px;
+      font-weight:900;
+    }
+    .contact-card-content span{
+      display:block;
+      margin-top:6px;
+      color:#fff;
+      font-size:16px;
+      font-weight:800;
+      direction:ltr;
+      text-align:right;
+    }
 
 
+.interest-showcase{display:grid;grid-template-columns:.85fr 1.15fr;gap:28px;align-items:stretch;padding:38px;border-radius:30px;background:linear-gradient(135deg,#1b2c4a 0%,#223760 54%,#1f2f52 100%);box-shadow:0 26px 60px -34px rgba(16,47,85,.48)}
+.interest-intro{color:#fff;padding:12px}.interest-intro .eyebrow{color:#d8ad5d}.interest-intro h2{margin:8px 0 12px;font-size:clamp(30px,4vw,48px);line-height:1.35}.interest-intro p{margin:0;color:rgba(255,255,255,.78);font-size:14px;line-height:2}
+.direct-contact{display:grid;gap:10px;margin-top:24px}.direct-contact a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 16px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(255,255,255,.08);color:#fff}.direct-contact span{direction:ltr;font-size:13px}
+.interest-form{display:grid;gap:13px;padding:24px;border-radius:22px;background:#fffdf9;color:#17345d}.interest-form label{display:grid;gap:6px;font-size:12px;font-weight:900}.interest-form input,.interest-form select,.interest-form textarea{width:100%;padding:12px 13px;border:1px solid #d8dfe7;border-radius:11px;background:#fff;color:#243446;font:inherit;font-size:13px;outline:none}.interest-form input,.interest-form select{min-height:45px}.interest-form input:focus,.interest-form select:focus,.interest-form textarea:focus{border-color:#17345d;box-shadow:0 0 0 3px rgba(23,52,93,.08)}
+.interest-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.interest-form .btn{border:0;cursor:pointer;font:inherit;font-weight:900}.interest-success{display:none;padding:10px 12px;border-radius:10px;background:rgba(63,143,82,.09);color:#2f7f42;font-size:12px;font-weight:800}.interest-form small{color:#778290;font-size:10px;line-height:1.6}.compact-card[data-href]{cursor:pointer}
 
-/* === PayScale Hub visual identity preview overrides === */
-:root{
-  --ink:#16223f;
-  --navy:#16223f;
-  --blue:#16223f;
-  --blue2:#223457;
-  --teal:#c0995c;
-  --green:#3f8f5f;
-  --gold:#c0995c;
-  --bg:#f6f1e9;
-  --card:#fffdfa;
-  --text:#16223f;
-  --muted:#5a6076;
-  --border:#e9e0cf;
-  --soft:#fbf7f0;
-  --shadow:0 18px 44px -30px rgba(22,34,63,.28);
-  --shadow2:0 24px 56px -30px rgba(22,34,63,.34);
-}
-body{
-  font-family:'Noto Sans Arabic',sans-serif;
-  background:#f6f1e9;
-  color:#16223f;
-}
-body:before{
-  background:
-    radial-gradient(circle at 12% 10%,rgba(192,153,92,.14),transparent 28%),
-    radial-gradient(circle at 88% 0%,rgba(22,34,63,.08),transparent 32%);
-}
-header{
-  background:rgba(246,241,233,.92);
-  border-bottom:1px solid #e9e0cf;
-}
-.nav{min-height:68px;}
-.brand strong{color:#16223f;font-size:22px;letter-spacing:-.4px;}
-.brand span{color:#7a7f8f;font-size:13px;}
-.nav a{color:#5a6076;}
-.nav a:hover{color:#16223f;}
-.cta{
-  background:#16223f;
-  color:#fff!important;
-  border-radius:12px;
-  padding:12px 22px;
-  box-shadow:0 14px 28px rgba(22,34,63,.18);
-}
-.cta:hover{background:#1e2f56;box-shadow:0 18px 34px rgba(22,34,63,.24);}
-.secondary{
-  border-color:rgba(192,153,92,.45);
-  color:#fff;
-  background:rgba(192,153,92,.12);
-  border-radius:12px;
-}
-.secondary:hover{background:rgba(192,153,92,.20);}
-.hero{
-  background:
-    linear-gradient(105deg,rgba(22,34,63,.98) 0%,rgba(22,34,63,.94) 55%,rgba(192,153,92,.78) 130%),
-    linear-gradient(180deg,#16223f,#16223f);
-  padding:96px 0 86px;
-}
-.eyebrow{
-  background:rgba(192,153,92,.14);
-  border:1px solid rgba(192,153,92,.38);
-  color:#f6dfb5;
-  letter-spacing:.04em;
-  border-radius:999px;
-}
-.hero h1{color:#fff;letter-spacing:-.9px;}
-.hero p{color:rgba(255,255,255,.82);}
-.laptop{filter:drop-shadow(0 28px 44px rgba(0,0,0,.30));}
-.laptop-screen{
-  background:#0f172a;
-  border-color:#111827;
-  box-shadow:inset 0 0 0 1px rgba(192,153,92,.16);
-}
-.screen-kpi strong{color:#c0995c;}
-.bar{background:linear-gradient(180deg,#c0995c,#8e6f3f);}
-.hero-pill{
-  background:rgba(255,255,255,.09);
-  border-color:rgba(192,153,92,.22);
-  border-radius:14px;
-}
-.hero-pill svg{stroke:#c0995c;}
-section{background:#f6f1e9;}
-section[style*="var(--soft)"]{background:#fbf7f0!important;}
-.section-title h2{color:#16223f;}
-.section-title p{color:#5a6076;}
-.card,.step,.platform-page-card,.price-card,.compare{
-  background:#fffdfa;
-  border-color:#ece3d3;
-  border-radius:18px;
-  box-shadow:0 18px 44px -30px rgba(22,34,63,.28);
-}
-.card:hover,.platform-page-card:hover{border-color:#d8cbb0;}
-.icon-box{
-  background:#faf6ee;
-  border-color:#e3d9c7;
-  border-radius:12px;
-}
-.icon-box svg{stroke:#c0995c;}
-.step:before{background:#16223f;color:#fff;border-radius:12px;}
-.price-card:before{background:#c0995c;}
-.price{color:#16223f;}
-.badge{
-  background:#fff7ec;
-  color:#7a6040;
-  border-color:#f0dfc2;
-}
-.screenshot-frame{background:linear-gradient(180deg,#faf6ee,#f1e6d3)!important;}
-.screenshot-placeholder img{border-color:#16223f!important;box-shadow:0 24px 42px rgba(22,34,63,.20)!important;}
-.screenshot-placeholder:after{background:linear-gradient(180deg,#d8cbb0,#b3aa97)!important;}
-.compare-table th{background:#16223f;}
-.compare-table th:nth-child(2){background:#c0995c;color:#16223f;}
-.compare-table td:nth-child(2){background:#fff7ec!important;color:#16223f;box-shadow:inset 4px 0 0 #c0995c;}
-.yes{color:#3f8f5f;}
-.partial{color:#9a6b25;}
-.final-cta{
-  background:linear-gradient(105deg,rgba(22,34,63,.98),rgba(22,34,63,.93));
-  border:1px solid rgba(192,153,92,.24);
-}
-.contact-card{border-color:rgba(192,153,92,.22);}
-.contact-card svg{stroke:#c0995c;}
-footer{background:#16223f;}
+    @media(max-width:1060px){
+      .nav,.header-actions{display:none}
+      .menu-toggle{display:flex}
+      .mobile-menu.open{display:grid;gap:8px;padding:0 0 14px;position:relative;z-index:10}
+      .mobile-menu a{padding:11px 13px;background:rgba(8,28,47,.82);border:1px solid rgba(255,255,255,.16);border-radius:10px;color:#fff;font-size:13px;font-weight:800}
+      .hero-content{margin:auto;text-align:center}
+      .hero-actions,.hero-note{justify-content:center}
+      .hero-features{grid-template-columns:repeat(2,1fr)}
+      .hero-feature:nth-child(2){border-left:none}
+      .cards,.cards.four{grid-template-columns:repeat(2,1fr)}
 
-</style>
+      .category-tabs{grid-template-columns:repeat(3,minmax(0,1fr));}
+      .products-topbar{grid-template-columns:1fr;gap:14px}
+      .interest-showcase{grid-template-columns:1fr}
+      .status-filter{justify-content:flex-start}
+      .category-tabs{grid-template-columns:repeat(3,minmax(0,1fr));}
+      .compact-products-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .status-filter{flex-wrap:wrap;justify-content:flex-start}
+      .why{grid-template-columns:1fr}
+      .journey{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:820px){
+      .compact-products-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(max-width:650px){
+      .container{width:min(100% - 24px,560px)}
+      .hero{min-height:820px;background-position:45% center}
+      .hero-header{min-height:72px}
+      .brand strong{font-size:20px}
+      .hero-content-wrap{min-height:570px}
+      .hero h1{font-size:clamp(37px,11vw,50px)}
+      .hero p{font-size:14px}
+      .hero-actions{display:grid}.hero-actions .btn{width:100%}
+      .hero-features{grid-template-columns:1fr}
+      .hero-feature{border-left:none;border-bottom:1px solid rgba(255,255,255,.13)}
+      .hero-feature:last-child{border-bottom:none}
+      .section{padding:64px 0}
+      .group-title{align-items:flex-start;flex-direction:column}.group-title p{text-align:right}
+      .cards,.cards.four{grid-template-columns:1fr}
+      .category-tabs{grid-template-columns:1fr 1fr;max-width:none;overflow:visible;padding-bottom:0}
+      .category-tab{white-space:normal}
+      .products-topbar{grid-template-columns:1fr}
+      .category-tabs{grid-template-columns:1fr}
+      .compact-products-grid{grid-template-columns:1fr}
+      .status-filter{align-items:flex-start;gap:10px 16px;flex-wrap:wrap}
+      .contact-showcase{padding:36px 18px 28px;border-radius:24px}
+      .interest-showcase{padding:22px 16px;border-radius:22px}
+      .interest-two{grid-template-columns:1fr}
+      .contact-showcase p{font-size:14px}
+      .contact-cards{grid-template-columns:1fr}
+      .contact-card{padding:18px 16px}
+      .why-grid{grid-template-columns:1fr}
+      .journey{grid-template-columns:1fr}
+      .cta-panel{flex-direction:column;align-items:flex-start;padding:27px 23px}
+      .cta-actions{width:100%;display:grid}.cta-actions .btn{width:100%}
+      .footer-inner{justify-content:center;text-align:center}
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="container nav">
-    <div class="brand">
-      <strong>PayScale Hub</strong>
-      <span>مقارنة سوقية + بناء سلم رواتب</span>
-    </div>
-    <nav class="nav-links">
-      <a href="#service">الخدمة</a>
-      <a href="#price">السعر</a>
-      <a href="#report">شكل التقرير</a>
-      <a href="#process">آلية العمل</a>
-      <a href="#compare">المقارنة</a>
-      <a class="cta" href="request.html" target="_blank">اطلب الخدمة الآن</a>
-      <a class="login-btn" href="login.html">تسجيل الدخول</a>
-      
-    </nav>
-  </div>
-</header>
-
 <section class="hero">
-  <div class="container hero-grid">
-    <div>
-      <span class="eyebrow">Salary Benchmarking + Salary Scale Builder</span>
-      <h1>منصة SaaS لتطوير سلم رواتب مبني على السوق.</h1>
-      <p>ليست مجرد دراسة مقارنة رواتب، بل تجربة رقمية تمكّن العميل من اختيار شركات المقارنة، رفع بيانات موظفيه، استعراض النتائج، ومحاكاة وبناء سلم رواتب مناسب داخل منصة تفاعلية.</p>
-      <div class="hero-actions">
-        <a class="cta" href="request.html" target="_blank">ابدأ طلب الخدمة</a>
-        <a class="secondary" href="#process">كيف تعمل الخدمة؟</a>
-      </div>
-    </div>
-    <div class="hero-card laptop-showcase">
-      <div class="laptop-wrap">
-        <div class="laptop">
-          <div class="laptop-screen">
-            <div class="screen-top">
-              <span>PayScale Hub Dashboard</span>
-              <div class="screen-dots"><span></span><span></span><span></span></div>
-            </div>
-            <div class="screen-layout">
-              <div class="screen-side">
-                <div style="width:80%"></div>
-                <div style="width:62%"></div>
-                <div style="width:72%"></div>
-                <div style="width:52%"></div>
-                <div style="width:66%"></div>
-              </div>
-              <div class="screen-main">
-                <div class="screen-kpis">
-                  <div class="screen-kpi"><strong>38%</strong><span>Below P50</span></div>
-                  <div class="screen-kpi"><strong>124</strong><span>Impacted</span></div>
-                  <div class="screen-kpi"><strong>P50</strong><span>Target</span></div>
-                </div>
-                <div class="screen-chart">
-                  <span class="bar" style="height:52%"></span>
-                  <span class="bar" style="height:72%"></span>
-                  <span class="bar" style="height:44%"></span>
-                  <span class="bar" style="height:88%"></span>
-                  <span class="bar" style="height:64%"></span>
-                  <span class="bar" style="height:78%"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="laptop-base"></div>
-        </div>
+  <div class="container">
+    <header class="hero-header">
+      <a class="brand" href="#">
+        <strong>PayScale <span>Hub</span></strong>
+        <small>منصة حلول التطوير التنظيمي والموارد البشرية</small>
+      </a>
+
+      <nav class="nav">
+        <a class="active" href="#">الرئيسية</a>
+        <a href="#products">المنتجات</a>
+        <a href="#why">لماذا نحن؟</a>
+        <a href="#journey">آلية العمل</a>
+        <a href="#contact">تواصل معنا</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-outline" href="login.html">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg>
+          تسجيل الدخول
+        </a>
+        <a class="btn btn-gold" href="#contact">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M8 2v3M16 2v3M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg>
+          تواصل معنا
+        </a>
       </div>
 
-      <div class="hero-pill-row">
-        <div class="hero-pill">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="فتح القائمة">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </header>
+
+    <nav class="mobile-menu" id="mobileMenu">
+      <a href="#products">المنتجات</a>
+      <a href="#why">لماذا نحن؟</a>
+      <a href="#journey">آلية العمل</a>
+      <a href="login.html">تسجيل الدخول</a>
+      <a href="#contact">تواصل معنا</a>
+    </nav>
+
+    <div class="hero-content-wrap">
+      <div class="hero-content">
+        <div class="hero-badge">خبرة استشارية تتحول إلى حلول رقمية</div>
+        <h1>حلول رقمية متكاملة <span>للتطوير التنظيمي والموارد البشرية</span></h1>
+        <p>
+          نساعد المنشآت على تطوير أنظمتها وعملياتها، واتخاذ قرارات أدق، وتحسين الأداء المؤسسي وتجربة الموظف،
+          من خلال منتجات رقمية عربية متخصصة في التطوير التنظيمي والموارد البشرية.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#products">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            استعرض المنتجات
+          </a>
+          <a class="btn btn-outline" href="#contact">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M8 2v3M16 2v3M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg>
+            تواصل معنا
+          </a>
+        </div>
+
+        <div class="hero-note">
           <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-5"/></svg>
-          <div><strong>دراسة سوقية حقيقية</strong><span>بيانات موثوقة ومحدثة.</span></div>
-        </div>
-        <div class="hero-pill">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/><path d="M8 5v14M16 5v14"/></svg>
-          <div><strong>منصة تفاعلية</strong><span>تجربة استخدام سهلة.</span></div>
-        </div>
-        <div class="hero-pill">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-9"/></svg>
-          <div><strong>قرارات مبنية على بيانات</strong><span>تحليل واضح للإدارة.</span></div>
+          حلول آمنة، مرنة، وقابلة للتوسع.
         </div>
       </div>
     </div>
   </div>
-</section>
 
-<section id="service">
-  <div class="container">
-    <div class="section-title reveal">
-      <h2>ما الذي تقدمه الخدمة؟</h2>
-      <p>حل متكامل يجمع بين الاستشارة والمنصة الرقمية لبناء سلم رواتب عملي.</p>
+  <div class="hero-features">
+    <div class="hero-feature">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"/><path d="M9 12l2 2 4-5"/></svg>
+      <div><strong>سرية وأمان</strong><span>حماية بياناتك والمنشأة</span></div>
     </div>
-    <div class="cards reveal">
-      <div class="card"><div class="icon-box"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-9"/><path d="M19 7l-3 3-3-2-4 5"/></svg></div><h3>دراسة مقارنة سوقية</h3><p>تحليل الرواتب الأساسية مقارنةً بشركات مرجعية يختارها العميل من قاعدة بيانات السوق.</p></div>
-      <div class="card"><div class="icon-box"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 3v4"/><path d="M6 9h12"/><path d="M6 9l-3 6h6L6 9z"/><path d="M18 9l-3 6h6l-3-6z"/><path d="M12 7v14"/><path d="M8 21h8"/></svg></div><h3>توزين الوظائف وبناء نظام التصنيف الوظيفي</h3><p>قد يتم عقد اجتماع مع العميل لمراجعة المسميات الوظيفية وتوزينها وبناء تصنيف وظيفي واضح قبل تنفيذ التحليل.</p></div>
-      <div class="card"><div class="icon-box"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19h16"/><path d="M6 17V9h3v8"/><path d="M11 17V5h3v12"/><path d="M16 17v-6h3v6"/></svg></div><h3>منصة لبناء سلم رواتب احترافي سوقي</h3><p>يدخل العميل للمنصة بكلمة سر ويستعرض النتائج ويبني سلم رواتب احترافي مبني على التموضع السوقي المطلوب.</p></div>
-      <div class="card"><div class="icon-box"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 6v6l4 2"/><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v6h-6"/></svg></div><h3>ميزة إضافية خلال سنة</h3><p>يمكن للعميل طلب توزين وظيفة محددة مستحدثة خلال سنة من تنفيذ الدراسة، كميزة إضافية لدعم تحديث السلم والتصنيف الوظيفي.</p></div>
+    <div class="hero-feature">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-9"/></svg>
+      <div><strong>نتائج قابلة للقياس</strong><span>تقارير ومؤشرات تدعم القرار</span></div>
+    </div>
+    <div class="hero-feature">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><path d="M5 19l14-14M13 5h6v6M5 13v6h6"/></svg>
+      <div><strong>منهجيات عملية</strong><span>أدوات مبنية على أفضل الممارسات</span></div>
+    </div>
+    <div class="hero-feature">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 4 6 4 9s-1 6-4 9c-3-3-4-6-4-9s1-6 4-9z"/></svg>
+      <div><strong>قابلية للتخصيص</strong><span>مرونة تناسب احتياجات كل منشأة</span></div>
     </div>
   </div>
 </section>
 
-<section id="report">
-  <div class="container">
-    <div class="section-title reveal">
-      <h2>شكل التقرير والمنصة</h2>
-      <p>هذا هو الجزء الذي يراه العميل بعد تنفيذ الدراسة: خمس صفحات تفاعلية تساعده على فهم النتائج وبناء سلم رواتب عملي.</p>
-    </div>
-
-    <div class="platform-gallery reveal">
-
+<main>
+  
+  <section class="section products-section" id="products">
+    <div class="container">
       
-
-      <div class="platform-page-card">
-        <div class="screenshot-frame">
-          <div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
-          <div class="screenshot-placeholder">
-            <img src="./images/report-preview-1.jpg" alt="لوحة المؤشرات التنفيذية" onerror="this.style.display='none'">
-            <div class="mock-screen">
-              <div class="mock-panel">
-                <div class="mock-line short"></div>
-                <div class="mock-chart"></div>
-              </div>
-              <div class="mock-panel">
-                <div class="mock-line"></div>
-                <div class="mock-line medium"></div>
-                <div class="mock-line"></div>
-                <div class="mock-line short"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="platform-page-body">
-          <h3>1. لوحة المؤشرات التنفيذية</h3>
-          <p>تعطي الإدارة قراءة سريعة عن تنافسية الرواتب، نسبة الموظفين الأقل من السوق، العائلات الوظيفية الأعلى مخاطرة، وموقع الشركة العام مقارنةً بمستويات السوق.</p>
-        </div>
+<div class="section-heading">
+        <div class="eyebrow">منتجاتنا وحلولنا</div>
+        <h2>حلول رقمية تغطي رحلة التطوير التنظيمي ورأس المال البشري</h2>
+        <p>اختر التصنيف المناسب، ثم استخدم فلتر الحالة للوصول بسرعة إلى المنتجات الجاهزة أو القادمة.</p>
       </div>
 
-      <div class="platform-page-card">
-        <div class="screenshot-frame">
-          <div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
-          <div class="screenshot-placeholder">
-            <img src="./images/report-preview-2.jpg" alt="صفحة تحليل الموظفين" onerror="this.style.display='none'">
-            <div class="mock-screen">
-              <div class="mock-panel" style="grid-column:1/-1;">
-                <div class="mock-line short"></div>
-                <div class="mock-table-lines">
-                  <span></span><span></span><span></span><span></span><span></span><span></span>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="products-topbar">
+        <div class="category-tabs" role="tablist" aria-label="تصنيفات المنتجات">
+          <button class="category-tab active" data-filter="all" type="button">كل المنتجات</button>
+          <button class="category-tab" data-filter="التعويضات" type="button">التعويضات وتخطيط القوى العاملة</button>
+          <button class="category-tab" data-filter="المواهب" type="button">إدارة المواهب والأداء</button>
+          <button class="category-tab" data-filter="التطوير" type="button">التطوير المؤسسي وتجربة الموظف</button>
+          <button class="category-tab" data-filter="الحوكمة" type="button">الحوكمة</button>
         </div>
-        <div class="platform-page-body">
-          <h3>2. صفحة بيانات الموظفين</h3>
-          <p>تمكّن العميل من استعراض الموظفين بعد ربطهم بنتائج السوق، مع البحث والتصفية حسب العائلة الوظيفية والجنسية والدرجة، وتوضيح موقع كل موظف مقارنةً بالسوق.</p>
-        </div>
-      </div>
 
-      <div class="platform-page-card">
-        <div class="screenshot-frame">
-          <div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
-          <div class="screenshot-placeholder">
-            <img src="./images/report-preview-3.jpg" alt="محاكي الأثر المالي" onerror="this.style.display='none'">
-            <div class="mock-screen">
-              <div class="mock-panel">
-                <div class="mock-line medium"></div>
-                <div class="mock-line"></div>
-                <div class="mock-chart"></div>
-              </div>
-              <div class="mock-panel">
-                <div class="mock-line short"></div>
-                <div class="mock-table-lines">
-                  <span></span><span></span><span></span><span></span>
-                </div>
-              </div>
-            </div>
-          </div>
+        
+        <div class="status-filter">
+          <label for="statusSelect">حالة المنتج</label>
+          <select id="statusSelect" aria-label="فلترة حسب حالة المنتج">
+            <option value="all">جميع المنتجات</option>
+            <option value="ready">المنتجات الجاهزة</option>
+            <option value="soon">قريبًا</option>
+          </select>
         </div>
-        <div class="platform-page-body">
-          <h3>3. محاكي الأثر المالي</h3>
-          <p>يساعد العميل على تحديد التموضع السوقي المستقبلي لكل عائلة وظيفية، ومعرفة عدد الموظفين المتأثرين وقيمة الأثر المالي الشهري قبل اتخاذ قرار الزيادة.</p>
-        </div>
-      </div>
-
-      <div class="platform-page-card">
-        <div class="screenshot-frame">
-          <div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
-          <div class="screenshot-placeholder" style="min-height:300px;">
-            <img src="./images/report-preview-4.jpg" alt="صفحة بناء سلم الرواتب" onerror="this.style.display='none'">
-            <div class="mock-screen" style="height:245px;grid-template-columns:.75fr 1.25fr;">
-              <div class="mock-panel">
-                <div class="mock-line short"></div>
-                <div class="mock-line"></div>
-                <div class="mock-line medium"></div>
-                <div class="mock-line"></div>
-                <div class="mock-chart"></div>
-              </div>
-              <div class="mock-panel">
-                <div class="mock-line medium"></div>
-                <div class="mock-table-lines">
-                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="platform-page-body">
-          <h3>4. صفحة بناء سلم الرواتب</h3>
-          <p>الصفحة الأهم في المنصة؛ تتيح للعميل بناء سلالم رواتب مقترحة حسب الجنسيات أو الشرائح المعتمدة، وتحديد عدد الخطوات ونطاق السلم والتموضع السوقي، ثم طباعة أو تصدير السلم المقترح.</p>
-        </div>
-      </div>
-
-    </div>
-
     
-  </div>
-</section>
-
-<section id="process" style="background:var(--soft);">
-  <div class="container">
-    <div class="section-title reveal">
-      <h2>آلية العمل</h2>
-      <p>رحلة تجمع بين إدخال بيانات العميل، تنفيذ الدراسة، ثم تمكين العميل من استخدام المنصة.</p>
-    </div>
-    <div class="steps reveal">
-      <div class="step"><h3>تقديم الطلب</h3><p>يدخل العميل معلومات الشركة، يختار شركات المقارنة، ويرفع ملف الموظفين والرواتب.</p></div>
-      <div class="step"><h3>مراجعة وتوزين المسميات</h3><p>نراجع البيانات وقد نعقد اجتماعًا لتوزين المسميات الوظيفية والتأكد من جاهزية المقارنة.</p></div>
-      <div class="step"><h3>تنفيذ الدراسة</h3><p>يتم تنفيذ المقارنة السوقية وتجهيز نتائج الرواتب داخل المنصة.</p></div>
-      <div class="step"><h3>دخول العميل للمنصة</h3><p>يستلم العميل كلمة السر، يدخل على الموقع، يستعرض النتائج، ويبني سلم الرواتب المقترح.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="price" style="background:var(--soft);">
-  <div class="container">
-    <div class="price-card reveal">
-      <div>
-        <span class="badge">عرض إطلاق الخدمة</span>
-        <h2 style="font-size:32px;margin:0 0 10px;">سعر الخدمة</h2>
-        <p style="color:var(--muted);margin:0;">تشمل الخدمة طلب المقارنة، معالجة بيانات الموظفين، تنفيذ الدراسة، وإتاحة دخول العميل للمنصة لاستعراض النتائج وبناء سلم الرواتب.</p>
       </div>
-      <div>
-        <div class="old-price">25,000 ريال</div>
-        <div class="price">20,000 ريال</div>
-        <div class="vat">غير شامل ضريبة القيمة المضافة.</div>
+
+      <div class="compact-products-grid" id="productsGrid">
+        
+          
+      <article class="compact-card ready" data-category="التعويضات" data-status="ready" data-href="salary-scale.html" tabindex="0" role="link">
+        <div class="compact-status"><span>✓</span>جاهز</div>
+        <div class="compact-image-slot">
+          <img src="images/products/salary-scale.png" alt="Salary Scale">
+        </div>
+        <div class="compact-content">
+          <h3>سلم الرواتب</h3>
+          <div class="compact-en">Salary Scale</div><ul class="compact-points"><li>مقارنة الرواتب بالسوق</li><li>بناء سلم رواتب متكامل</li><li>احتساب الأثر المالي</li></ul>
+          <a class="compact-link" href="salary-scale.html">استكشف المنتج<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card ready" data-category="التطوير" data-status="ready" data-href="employee-engagement.html" tabindex="0" role="link">
+        <div class="compact-status"><span>✓</span>جاهز</div>
+        <div class="compact-image-slot">
+          <img src="images/products/employee-engagement.png" alt="Employee Engagement">
+        </div>
+        <div class="compact-content">
+          <h3>قياس الارتباط الوظيفي</h3>
+          <div class="compact-en">Employee Engagement</div><ul class="compact-points"><li>قياس الارتباط الوظيفي</li><li>تحليل النتائج والفجوات</li><li>بناء مبادرات التحسين</li></ul>
+          <a class="compact-link" href="employee-engagement.html">استكشف المنتج<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card ready" data-category="التطوير" data-status="ready" data-href="maturity-assessment.html" tabindex="0" role="link">
+        <div class="compact-status"><span>✓</span>جاهز</div>
+        <div class="compact-image-slot">
+          <img src="images/products/maturity-assessment.png" alt="Maturity Assessment">
+        </div>
+        <div class="compact-content">
+          <h3>قياس النضج المؤسسي</h3>
+          <div class="compact-en">Maturity Assessment</div><ul class="compact-points"><li>قياس مستوى النضج</li><li>تحليل الفجوات المؤسسية</li><li>تحديد أولويات التطوير</li></ul>
+          <a class="compact-link" href="maturity-assessment.html">استكشف المنتج<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="التعويضات" data-status="soon" data-href="fte.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/fte.png" alt="FTE">
+        </div>
+        <div class="compact-content">
+          <h3>تحليل الاحتياج من القوى العاملة</h3>
+          <div class="compact-en">FTE</div><ul class="compact-points"><li>تحليل حجم العمل</li><li>تقدير الاحتياج من الموظفين</li><li>دعم تخطيط القوى العاملة</li></ul>
+          <a class="compact-link" href="fte.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="الحوكمة" data-status="soon" data-href="hr-policy-builder.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/hr-policy-builder.png" alt="HR Policy Builder">
+        </div>
+        <div class="compact-content">
+          <h3>منصة بناء سياسات الموارد البشرية</h3>
+          <div class="compact-en">HR Policy Builder</div><ul class="compact-points"><li>بناء السياسات والإجراءات</li><li>تخصيص المحتوى للمنشأة</li><li>إدارة التحديثات والإصدارات</li></ul>
+          <a class="compact-link" href="hr-policy-builder.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="الحوكمة" data-status="soon" data-href="authority-matrix.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/authority-matrix.png" alt="Authority Matrix">
+        </div>
+        <div class="compact-content">
+          <h3>مصفوفة الصلاحيات</h3>
+          <div class="compact-en">Authority Matrix</div><ul class="compact-points"><li>تحديد مستويات الصلاحيات</li><li>توضيح المسؤوليات والاعتمادات</li><li>توثيق مصفوفة القرار</li></ul>
+          <a class="compact-link" href="authority-matrix.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="المواهب" data-status="soon" data-href="feedback-360.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/feedback-360.png" alt="Feedback 360">
+        </div>
+        <div class="compact-content">
+          <h3>التغذية الراجعة 360°</h3>
+          <div class="compact-en">Feedback 360</div><ul class="compact-points"><li>تقييم متعدد المصادر</li><li>تحليل التغذية الراجعة</li><li>بناء خطط التطوير</li></ul>
+          <a class="compact-link" href="feedback-360.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="المواهب" data-status="soon" data-href="performance-management.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/performance-management.png" alt="Performance Management">
+        </div>
+        <div class="compact-content">
+          <h3>إدارة الأداء</h3>
+          <div class="compact-en">Performance Management</div><ul class="compact-points"><li>إدارة الأهداف</li><li>متابعة تقييمات الأداء</li><li>إصدار تقارير الأداء</li></ul>
+          <a class="compact-link" href="performance-management.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="المواهب" data-status="soon" data-href="training-needs-assessment.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/training-needs.png" alt="Training Needs Assessment">
+        </div>
+        <div class="compact-content">
+          <h3>تحليل الاحتياجات التدريبية</h3>
+          <div class="compact-en">Training Needs Assessment</div><ul class="compact-points"><li>تحليل فجوات المهارات</li><li>تحديد الأولويات التدريبية</li><li>بناء خطة تدريبية</li></ul>
+          <a class="compact-link" href="training-needs-assessment.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="الحوكمة" data-status="soon" data-href="executive-dashboard.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/executive-dashboard.png" alt="Executive Dashboard">
+        </div>
+        <div class="compact-content">
+          <h3>لوحات الأداء التنفيذية</h3>
+          <div class="compact-en">Executive Dashboard</div><ul class="compact-points"><li>عرض المؤشرات الرئيسية</li><li>متابعة الأداء التنفيذي</li><li>دعم اتخاذ القرار</li></ul>
+          <a class="compact-link" href="executive-dashboard.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="المواهب" data-status="soon" data-href="competencies-framework.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/competencies-framework.png" alt="Competencies Framework">
+        </div>
+        <div class="compact-content">
+          <h3>إطار الجدارات والكفاءات</h3>
+          <div class="compact-en">Competencies Framework</div><ul class="compact-points"><li>بناء إطار الجدارات</li><li>ربط الجدارات بالوظائف</li><li>تحديد مستويات الكفاءة</li></ul>
+          <a class="compact-link" href="competencies-framework.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="التعويضات" data-status="soon" data-href="manpower-planning.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/manpower-planning.png" alt="Manpower Planning &amp; Recruitment Follow-up">
+        </div>
+        <div class="compact-content">
+          <h3>تخطيط القوى العاملة والتوظيف والتهيئة</h3>
+          <div class="compact-en">Manpower Planning & Recruitment Follow-up</div><ul class="compact-points"><li>تخطيط الاحتياج الوظيفي</li><li>متابعة التوظيف</li><li>إدارة التهيئة للموظفين</li></ul>
+          <a class="compact-link" href="manpower-planning.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="المواهب" data-status="soon" data-href="succession-planning.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/succession-planning.png" alt="Critical Positions &amp; Succession Planning">
+        </div>
+        <div class="compact-content">
+          <h3>الوظائف الحرجة والتعاقب الوظيفي</h3>
+          <div class="compact-en">Critical Positions & Succession Planning</div><ul class="compact-points"><li>تحديد الوظائف الحرجة</li><li>اختيار البدلاء المحتملين</li><li>بناء خطط التعاقب</li></ul>
+          <a class="compact-link" href="succession-planning.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+      <article class="compact-card soon" data-category="التطوير" data-status="soon" data-href="hr-maturity-benchmark.html" tabindex="0" role="link">
+        <div class="compact-status"><span>◷</span>قريبًا</div>
+        <div class="compact-image-slot">
+          <img src="images/products/hr-maturity-benchmark.png" alt="HR Maturity Benchmark">
+        </div>
+        <div class="compact-content">
+          <h3>نضج الموارد البشرية والمقارنة المرجعية</h3>
+          <div class="compact-en">HR Maturity Benchmark</div><ul class="compact-points"><li>قياس نضج الموارد البشرية</li><li>المقارنة مع منشآت أخرى</li><li>تحديد فرص التحسين</li></ul>
+          <a class="compact-link" href="hr-maturity-benchmark.html">قريبًا<span>←</span></a>
+        </div>
+      </article>
+    
+        
       </div>
+
     </div>
-  </div>
-</section>
+  </section>
 
 
-
-<section id="compare" style="background:var(--soft);">
-  <div class="container">
-    <div class="section-title reveal">
-      <h2>مقارنتنا مع الشركات المنافسة</h2>
-      <p>نموذج عملي منخفض التكلفة يركز على تمكين العميل من استخدام النتائج داخل منصة تفاعلية.</p>
-    </div>
-    <div class="compare reveal">
-      <table class="compare-table">
-        <thead>
-          <tr>
-            <th>البند</th>
-            <th>خدمتنا</th>
-            <th>شركات الاستشارات العالمية</th>
-            <th>دراسات الرواتب التقليدية</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>التكلفة</td>
-            <td>20,000 ريال</td>
-            <td>50,000 - 70,000 ريال</td>
-            <td>50,000 - 70,000 ريال</td>
-          </tr>
-          <tr>
-            <td>اختيار شركات المقارنة</td>
-            <td class="yes">العميل يختارها مباشرة</td>
-            <td class="partial">العميل يختارها مباشرة</td>
-            <td class="partial">غالبًا محدودة</td>
-          </tr>
-         <tr>
-  <td>منصة تفاعلية</td>
-
-  <td>
-    <span class="compare-main">منصة تفاعلية مكتملة ومؤتمتة بشكل كامل</span>
-    <div class="compare-features">
-      <div class="compare-feature yes"><span class="mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
-      <div class="compare-feature yes"><span class="mark">✓</span><span>منصة تفاعلية.</span></div>
-      <div class="compare-feature yes"><span class="mark">✓</span><span>سيناريوهات التطبيق.</span></div>
-      <div class="compare-feature yes"><span class="mark">✓</span><span>احتساب الأثر المالي للتطبيق.</span></div>
-      <div class="compare-feature yes"><span class="mark">✓</span><span>بناء سلم رواتب.</span></div>
-    </div>
-  </td>
-
-  <td>
-    <span class="compare-main">غالباً تقرير ثابت</span>
-    <div class="compare-features">
-      <div class="compare-feature yes"><span class="mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
-      <div class="compare-feature no"><span class="mark">×</span><span>منصة تفاعلية.</span></div>
-      <div class="compare-feature no"><span class="mark">×</span><span>سيناريوهات التطبيق.</span></div>
-      <div class="compare-feature no"><span class="mark">×</span><span>احتساب الأثر المالي للتطبيق.</span></div>
-      <div class="compare-feature no"><span class="mark">×</span><span>بناء سلم رواتب.</span></div>
-    </div>
-  </td>
-
-  <td>
-    <span class="compare-main">غالباً تقرير ثابت</span>
-    <div class="compare-features">
-      <div class="compare-feature yes"><span class="mark">✓</span><span>دراسة لتموضع كل موظف.</span></div>
-      <div class="compare-feature no"><span class="mark">×</span><span>منصة تفاعلية.</span></div>
-      <div class="compare-feature no"><span class="mark">×</span><span>سيناريوهات التطبيق.</span></div>
-      <div class="compare-feature no"><span class="mark">×</span><span>احتساب الأثر المالي للتطبيق.</span></div>
-      <div class="compare-feature no"><span class="mark">×</span><span>بناء سلم رواتب.</span></div>
-    </div>
-  </td>
-</tr>
-          <tr>
-            <td>بناء سلم رواتب</td>
-            <td>جزء أساسي من الخدمة</td>
-            <td class="partial">يتطلب نطاقًا إضافيًا</td>
-            <td class="partial">حسب نطاق التعاقد</td>
-          </tr>
-          <tr>
-            <td>سرعة التنفيذ</td>
-            <td>5 أيام عمل</td>
-            <td>21 يوم عمل</td>
-            <td>غالبًا أكثر من 30 يوم عمل</td>
-          </tr>
-          <tr>
-            <td>ملاءمة الشركات المتوسطة</td>
-            <td class="yes">مصممة لهذا الغرض</td>
-            <td class="partial">قد تكون أكبر من احتياج العميل</td>
-            <td class="partial">تختلف حسب جودة الدراسة</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<div class="container">
-  <div class="final-cta reveal">
-    <h2>جاهز تبدأ بناء سلم الرواتب؟</h2>
-    <p>ابدأ بطلب الخدمة، اختر منهجية المقارنة، وارفع بيانات الموظفين. بعدها ننفذ الدراسة ونمنحك دخولًا للمنصة لاستعراض النتائج وبناء سلم الرواتب.</p>
-    <a class="cta" href="request.html" target="_blank">اطلب الخدمة الآن</a>
-
-    <div class="contact-grid">
-      <div class="contact-card">
-        <div class="contact-icon"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg></div>
-        <div>
-          <strong>التواصل عبر البريد</strong>
-          <a href="mailto:info@payscalehub.com">info@payscalehub.com</a>
+  <section class="section" id="why" style="padding-top:18px">
+    <div class="container">
+      <div class="why">
+        <div class="why-main">
+          <h2>نحوّل الخبرة الاستشارية إلى أدوات رقمية عملية</h2>
+          <p>منتجاتنا ليست مجرد واجهات تقنية، بل حلول بُنيت حول احتياجات واقعية في التطوير التنظيمي والموارد البشرية، لتساعد المنشآت على تحويل البيانات إلى قرارات، والتوصيات إلى مبادرات، والعمليات إلى تجربة أكثر كفاءة.</p>
+        </div>
+        <div class="why-grid">
+          <div class="benefit"><h3>مخرجات واضحة</h3><p>تقارير ومؤشرات قابلة للاستخدام المباشر في اتخاذ القرار.</p></div>
+          <div class="benefit"><h3>مرونة في التخصيص</h3><p>إعدادات تناسب حجم المنشأة وطبيعة أعمالها واحتياجاتها.</p></div>
+          <div class="benefit"><h3>خصوصية وأمان</h3><p>تصميم يراعي حساسية بيانات التطوير التنظيمي والموارد البشرية وسريتها.</p></div>
+          <div class="benefit"><h3>تجربة عربية</h3><p>واجهات عربية واضحة وسهلة الاستخدام من البداية للنهاية.</p></div>
         </div>
       </div>
-      <div class="contact-card">
-        <div class="contact-icon"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M6 4h4l2 5-3 2a12 12 0 0 0 4 4l2-3 5 2v4c0 1-1 2-2 2A16 16 0 0 1 4 6c0-1 1-2 2-2z"/></svg></div>
-        <div>
-          <strong>الهاتف / واتساب</strong>
-          <a href="https://wa.me/966561584191" target="_blank">0561584191</a>
-        </div>
+    </div>
+  </section>
+
+  <section class="section" id="journey" style="padding-top:30px">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">آلية العمل</div>
+        <h2>رحلتك معنا في 4 خطوات</h2>
+      </div>
+      <div class="journey">
+        <div class="journey-step"><div class="step-icon">1</div><div><strong>اختر الحل المناسب</strong><span>استعرض المنتجات وحدد الأقرب لاحتياج منشأتك.</span></div></div>
+        <div class="journey-step"><div class="step-icon">2</div><div><strong>اطلب الخدمة أو التجربة</strong><span>أكمل الطلب أو تواصل معنا.</span></div></div>
+        <div class="journey-step"><div class="step-icon">3</div><div><strong>الإعداد والتخصيص</strong><span>نقوم بإعداد المنتج بما يناسب منشأتك.</span></div></div>
+        <div class="journey-step"><div class="step-icon">4</div><div><strong>ابدأ الاستخدام</strong><span>استلم بيانات الدخول وابدأ بتحقيق القيمة.</span></div></div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
+
+  
+  
+  <section class="section contact-section" id="contact" style="padding-top:18px"><div class="container"><div class="interest-showcase">
+<div class="interest-intro"><div class="eyebrow">إظهار الاهتمام</div><h2>أي من حلولنا يهم منشأتك؟</h2><p>حدد المنتج وأرسل بيانات التواصل، وسنتابع معك لمناقشة احتياجك أو إبلاغك عند توفر المنتجات القادمة.</p>
+<div class="direct-contact"><a href="mailto:info@payscalehub.com"><strong>البريد الإلكتروني</strong><span>info@payscalehub.com</span></a><a href="https://wa.me/966561584191" target="_blank" rel="noopener noreferrer"><strong>واتساب / الهاتف</strong><span>0561584191</span></a></div></div>
+<form class="interest-form" id="interestForm"><input type="hidden" name="type" value="interest"><label>المنتج المهتم به<select name="product" required><option value="">اختر المنتج</option><option value="سلم الرواتب">سلم الرواتب — Salary Scale</option>
+<option value="قياس الارتباط الوظيفي">قياس الارتباط الوظيفي — Employee Engagement</option>
+<option value="قياس النضج المؤسسي">قياس النضج المؤسسي — Maturity Assessment</option>
+<option value="تحليل الاحتياج من القوى العاملة">تحليل الاحتياج من القوى العاملة — FTE</option>
+<option value="منصة بناء سياسات الموارد البشرية">منصة بناء سياسات الموارد البشرية — HR Policy Builder</option>
+<option value="مصفوفة الصلاحيات">مصفوفة الصلاحيات — Authority Matrix</option>
+<option value="التغذية الراجعة 360°">التغذية الراجعة 360° — Feedback 360</option>
+<option value="إدارة الأداء">إدارة الأداء — Performance Management</option>
+<option value="تحليل الاحتياجات التدريبية">تحليل الاحتياجات التدريبية — Training Needs Assessment</option>
+<option value="لوحات الأداء التنفيذية">لوحات الأداء التنفيذية — Executive Dashboard</option>
+<option value="إطار الجدارات والكفاءات">إطار الجدارات والكفاءات — Competencies Framework</option>
+<option value="تخطيط القوى العاملة والتوظيف والتهيئة">تخطيط القوى العاملة والتوظيف والتهيئة — Manpower Planning &amp; Recruitment Follow-up</option>
+<option value="الوظائف الحرجة والتعاقب الوظيفي">الوظائف الحرجة والتعاقب الوظيفي — Critical Positions &amp; Succession Planning</option>
+<option value="نضج الموارد البشرية والمقارنة المرجعية">نضج الموارد البشرية والمقارنة المرجعية — HR Maturity Benchmark</option></select></label>
+<div class="interest-two"><label>اسم الشركة<input name="company" type="text" required></label><label>الاسم<input name="name" type="text" required></label></div>
+<div class="interest-two"><label>رقم الهاتف<input name="phone" type="tel" required></label><label>البريد الإلكتروني<input name="email" type="email"></label></div>
+<label>ملاحظات — اختياري<textarea name="message" rows="3"></textarea></label><button class="btn btn-gold" type="submit">إرسال الاهتمام</button><div class="interest-success" id="interestSuccess"></div><small>عند عدم ربط النموذج بقاعدة البيانات، سيفتح واتساب لإرسال البيانات.</small></form>
+</div></div></section></main>
 
 <footer>
   <div class="container footer-inner">
     <div>© 2026 PayScale Hub. جميع الحقوق محفوظة.</div>
-    <div>مقارنة رواتب + منصة بناء سلم رواتب.</div>
+    <div>منصة حلول رقمية للتطوير التنظيمي والموارد البشرية.</div>
   </div>
 </footer>
 
-
-
 <script>
-  const revealItems = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.14 });
-  revealItems.forEach(item => observer.observe(item));
-</script>
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
 
-</body>
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    });
+  }
+
+  const categoryTabs = document.querySelectorAll('.category-tab');
+  const statusSelect = document.getElementById('statusSelect');
+  const productCards = document.querySelectorAll('.compact-card');
+
+  let activeCategory = 'all';
+  let activeStatus = 'all';
+
+  function applyProductFilters() {
+    productCards.forEach(card => {
+      const categoryMatch =
+        activeCategory === 'all' ||
+        card.dataset.category === activeCategory;
+
+      const statusMatch =
+        activeStatus === 'all' ||
+        card.dataset.status === activeStatus;
+
+      card.classList.toggle('hidden', !(categoryMatch && statusMatch));
+    });
+  }
+
+  categoryTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      categoryTabs.forEach(item => item.classList.remove('active'));
+      tab.classList.add('active');
+      activeCategory = tab.dataset.filter || 'all';
+      applyProductFilters();
+    });
+  });
+
+  if (statusSelect) {
+    statusSelect.addEventListener('change', () => {
+      activeStatus = statusSelect.value || 'all';
+      applyProductFilters();
+    });
+  }
+
+  applyProductFilters();
+document.querySelectorAll('.compact-card[data-href]').forEach(card=>{card.addEventListener('click',e=>{if(e.target.closest('a,button,select,input,textarea'))return;location.href=card.dataset.href});card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();location.href=card.dataset.href}})});
+</script>
+<script src="assets/js/config.js"></script><script src="assets/js/forms.js"></script></body>
 </html>
+
