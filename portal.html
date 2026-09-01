@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102f55">
+  <title>بوابة العميل | PayScale Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    :root{
+      --navy:#102f55;
+      --navy-dark:#0b223b;
+      --gold:#c69a4a;
+      --cream:#f7f3ec;
+      --paper:#fffdf9;
+      --text:#26384f;
+      --muted:#6b7480;
+      --border:#e6ded2;
+      --green:#2f7d3d;
+      --shadow:0 22px 52px -34px rgba(16,47,85,.30);
+    }
+    html{min-width:320px;background:var(--cream)}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 7% 0%,rgba(198,154,74,.12),transparent 28%),
+        linear-gradient(180deg,#fbfaf7 0%,var(--cream) 100%);
+      font-family:"Noto Naskh Arabic",Tahoma,Arial,sans-serif;
+      font-size:14px;
+      line-height:1.75;
+    }
+    button,a{font:inherit}
+    a{text-decoration:none;color:inherit}
+    .container{width:min(1180px,calc(100% - 40px));margin:auto}
+    .topbar{
+      color:#fff;
+      background:linear-gradient(135deg,var(--navy-dark),var(--navy));
+      box-shadow:0 12px 32px rgba(11,34,59,.16);
+    }
+    .topbar-inner{
+      min-height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{display:flex;flex-direction:column;line-height:1.35}
+    .brand strong{font-size:22px;font-weight:700}
+    .brand strong span{color:#d8ad5d}
+    .brand small{font-size:10px;color:rgba(255,255,255,.65)}
+    .account-actions{display:flex;align-items:center;gap:12px}
+    .account-name{font-size:12px;color:rgba(255,255,255,.82)}
+    .logout{
+      min-height:38px;
+      padding:7px 14px;
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:9px;
+      color:#fff;
+      background:rgba(255,255,255,.06);
+      cursor:pointer;
+    }
+    .logout:hover{background:rgba(255,255,255,.12)}
+    main{padding:54px 0 70px}
+    .welcome{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:24px;
+      margin-bottom:28px;
+    }
+    .welcome-label{
+      display:inline-flex;
+      padding:5px 11px;
+      border:1px solid rgba(198,154,74,.26);
+      border-radius:999px;
+      color:#8a6936;
+      background:rgba(198,154,74,.08);
+      font-size:11px;
+      font-weight:700;
+    }
+    .welcome h1{margin:9px 0 4px;color:var(--navy);font-size:30px;line-height:1.35;font-weight:700}
+    .welcome p{margin:0;color:var(--muted);font-size:13px}
+    .client-id{
+      padding:10px 14px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      color:var(--muted);
+      background:rgba(255,253,249,.82);
+      font-size:11px;
+      direction:ltr;
+    }
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:15px;
+    }
+    .section-title h2{margin:0;color:var(--navy);font-size:19px;font-weight:700}
+    .section-title span{color:var(--muted);font-size:11px}
+    .tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .tool-card{
+      min-height:230px;
+      display:flex;
+      flex-direction:column;
+      padding:23px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(255,253,249,.96);
+      box-shadow:var(--shadow);
+      transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+    }
+    .tool-card:not(.disabled):hover{
+      transform:translateY(-4px);
+      border-color:rgba(198,154,74,.55);
+      box-shadow:0 26px 58px -34px rgba(16,47,85,.42);
+    }
+    .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+    .tool-icon{
+      width:52px;height:52px;flex:0 0 52px;
+      display:grid;place-items:center;
+      border-radius:14px;
+      color:var(--navy);
+      background:#f2ece2;
+    }
+    .tool-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8}
+    .status{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:5px 9px;
+      border-radius:999px;
+      color:var(--green);
+      background:#eaf3ec;
+      font-size:10px;font-weight:700;
+    }
+    .status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+    .tool-card h3{margin:17px 0 1px;color:var(--navy);font-size:19px;font-weight:700}
+    .tool-card .en{color:#496079;font-family:"Segoe UI",Arial,sans-serif;font-size:11px;direction:ltr;text-align:right}
+    .tool-card p{margin:10px 0 18px;color:var(--muted);font-size:12px;line-height:1.85}
+    .open-tool{
+      min-height:42px;
+      margin-top:auto;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      border-radius:9px;
+      color:#fff;
+      background:var(--navy);
+      font-size:12px;font-weight:700;
+    }
+    .open-tool svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+    .tool-card.disabled{opacity:.64}
+    .tool-card.disabled .status{color:#7d8490;background:#eef0f2}
+    .tool-card.disabled .open-tool{background:#9da3ab;cursor:not-allowed}
+    .support{
+      margin-top:22px;
+      padding:16px 19px;
+      display:flex;align-items:center;justify-content:space-between;gap:18px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:rgba(255,253,249,.72);
+      color:var(--muted);
+      font-size:11px;
+    }
+    .support a{color:var(--navy);font-weight:700}
+    .loading-overlay{
+      position:fixed;inset:0;z-index:1000;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(247,243,236,.94);
+      transition:opacity .18s ease;
+    }
+    .loading-overlay.hidden{opacity:0;pointer-events:none}
+    .loader-card{text-align:center;color:var(--navy);font-size:12px;font-weight:700}
+    .spinner{
+      width:34px;height:34px;margin:0 auto 12px;
+      border:3px solid rgba(16,47,85,.13);border-top-color:var(--gold);border-radius:50%;
+      animation:spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:760px){
+      .container{width:min(100% - 28px,1180px)}
+      .topbar-inner{min-height:68px}
+      .brand strong{font-size:19px}
+      .account-name{display:none}
+      main{padding-top:34px}
+      .welcome{align-items:flex-start;flex-direction:column}
+      .welcome h1{font-size:25px}
+      .tools-grid{grid-template-columns:1fr}
+      .tool-card{min-height:220px}
+      .support{align-items:flex-start;flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingOverlay" class="loading-overlay" aria-live="polite">
+    <div class="loader-card"><div class="spinner"></div><div>جارٍ تحميل بوابة العميل...</div></div>
+  </div>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html" aria-label="PayScale Hub">
+        <strong>PayScale <span>Hub</span></strong>
+        <small>HR &amp; ORGANIZATION DEVELOPMENT SOLUTIONS</small>
+      </a>
+      <div class="account-actions">
+        <span id="accountName" class="account-name"></span>
+        <button id="logoutBtn" class="logout" type="button">تسجيل الخروج</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="welcome">
+        <div>
+          <span class="welcome-label">بوابة العميل</span>
+          <h1>مرحباً، <span id="companyName"></span></h1>
+          <p>اختر الأداة التي ترغب في استخدامها من الأدوات المتاحة لشركتكم.</p>
+        </div>
+        <div id="clientId" class="client-id"></div>
+      </section>
+
+      <div class="section-title">
+        <h2>أدواتكم</h2>
+        <span>أربع أدوات جاهزة للاستخدام.</span>
+      </div>
+
+      <section id="toolsGrid" class="tools-grid" aria-label="أدوات العميل"></section>
+
+      <div class="support">
+        <span>تحتاج إلى مساعدة في استخدام إحدى الأدوات؟</span>
+        <a href="mailto:info@payscalehub.com">info@payscalehub.com</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const SESSION_KEY = "psh_client_session";
+    const TOOL_DEFINITIONS = [
+      {
+        code:"SALARY_SCALE",
+        name:"سلم الرواتب",
+        en:"Salary Scale",
+        description:"استعرض نتائج المقارنة السوقية وابنِ سلم رواتب مناسباً لشركتكم.",
+        icon:'<svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-9"/></svg>'
+      },
+      {
+        code:"FTE",
+        name:"تحليل عبء العمل",
+        en:"FTE Workload Hub",
+        description:"حلّل عبء العمل وحدد الاحتياج الفعلي والمستقبلي من القوى العاملة.",
+        icon:'<svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 20V10h4v10M13 20V4h4v16"/><path d="M5 7l5-3 4 2 5-3"/></svg>'
+      },
+      {
+        code:"EMP_ENGAGEMENT",
+        name:"الرضا والارتباط الوظيفي",
+        en:"Employee Engagement",
+        description:"أنشئ الدراسات والاستبيانات وتابع المشاركة وحلل النتائج والتوصيات.",
+        icon:'<svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M16 3.3a4 4 0 0 1 0 7.4M21 21v-2a4 4 0 0 0-3-3.6"/></svg>'
+      },
+      {
+        code:"MATURITY_ASSESS",
+        name:"تقييم النضج المؤسسي",
+        en:"Maturity Assessment",
+        description:"قيّم مستوى النضج المؤسسي وحدد الفجوات والأولويات التطويرية.",
+        icon:'<svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19V12M22 19H2"/><path d="M3 6l6-3 6 5 6-5"/></svg>'
+      }
+    ];
+
+    function getSession(){
+      try{return JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null")}catch(error){return null}
+    }
+
+    function toolMap(session){
+      return new Map((session.tools || []).map(tool => [tool.code, tool]));
+    }
+
+    function safeToolUrl(value){
+      try{
+        const url = new URL(value);
+        return url.protocol === "https:" ? url.href : "";
+      }catch(error){
+        return "";
+      }
+    }
+
+    function renderPortal(session){
+      const tools = toolMap(session);
+      document.getElementById("companyName").textContent = session.companyName || "عميل PayScale Hub";
+      document.getElementById("accountName").textContent = session.email || "";
+      document.getElementById("clientId").textContent = session.clientId || "";
+
+      document.getElementById("toolsGrid").innerHTML = TOOL_DEFINITIONS.map(definition => {
+        const assigned = tools.get(definition.code);
+        const url = assigned ? safeToolUrl(assigned.url) : "";
+        const available = assigned && assigned.status === "ACTIVE" && url;
+        const action = available
+          ? `<a class="open-tool" href="${url}" rel="noopener">فتح الأداة <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>`
+          : '<span class="open-tool" aria-disabled="true">الأداة غير متاحة حالياً</span>';
+        return `
+          <article class="tool-card ${available ? "" : "disabled"}">
+            <div class="card-head">
+              <div class="tool-icon">${definition.icon}</div>
+              <span class="status">${available ? "جاهزة للاستخدام" : "قيد التجهيز"}</span>
+            </div>
+            <h3>${definition.name}</h3>
+            <div class="en">${definition.en}</div>
+            <p>${definition.description}</p>
+            ${action}
+          </article>`;
+      }).join("");
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      sessionStorage.removeItem(SESSION_KEY);
+      window.location.replace("login.html");
+    });
+
+    const session = getSession();
+    if(!session || session.status !== "ACTIVE"){
+      window.location.replace("login.html");
+    }else{
+      renderPortal(session);
+      requestAnimationFrame(() => document.getElementById("loadingOverlay").classList.add("hidden"));
+    }
+  </script>
+</body>
+</html>
