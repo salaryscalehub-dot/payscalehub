@@ -293,8 +293,21 @@
     </div>
   </main>
 
-  <script>
-    const SESSION_KEY = "psh_client_session";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    const firebaseConfig = {
+      "apiKey": "AIzaSyAoTQLhHak-lbMCqreJprprOaAZ5KK3y6c",
+      "appId": "1:785375519140:web:bc9c44a815a6cb740ca131",
+      "authDomain": "payscale-hub.firebaseapp.com",
+      "messagingSenderId": "785375519140",
+      "projectId": "payscale-hub",
+      "storageBucket": "payscale-hub.firebasestorage.app"
+};
+    const firebaseApp = initializeApp(firebaseConfig);
+    const auth = getAuth(firebaseApp);
+    const db = getFirestore(firebaseApp);
     const previewMode = new URLSearchParams(window.location.search).get("preview") === "1";
     const TOOL_DEFINITIONS = [
       {code:"SALARY_SCALE",ready:true,name:"سلم الرواتب",en:"Salary Scale",image:"images/products/salary-scale.png",features:["مقارنة الرواتب بالسوق","بناء سلم رواتب متكامل","احتساب الأثر المالي"]},
@@ -312,10 +325,6 @@
       {code:"SUCCESSION_PLANNING",ready:false,name:"الوظائف الحرجة والتعاقب الوظيفي",en:"Critical Positions & Succession Planning",image:"images/products/succession-planning.png",features:["تحديد الوظائف الحرجة","اختيار البدلاء المحتملين","بناء خطط التعاقب"]},
       {code:"HR_MATURITY_BENCHMARK",ready:false,name:"نضج الموارد البشرية والمقارنة المرجعية",en:"HR Maturity Benchmark",image:"images/products/hr-maturity-benchmark.png",features:["قياس نضج الموارد البشرية","المقارنة مع منشآت أخرى","تحديد فرص التحسين"]}
     ];
-
-    function getSession(){
-      try{return JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null")}catch(error){return null}
-    }
 
     function toolMap(session){
       return new Map((session.tools || []).map(tool => [tool.code, tool]));
@@ -363,8 +372,8 @@
       }).join("");
     }
 
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      sessionStorage.removeItem(SESSION_KEY);
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
       window.location.replace("login.html");
     });
 
@@ -383,16 +392,37 @@
       }))
     };
 
-    const session = previewMode ? previewSession : getSession();
-    if(!session || session.status !== "ACTIVE"){
-      window.location.replace("login.html");
-    }else{
-      if(previewMode){
-        document.getElementById("previewNote").classList.add("visible");
-        document.getElementById("logoutBtn").style.display = "none";
-      }
-      renderPortal(session);
+    if(previewMode){
+      document.getElementById("previewNote").classList.add("visible");
+      document.getElementById("logoutBtn").style.display = "none";
+      renderPortal(previewSession);
       requestAnimationFrame(() => document.getElementById("loadingOverlay").classList.add("hidden"));
+    }else{
+      onAuthStateChanged(auth, async user => {
+        if(!user){
+          window.location.replace("login.html");
+          return;
+        }
+        try{
+          const profileSnapshot = await getDoc(doc(db,"clientProfiles",user.uid));
+          if(!profileSnapshot.exists()){
+            await signOut(auth);
+            window.location.replace("login.html?error=profile_missing");
+            return;
+          }
+          const profile = profileSnapshot.data();
+          if(profile.status !== "ACTIVE"){
+            await signOut(auth);
+            window.location.replace("login.html?error=inactive");
+            return;
+          }
+          renderPortal({...profile,email:user.email || profile.email || ""});
+          requestAnimationFrame(() => document.getElementById("loadingOverlay").classList.add("hidden"));
+        }catch(error){
+          await signOut(auth);
+          window.location.replace("login.html?error=profile_missing");
+        }
+      });
     }
   </script>
 </body>
