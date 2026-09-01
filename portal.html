@@ -115,57 +115,70 @@
     }
     .section-title h2{margin:0;color:var(--navy);font-size:19px;font-weight:700}
     .section-title span{color:var(--muted);font-size:11px}
-    .tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .tools-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:stretch}
     .tool-card{
-      min-height:230px;
+      min-width:0;
       display:flex;
       flex-direction:column;
-      padding:23px;
-      border:1px solid var(--border);
+      overflow:hidden;
+      border:1px solid #4a9660;
       border-radius:18px;
-      background:rgba(255,253,249,.96);
-      box-shadow:var(--shadow);
-      transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+      background:var(--paper);
+      box-shadow:0 16px 38px -30px rgba(16,47,85,.34);
+      transition:transform .2s ease,box-shadow .2s ease;
     }
     .tool-card:not(.disabled):hover{
       transform:translateY(-4px);
-      border-color:rgba(198,154,74,.55);
-      box-shadow:0 26px 58px -34px rgba(16,47,85,.42);
+      box-shadow:0 22px 44px -28px rgba(16,47,85,.42);
     }
-    .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
-    .tool-icon{
-      width:52px;height:52px;flex:0 0 52px;
-      display:grid;place-items:center;
-      border-radius:14px;
-      color:var(--navy);
-      background:#f2ece2;
-    }
-    .tool-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8}
-    .status{
-      display:inline-flex;align-items:center;gap:6px;
-      padding:5px 9px;
-      border-radius:999px;
-      color:var(--green);
-      background:#eaf3ec;
-      font-size:10px;font-weight:700;
-    }
-    .status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
-    .tool-card h3{margin:17px 0 1px;color:var(--navy);font-size:19px;font-weight:700}
-    .tool-card .en{color:#496079;font-family:"Segoe UI",Arial,sans-serif;font-size:11px;direction:ltr;text-align:right}
-    .tool-card p{margin:10px 0 18px;color:var(--muted);font-size:12px;line-height:1.85}
-    .open-tool{
-      min-height:42px;
-      margin-top:auto;
-      display:flex;align-items:center;justify-content:center;gap:8px;
-      border-radius:9px;
+    .card-status{
+      min-height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
       color:#fff;
-      background:var(--navy);
-      font-size:12px;font-weight:700;
+      background:#3d9255;
+      font-size:13px;
+      font-weight:700;
     }
-    .open-tool svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
-    .tool-card.disabled{opacity:.64}
-    .tool-card.disabled .status{color:#7d8490;background:#eef0f2}
-    .tool-card.disabled .open-tool{background:#9da3ab;cursor:not-allowed}
+    .card-status svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8}
+    .tool-media{
+      height:125px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:13px 20px 9px;
+      border-bottom:1px solid #ece5dc;
+      background:#faf8f3;
+    }
+    .tool-media img{display:block;width:100%;height:100%;object-fit:contain}
+    .tool-content{flex:1;display:flex;flex-direction:column;padding:14px 22px 18px}
+    .tool-card h3{margin:0;text-align:center;color:var(--navy);font-size:17px;line-height:1.55;font-weight:700}
+    .tool-card .en{margin-top:1px;text-align:center;color:#092e5b;font-family:"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.45;font-weight:700;direction:ltr}
+    .features{margin:15px 0 18px;padding:0;list-style:none;color:#536172;font-size:12px;line-height:1.75}
+    .features li{position:relative;padding-right:15px;margin:3px 0}
+    .features li::before{content:"•";position:absolute;right:0;top:0;color:var(--gold);font-size:17px;line-height:1.3}
+    .open-tool{
+      min-height:40px;
+      margin-top:auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      border:1px solid #3d9255;
+      border-radius:9px;
+      color:#267b3e;
+      background:#fffdfa;
+      font-size:12px;
+      font-weight:700;
+      transition:background .18s ease,color .18s ease;
+    }
+    .open-tool:hover{color:#fff;background:#3d9255}
+    .open-tool svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+    .tool-card.disabled{border-color:#c77d2e}
+    .tool-card.disabled .card-status{background:#c77d2e}
+    .tool-card.disabled .open-tool{border-color:#8d9bab;color:#738092;background:#f4f5f6;cursor:not-allowed}
     .support{
       margin-top:22px;
       padding:16px 19px;
@@ -191,6 +204,7 @@
       animation:spin .8s linear infinite;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:1050px){.tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:760px){
       .container{width:min(100% - 28px,1180px)}
       .topbar-inner{min-height:68px}
@@ -200,7 +214,7 @@
       .welcome{align-items:flex-start;flex-direction:column}
       .welcome h1{font-size:25px}
       .tools-grid{grid-template-columns:1fr}
-      .tool-card{min-height:220px}
+      .tool-card{min-height:0}
       .support{align-items:flex-start;flex-direction:column}
     }
   </style>
@@ -257,29 +271,29 @@
         code:"SALARY_SCALE",
         name:"سلم الرواتب",
         en:"Salary Scale",
-        description:"استعرض نتائج المقارنة السوقية وابنِ سلم رواتب مناسباً لشركتكم.",
-        icon:'<svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5M12 16V8M16 16v-9"/></svg>'
-      },
-      {
-        code:"FTE",
-        name:"تحليل عبء العمل",
-        en:"FTE Workload Hub",
-        description:"حلّل عبء العمل وحدد الاحتياج الفعلي والمستقبلي من القوى العاملة.",
-        icon:'<svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 20V10h4v10M13 20V4h4v16"/><path d="M5 7l5-3 4 2 5-3"/></svg>'
+        image:"images/products/salary-scale.png",
+        features:["مقارنة الرواتب بالسوق","بناء سلم رواتب متكامل","احتساب الأثر المالي"]
       },
       {
         code:"EMP_ENGAGEMENT",
-        name:"الرضا والارتباط الوظيفي",
+        name:"قياس الارتباط الوظيفي",
         en:"Employee Engagement",
-        description:"أنشئ الدراسات والاستبيانات وتابع المشاركة وحلل النتائج والتوصيات.",
-        icon:'<svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M16 3.3a4 4 0 0 1 0 7.4M21 21v-2a4 4 0 0 0-3-3.6"/></svg>'
+        image:"images/products/employee-engagement.png",
+        features:["قياس الارتباط الوظيفي","تحليل النتائج والفجوات","بناء مبادرات التحسين"]
       },
       {
         code:"MATURITY_ASSESS",
-        name:"تقييم النضج المؤسسي",
+        name:"قياس النضج المؤسسي",
         en:"Maturity Assessment",
-        description:"قيّم مستوى النضج المؤسسي وحدد الفجوات والأولويات التطويرية.",
-        icon:'<svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19V12M22 19H2"/><path d="M3 6l6-3 6 5 6-5"/></svg>'
+        image:"images/products/maturity-assessment.png",
+        features:["قياس مستوى النضج","تحليل الفجوات المؤسسية","تحديد أولويات التطوير"]
+      },
+      {
+        code:"FTE",
+        name:"تحليل الاحتياج من القوى العاملة",
+        en:"FTE",
+        image:"images/products/fte.png",
+        features:["تحليل حجم العمل","تقدير الاحتياج من الموظفين","دعم تخطيط القوى العاملة"]
       }
     ];
 
@@ -311,18 +325,21 @@
         const url = assigned ? safeToolUrl(assigned.url) : "";
         const available = assigned && assigned.status === "ACTIVE" && url;
         const action = available
-          ? `<a class="open-tool" href="${url}" rel="noopener">فتح الأداة <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>`
+          ? `<a class="open-tool" href="${url}" rel="noopener">فتح الأداة <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>`
           : '<span class="open-tool" aria-disabled="true">الأداة غير متاحة حالياً</span>';
         return `
           <article class="tool-card ${available ? "" : "disabled"}">
-            <div class="card-head">
-              <div class="tool-icon">${definition.icon}</div>
-              <span class="status">${available ? "جاهزة للاستخدام" : "قيد التجهيز"}</span>
+            <div class="card-status">
+              <span>${available ? "جاهزة" : "قيد التجهيز"}</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="${available ? "m8 12 2.6 2.6L16 9" : "M12 7v5l3 2"}"/></svg>
             </div>
-            <h3>${definition.name}</h3>
-            <div class="en">${definition.en}</div>
-            <p>${definition.description}</p>
-            ${action}
+            <div class="tool-media"><img src="${definition.image}" alt="" loading="eager"></div>
+            <div class="tool-content">
+              <h3>${definition.name}</h3>
+              <div class="en">${definition.en}</div>
+              <ul class="features">${definition.features.map(feature => `<li>${feature}</li>`).join("")}</ul>
+              ${action}
+            </div>
           </article>`;
       }).join("");
     }
