@@ -106,6 +106,23 @@
       font-size:11px;
       direction:ltr;
     }
+    .subscription-card{
+      margin:-8px 0 26px;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      border:1px solid #d8e7dc;
+      border-radius:13px;
+      background:#f6fbf7;
+      box-shadow:0 12px 30px -28px rgba(16,47,85,.28);
+    }
+    .subscription-status{display:flex;align-items:center;gap:9px;color:#2f7d3d;font-size:13px;font-weight:700}
+    .subscription-status::before{content:"";width:8px;height:8px;border-radius:50%;background:#3d9255;box-shadow:0 0 0 4px rgba(61,146,85,.12)}
+    .subscription-details{display:flex;align-items:center;gap:8px;color:#59697a;font-size:12px}
+    .subscription-details strong{color:var(--navy);font-weight:700}
+    .subscription-separator{color:#b4bdc7}
     .section-title{
       display:flex;
       align-items:center;
@@ -213,6 +230,8 @@
       main{padding-top:34px}
       .welcome{align-items:flex-start;flex-direction:column}
       .welcome h1{font-size:25px}
+      .subscription-card{align-items:flex-start;flex-direction:column;gap:7px}
+      .subscription-details{align-items:flex-start;flex-wrap:wrap}
       .tools-grid{grid-template-columns:1fr}
       .tool-card{min-height:0}
       .support{align-items:flex-start;flex-direction:column}
@@ -247,6 +266,17 @@
           <p>اختر الأداة التي ترغب في استخدامها من الأدوات المتاحة لشركتكم.</p>
         </div>
         <div id="clientId" class="client-id"></div>
+      </section>
+
+      <section class="subscription-card" aria-label="بيانات الاشتراك">
+        <div class="subscription-status">الاشتراك فعّال</div>
+        <div class="subscription-details">
+          <span>من <strong id="subscriptionStart"></strong></span>
+          <span class="subscription-separator">—</span>
+          <span>حتى <strong id="subscriptionEnd"></strong></span>
+          <span class="subscription-separator">•</span>
+          <span>المدة: <strong id="subscriptionDuration"></strong></span>
+        </div>
       </section>
 
       <div class="section-title">
@@ -305,6 +335,9 @@
       document.getElementById("companyName").textContent = session.companyName || "عميل PayScale Hub";
       document.getElementById("accountName").textContent = session.email || "";
       document.getElementById("clientId").textContent = session.clientId || "";
+      document.getElementById("subscriptionStart").textContent = session.subscriptionStart || "—";
+      document.getElementById("subscriptionEnd").textContent = session.subscriptionEnd || "—";
+      document.getElementById("subscriptionDuration").textContent = session.subscriptionDuration || "—";
 
       document.getElementById("toolsGrid").innerHTML = TOOL_DEFINITIONS.map(definition => {
         const assigned = tools.get(definition.code);
@@ -340,6 +373,9 @@
       companyName:"شركة تجريبية",
       email:"client@example.com",
       status:"ACTIVE",
+      subscriptionStart:"1 سبتمبر 2026",
+      subscriptionEnd:"31 أغسطس 2027",
+      subscriptionDuration:"سنة واحدة",
       tools:TOOL_DEFINITIONS.filter(tool => tool.ready).map(tool => ({
         code:tool.code,
         status:"ACTIVE",
