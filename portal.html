@@ -267,34 +267,20 @@
     const SESSION_KEY = "psh_client_session";
     const previewMode = new URLSearchParams(window.location.search).get("preview") === "1";
     const TOOL_DEFINITIONS = [
-      {
-        code:"SALARY_SCALE",
-        name:"سلم الرواتب",
-        en:"Salary Scale",
-        image:"images/products/salary-scale.png",
-        features:["مقارنة الرواتب بالسوق","بناء سلم رواتب متكامل","احتساب الأثر المالي"]
-      },
-      {
-        code:"EMP_ENGAGEMENT",
-        name:"قياس الارتباط الوظيفي",
-        en:"Employee Engagement",
-        image:"images/products/employee-engagement.png",
-        features:["قياس الارتباط الوظيفي","تحليل النتائج والفجوات","بناء مبادرات التحسين"]
-      },
-      {
-        code:"MATURITY_ASSESS",
-        name:"قياس النضج المؤسسي",
-        en:"Maturity Assessment",
-        image:"images/products/maturity-assessment.png",
-        features:["قياس مستوى النضج","تحليل الفجوات المؤسسية","تحديد أولويات التطوير"]
-      },
-      {
-        code:"FTE",
-        name:"تحليل الاحتياج من القوى العاملة",
-        en:"FTE",
-        image:"images/products/fte.png",
-        features:["تحليل حجم العمل","تقدير الاحتياج من الموظفين","دعم تخطيط القوى العاملة"]
-      }
+      {code:"SALARY_SCALE",ready:true,name:"سلم الرواتب",en:"Salary Scale",image:"images/products/salary-scale.png",features:["مقارنة الرواتب بالسوق","بناء سلم رواتب متكامل","احتساب الأثر المالي"]},
+      {code:"EMP_ENGAGEMENT",ready:true,name:"قياس الارتباط الوظيفي",en:"Employee Engagement",image:"images/products/employee-engagement.png",features:["قياس الارتباط الوظيفي","تحليل النتائج والفجوات","بناء مبادرات التحسين"]},
+      {code:"MATURITY_ASSESS",ready:true,name:"قياس النضج المؤسسي",en:"Maturity Assessment",image:"images/products/maturity-assessment.png",features:["قياس مستوى النضج","تحليل الفجوات المؤسسية","تحديد أولويات التطوير"]},
+      {code:"FTE",ready:true,name:"تحليل الاحتياج من القوى العاملة",en:"FTE",image:"images/products/fte.png",features:["تحليل حجم العمل","تقدير الاحتياج من الموظفين","دعم تخطيط القوى العاملة"]},
+      {code:"HR_POLICY_BUILDER",ready:false,name:"منصة بناء سياسات الموارد البشرية",en:"HR Policy Builder",image:"images/products/hr-policy-builder.png",features:["بناء السياسات والإجراءات","تخصيص المحتوى للمنشأة","إدارة التحديثات والإصدارات"]},
+      {code:"AUTHORITY_MATRIX",ready:false,name:"مصفوفة الصلاحيات",en:"Authority Matrix",image:"images/products/authority-matrix.png",features:["تحديد مستويات الصلاحيات","توضيح المسؤوليات والاعتمادات","توثيق مصفوفة القرار"]},
+      {code:"FEEDBACK_360",ready:false,name:"التغذية الراجعة 360°",en:"Feedback 360",image:"images/products/feedback-360.png",features:["تقييم متعدد المصادر","تحليل التغذية الراجعة","بناء خطط التطوير"]},
+      {code:"PERFORMANCE_MANAGEMENT",ready:false,name:"إدارة الأداء",en:"Performance Management",image:"images/products/performance-management.png",features:["إدارة الأهداف","متابعة تقييمات الأداء","إصدار تقارير الأداء"]},
+      {code:"TRAINING_NEEDS",ready:false,name:"تحليل الاحتياجات التدريبية",en:"Training Needs Assessment",image:"images/products/training-needs.png",features:["تحليل فجوات المهارات","تحديد الأولويات التدريبية","بناء خطة تدريبية"]},
+      {code:"EXECUTIVE_DASHBOARD",ready:false,name:"لوحات الأداء التنفيذية",en:"Executive Dashboard",image:"images/products/executive-dashboard.png",features:["عرض المؤشرات الرئيسية","متابعة الأداء التنفيذي","دعم اتخاذ القرار"]},
+      {code:"COMPETENCIES_FRAMEWORK",ready:false,name:"إطار الجدارات والكفاءات",en:"Competencies Framework",image:"images/products/competencies-framework.png",features:["بناء إطار الجدارات","ربط الجدارات بالوظائف","تحديد مستويات الكفاءة"]},
+      {code:"MANPOWER_PLANNING",ready:false,name:"تخطيط القوى العاملة والتوظيف والتهيئة",en:"Manpower Planning & Recruitment Follow-up",image:"images/products/manpower-planning.png",features:["تخطيط الاحتياج الوظيفي","متابعة التوظيف","إدارة التهيئة للموظفين"]},
+      {code:"SUCCESSION_PLANNING",ready:false,name:"الوظائف الحرجة والتعاقب الوظيفي",en:"Critical Positions & Succession Planning",image:"images/products/succession-planning.png",features:["تحديد الوظائف الحرجة","اختيار البدلاء المحتملين","بناء خطط التعاقب"]},
+      {code:"HR_MATURITY_BENCHMARK",ready:false,name:"نضج الموارد البشرية والمقارنة المرجعية",en:"HR Maturity Benchmark",image:"images/products/hr-maturity-benchmark.png",features:["قياس نضج الموارد البشرية","المقارنة مع منشآت أخرى","تحديد فرص التحسين"]}
     ];
 
     function getSession(){
@@ -323,15 +309,15 @@
       document.getElementById("toolsGrid").innerHTML = TOOL_DEFINITIONS.map(definition => {
         const assigned = tools.get(definition.code);
         const url = assigned ? safeToolUrl(assigned.url) : "";
-        const available = assigned && assigned.status === "ACTIVE" && url;
+        const available = definition.ready && assigned && assigned.status === "ACTIVE" && url;
         const action = available
           ? `<a class="open-tool" href="${url}" rel="noopener">فتح الأداة <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>`
-          : '<span class="open-tool" aria-disabled="true">الأداة غير متاحة حالياً</span>';
+          : `<span class="open-tool" aria-disabled="true">${definition.ready ? "الأداة غير متاحة حالياً" : "قريباً"}</span>`;
         return `
-          <article class="tool-card ${available ? "" : "disabled"}">
+          <article class="tool-card ${definition.ready ? (available ? "" : "disabled") : "disabled upcoming"}">
             <div class="card-status">
-              <span>${available ? "جاهزة" : "قيد التجهيز"}</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="${available ? "m8 12 2.6 2.6L16 9" : "M12 7v5l3 2"}"/></svg>
+              <span>${definition.ready ? (available ? "جاهزة" : "قيد التجهيز") : "قريباً"}</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="${definition.ready && available ? "m8 12 2.6 2.6L16 9" : "M12 7v5l3 2"}"/></svg>
             </div>
             <div class="tool-media"><img src="${definition.image}" alt="" loading="eager"></div>
             <div class="tool-content">
@@ -354,7 +340,7 @@
       companyName:"شركة تجريبية",
       email:"client@example.com",
       status:"ACTIVE",
-      tools:TOOL_DEFINITIONS.map(tool => ({
+      tools:TOOL_DEFINITIONS.filter(tool => tool.ready).map(tool => ({
         code:tool.code,
         status:"ACTIVE",
         url:`https://payscalehub.com/portal.html?preview=1#${tool.code.toLowerCase()}`
