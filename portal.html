@@ -83,6 +83,18 @@
       font-size:11px;
       font-weight:700;
     }
+    .preview-note{
+      display:none;
+      margin-bottom:18px;
+      padding:11px 15px;
+      border:1px solid rgba(198,154,74,.34);
+      border-radius:11px;
+      color:#75572d;
+      background:rgba(198,154,74,.10);
+      font-size:11px;
+      font-weight:600;
+    }
+    .preview-note.visible{display:block}
     .welcome h1{margin:9px 0 4px;color:var(--navy);font-size:30px;line-height:1.35;font-weight:700}
     .welcome p{margin:0;color:var(--muted);font-size:13px}
     .client-id{
@@ -213,6 +225,7 @@
 
   <main>
     <div class="container">
+      <div id="previewNote" class="preview-note">هذه معاينة تصميمية ببيانات تجريبية. روابط الأدوات الفعلية ستُربط بعد تفعيل نظام الدخول.</div>
       <section class="welcome">
         <div>
           <span class="welcome-label">بوابة العميل</span>
@@ -238,6 +251,7 @@
 
   <script>
     const SESSION_KEY = "psh_client_session";
+    const previewMode = new URLSearchParams(window.location.search).get("preview") === "1";
     const TOOL_DEFINITIONS = [
       {
         code:"SALARY_SCALE",
@@ -318,10 +332,26 @@
       window.location.replace("login.html");
     });
 
-    const session = getSession();
+    const previewSession = {
+      clientId:"PSH-0001",
+      companyName:"شركة تجريبية",
+      email:"client@example.com",
+      status:"ACTIVE",
+      tools:TOOL_DEFINITIONS.map(tool => ({
+        code:tool.code,
+        status:"ACTIVE",
+        url:`https://payscalehub.com/portal.html?preview=1#${tool.code.toLowerCase()}`
+      }))
+    };
+
+    const session = previewMode ? previewSession : getSession();
     if(!session || session.status !== "ACTIVE"){
       window.location.replace("login.html");
     }else{
+      if(previewMode){
+        document.getElementById("previewNote").classList.add("visible");
+        document.getElementById("logoutBtn").style.display = "none";
+      }
       renderPortal(session);
       requestAnimationFrame(() => document.getElementById("loadingOverlay").classList.add("hidden"));
     }
