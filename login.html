@@ -1,241 +1,61 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102f55">
   <title>تسجيل الدخول | PayScale Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     *{box-sizing:border-box}
-
-    :root{
-      --navy:#16223f;
-      --gold:#c0995c;
-      --cream:#f6f1e9;
-      --card:#fffdfa;
-      --border:#e9e0cf;
-      --text:#16223f;
-      --muted:#5a6076;
-      --danger:#b5462f;
-      --success:#2f6f4a;
-    }
-
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family:'Noto Sans Arabic',sans-serif;
-      background:
-        radial-gradient(circle at 12% 10%,rgba(192,153,92,.16),transparent 30%),
-        radial-gradient(circle at 88% 0%,rgba(22,34,63,.10),transparent 34%),
-        var(--cream);
-      color:var(--text);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:28px;
-    }
-
-    .login-shell{
-      width:100%;
-      max-width:430px;
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:24px;
-      box-shadow:0 24px 56px -30px rgba(22,34,63,.36);
-      padding:34px;
-    }
-
-    .brand{
-      text-align:center;
-      margin-bottom:28px;
-    }
-
-    .brand h1{
-      margin:0;
-      font-size:28px;
-      font-weight:800;
-      color:var(--navy);
-      letter-spacing:-.4px;
-    }
-
-    .brand p{
-      margin:8px 0 0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.7;
-    }
-
-    .field{
-      margin-bottom:16px;
-    }
-
-    label{
-      display:block;
-      margin-bottom:7px;
-      font-size:13px;
-      font-weight:800;
-      color:var(--navy);
-    }
-
-    input{
-      width:100%;
-      height:48px;
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:0 14px;
-      font-family:inherit;
-      font-size:14px;
-      color:var(--text);
-      background:#fff;
-      outline:none;
-    }
-
-    input:focus{
-      border-color:var(--gold);
-      box-shadow:0 0 0 4px rgba(192,153,92,.14);
-    }
-
-    button{
-      width:100%;
-      height:50px;
-      border:none;
-      border-radius:14px;
-      background:var(--navy);
-      color:#fff;
-      font-family:inherit;
-      font-size:15px;
-      font-weight:800;
-      cursor:pointer;
-      margin-top:8px;
-      box-shadow:0 14px 28px rgba(22,34,63,.18);
-    }
-
-    button:hover{
-      background:#1e2f56;
-    }
-
-    button:disabled{
-      opacity:.65;
-      cursor:not-allowed;
-    }
-
-    .msg{
-      display:none;
-      margin-top:16px;
-      padding:12px 14px;
-      border-radius:12px;
-      font-size:13px;
-      font-weight:700;
-      line-height:1.7;
-    }
-
-    .msg.error{
-      display:block;
-      background:#fbeae6;
-      color:var(--danger);
-      border:1px solid #f0ccc2;
-    }
-
-    .msg.success{
-      display:block;
-      background:#eaf3ec;
-      color:var(--success);
-      border:1px solid #cfe6d6;
-    }
-
-    .back{
-      display:block;
-      text-align:center;
-      margin-top:20px;
-      color:var(--muted);
-      text-decoration:none;
-      font-size:13px;
-      font-weight:700;
-    }
-
-    .back:hover{
-      color:var(--navy);
-    }
+    :root{--navy:#102f55;--navy-dark:#0b223b;--gold:#c69a4a;--cream:#f7f3ec;--paper:#fffdf9;--text:#26384f;--muted:#6b7480;--border:#e6ded2;--danger:#a83b2e;--success:#2f7d3d}
+    body{margin:0;min-height:100vh;padding:28px;display:flex;align-items:center;justify-content:center;color:var(--text);background:radial-gradient(circle at 8% 0%,rgba(198,154,74,.13),transparent 30%),linear-gradient(180deg,#fbfaf7 0%,var(--cream) 100%);font-family:"Avenir Arabic Heavy","Avenir Arabic","Avenir Next Arabic","Noto Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;font-size:14px;line-height:1.8}
+    .login-shell{width:100%;max-width:430px;padding:34px;border:1px solid var(--border);border-radius:22px;background:var(--paper);box-shadow:0 24px 56px -34px rgba(16,47,85,.38)}
+    .brand{text-align:center;margin-bottom:26px}.brand h1{margin:0;color:var(--navy);font-size:27px;font-weight:800}.brand h1 span{color:var(--gold)}.brand p{margin:7px 0 0;color:var(--muted);font-size:12px}
+    .field{margin-bottom:15px}label{display:block;margin-bottom:6px;color:var(--navy);font-size:12px;font-weight:700}
+    input{width:100%;height:46px;padding:0 14px;border:1px solid var(--border);border-radius:11px;background:#fff;color:var(--text);font:inherit;font-size:13px;outline:none;direction:ltr;text-align:left}
+    input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(198,154,74,.12)}
+    .password-row{display:flex;justify-content:space-between;align-items:center;gap:12px}.forgot{padding:0;border:0;color:#58708b;background:none;font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+    .submit{width:100%;height:46px;margin-top:7px;border:0;border-radius:11px;color:#fff;background:var(--navy);font:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 14px 28px rgba(16,47,85,.16)}.submit:hover{background:var(--navy-dark)}button:disabled{opacity:.62;cursor:not-allowed}
+    .msg{display:none;margin-top:14px;padding:10px 12px;border-radius:10px;font-size:11px;font-weight:700;line-height:1.7}.msg.error{display:block;color:var(--danger);background:#fbecea;border:1px solid #efcbc5}.msg.success{display:block;color:var(--success);background:#edf6ef;border:1px solid #cfe6d5}
+    .back{display:block;margin-top:19px;text-align:center;color:var(--muted);text-decoration:none;font-size:11px;font-weight:700}.back:hover{color:var(--navy)}
+    .loading-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:rgba(247,243,236,.92)}.loading-overlay.visible{display:flex}.loader{text-align:center;color:var(--navy);font-size:12px;font-weight:700}.spinner{width:34px;height:34px;margin:0 auto 11px;border:3px solid rgba(16,47,85,.13);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:520px){body{padding:18px}.login-shell{padding:27px 22px;border-radius:18px}}
   </style>
 </head>
-
 <body>
-
+  <div id="loadingOverlay" class="loading-overlay" aria-live="polite"><div class="loader"><div class="spinner"></div><div id="loadingText">جارٍ التحقق...</div></div></div>
   <main class="login-shell">
-    <div class="brand">
-      <h1>PayScale Hub</h1>
-      <p>تسجيل دخول العملاء للوصول إلى منصة النتائج وبناء سلم الرواتب.</p>
-    </div>
-
+    <div class="brand"><h1>PayScale <span>Hub</span></h1><p>تسجيل دخول العملاء إلى أدوات الموارد البشرية والتطوير المؤسسي.</p></div>
     <form id="loginForm">
-      <div class="field">
-        <label for="username">اسم المستخدم</label>
-        <input id="username" name="username" type="text" autocomplete="username" required>
-      </div>
-
-      <div class="field">
-        <label for="password">كلمة المرور</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required>
-      </div>
-
-      <button id="loginBtn" type="submit">دخول</button>
-
-      <div id="message" class="msg"></div>
+      <div class="field"><label for="email">البريد الإلكتروني</label><input id="email" name="email" type="email" autocomplete="username" required></div>
+      <div class="field"><div class="password-row"><label for="password">كلمة المرور</label><button id="forgotBtn" class="forgot" type="button">نسيت كلمة المرور؟</button></div><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+      <button id="loginBtn" class="submit" type="submit">تسجيل الدخول</button>
+      <div id="message" class="msg" role="status"></div>
     </form>
-
     <a class="back" href="index.html">العودة إلى الصفحة الرئيسية</a>
   </main>
-
-  <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxz3cXxqDM9Wv0Rjnm_-XpAvw0KqxOeOdzNJC-XrZqG4UE1gjsw8l6jwqWLiaLoFH_I/exec";
-
-    const form = document.getElementById("loginForm");
-    const btn = document.getElementById("loginBtn");
-    const message = document.getElementById("message");
-
-    function showMessage(type, text){
-      message.className = "msg " + type;
-      message.textContent = text;
-    }
-
-    form.addEventListener("submit", async function(e){
-      e.preventDefault();
-
-      if(!WEB_APP_URL){
-        showMessage("error", "صفحة تسجيل الدخول جاهزة، لكن لم يتم ربطها بعد بنظام التحقق.");
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = "جاري التحقق...";
-
-      try{
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        const response = await fetch(WEB_APP_URL, {
-          method: "POST",
-          body: JSON.stringify({ username, password })
-        });
-
-        const result = await response.json();
-
-        if(result.success && result.link){
-          showMessage("success", "تم تسجيل الدخول بنجاح، جاري تحويلك...");
-          window.location.href = result.link;
-        }else{
-          showMessage("error", result.message || "بيانات الدخول غير صحيحة.");
-        }
-
-      }catch(err){
-        showMessage("error", "تعذر الاتصال بنظام التحقق. حاول مرة أخرى.");
-      }
-
-      btn.disabled = false;
-      btn.textContent = "دخول";
-    });
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getAuth, setPersistence, browserSessionPersistence, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+    const firebaseConfig = {
+      "apiKey": "AIzaSyAoTQLhHak-lbMCqreJprprOaAZ5KK3y6c",
+      "authDomain": "payscale-hub.firebaseapp.com",
+      "projectId": "payscale-hub",
+      "storageBucket": "payscale-hub.firebasestorage.app",
+      "messagingSenderId": "785375519140",
+      "appId": "1:785375519140:web:bc9c44a815a6cb740ca131"
+};
+    const auth=getAuth(initializeApp(firebaseConfig));
+    const form=document.getElementById("loginForm"),btn=document.getElementById("loginBtn"),forgotBtn=document.getElementById("forgotBtn"),message=document.getElementById("message"),overlay=document.getElementById("loadingOverlay"),loadingText=document.getElementById("loadingText");
+    let submitted=false;
+    function showMessage(type,text){message.className="msg "+type;message.textContent=text}
+    function setLoading(active,text="جارٍ التحقق..."){loadingText.textContent=text;overlay.classList.toggle("visible",active)}
+    function authError(code){return({"auth/invalid-credential":"البريد الإلكتروني أو كلمة المرور غير صحيحة.","auth/invalid-email":"صيغة البريد الإلكتروني غير صحيحة.","auth/too-many-requests":"تم إيقاف المحاولات مؤقتاً. حاول لاحقاً.","auth/user-disabled":"هذا الحساب موقوف. تواصل مع إدارة PayScale Hub.","auth/network-request-failed":"تعذر الاتصال. تحقق من الإنترنت وحاول مرة أخرى."})[code]||"تعذر تسجيل الدخول. حاول مرة أخرى."}
+    await setPersistence(auth,browserSessionPersistence);
+    onAuthStateChanged(auth,user=>{if(user&&!submitted) window.location.replace("portal.html")});
+    form.addEventListener("submit",async e=>{e.preventDefault();submitted=true;btn.disabled=true;setLoading(true,"جارٍ تسجيل الدخول...");try{await signInWithEmailAndPassword(auth,document.getElementById("email").value.trim(),document.getElementById("password").value);window.location.replace("portal.html")}catch(error){submitted=false;showMessage("error",authError(error.code));setLoading(false);btn.disabled=false}});
+    forgotBtn.addEventListener("click",async()=>{const email=document.getElementById("email").value.trim();if(!email){showMessage("error","أدخل بريدك الإلكتروني أولاً ثم اضغط «نسيت كلمة المرور؟».");return}forgotBtn.disabled=true;setLoading(true,"جارٍ إرسال رابط إعادة التعيين...");try{await sendPasswordResetEmail(auth,email);showMessage("success","تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.")}catch(error){showMessage("error",authError(error.code))}finally{setLoading(false);forgotBtn.disabled=false}});
+    const q=new URLSearchParams(location.search).get("error");if(q==="profile_missing")showMessage("error","الحساب صحيح، لكنه لم يُفعّل بعد في PayScale Hub.");if(q==="inactive")showMessage("error","اشتراك هذا الحساب غير فعّال.");
   </script>
-
 </body>
 </html>
