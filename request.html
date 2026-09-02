@@ -783,19 +783,47 @@ function reset() {
 }
 
 // ── Init ───────────────────────────────────────────────────
-if (typeof google !== 'undefined' && google.script) {
-  google.script.run
-    .withSuccessHandler(sectors => {
-      window._sectors = sectors;
+function loadSectors() {
+  const endpoint =
+    'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec';
+
+  const callbackName =
+    'pshSectorsCallback_' + Date.now();
+
+  const script = document.createElement('script');
+
+  window[callbackName] = function(response) {
+    try {
+      window._sectors =
+        response &&
+        response.success &&
+        Array.isArray(response.sectors)
+          ? response.sectors
+          : [];
+    } finally {
+      delete window[callbackName];
+      script.remove();
       render();
-    })
-    .getSectors();
-} else {
-  window._sectors = ['Construction & Material','Financial Services',
-    'Industrial Goods','Insurance','IT','Retail',
-    'Services','Transportation','Oil, Gas, Natural Resources','Other Sector'];
-  render();
+    }
+  };
+
+  script.onerror = function() {
+    window._sectors = [];
+    delete window[callbackName];
+    script.remove();
+    render();
+  };
+
+  script.src =
+    endpoint +
+    '?action=sectors' +
+    '&callback=' + encodeURIComponent(callbackName) +
+    '&_=' + Date.now();
+
+  document.body.appendChild(script);
 }
+
+loadSectors();
 
 </script>
 
