@@ -232,7 +232,9 @@ const state = {
   consent: false,
   submitted: false,
   reqNum: '',
-  loading: false
+  loading: false,
+  loadingMessage: 'جارٍ حفظ الطلب…',
+  loadingTimer: null
 };
 
 // ── Helpers ────────────────────────────────────────────────
@@ -455,7 +457,7 @@ function renderStep4() {
       <div class="err" id="errBox"></div>
       <div class="nav-row">
         <button class="btn-secondary" onclick="prev()">→ السابق</button>
-        <button class="btn-primary" onclick="submit()" ${state.loading ? 'disabled' : ''}>${state.loading ? 'جارٍ الإرسال...' : 'اعتماد الطلب وإرساله ✓'}</button>
+        <button class="btn-primary" onclick="submit()" ${state.loading ? 'disabled' : ''}>${state.loading ? state.loadingMessage : 'اعتماد الطلب وإرساله ✓'}</button>
       </div>
     </div>
   </div>`;
@@ -639,6 +641,30 @@ function submit() {
   state.loading = true;
   render();
 
+const loadingMessages = [
+  'جارٍ حفظ الطلب…',
+  'جارٍ إنشاء مجلدات وملفات العميل…',
+  'جارٍ إنشاء نسخ الأدوات الأربع…',
+  'جارٍ تعريف حساب المستخدم…',
+  'جارٍ إنهاء التجهيز…'
+];
+
+let loadingIndex = 0;
+state.loadingMessage = loadingMessages[0];
+
+clearInterval(state.loadingTimer);
+  
+state.loadingTimer = setInterval(function() {
+  if (!state.loading) {
+    clearInterval(state.loadingTimer);
+    return;
+  }
+
+  loadingIndex = Math.min(loadingIndex + 1, loadingMessages.length - 1);
+  state.loadingMessage = loadingMessages[loadingIndex];
+  render();
+}, 3500);
+  
   const payload = {
     company: {
       name: state.company.name,
@@ -701,10 +727,11 @@ function submit() {
 
   form.submit();
 
-  setTimeout(function() {
-    if (state.loading) {
-      state.loading = false;
-      state.submitted = true;
+setTimeout(function() {
+  if (state.loading) {
+    clearInterval(state.loadingTimer);
+    state.loading = false;
+    state.submitted = true;
 
       if (!state.reqNum) {
         state.reqNum = 'تم تسجيل الطلب';
@@ -720,6 +747,7 @@ function handleSubmitMessage(event) {
 
   if (!res || typeof res !== 'object') return;
 
+  clearInterval(state.loadingTimer);
   state.loading = false;
 
   const oldForm = document.getElementById('submitForm');
