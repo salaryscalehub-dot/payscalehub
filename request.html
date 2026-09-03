@@ -218,6 +218,21 @@ const COMPANIES = [
 
 const SECTORS = {};
 
+// قطاعات احتياطية مطابقة لقائمة Lookups في ملف الإدارة المركزي.
+const DEFAULT_SECTORS = [
+  'Construction & Material',
+  'Financial Services',
+  'Industrial Goods',
+  'Insurance',
+  'IT',
+  'Retail',
+  'Services',
+  'Transportation',
+  'Oil, Gas, Natural Resources',
+  'Other Sector'
+];
+
+window._sectors = DEFAULT_SECTORS.slice();
 const OWNERS = {listed:'مدرجة', private:'خاصة', family:'عائلية', gov:'حكومية'};
 const STEP_LABELS = ['معلومات الشركة','اختيار شركات المقارنة','رفع ملف الموظفين','اعتماد وإرسال'];
 
@@ -794,12 +809,17 @@ function loadSectors() {
 
   window[callbackName] = function(response) {
     try {
-      window._sectors =
+      const remoteSectors =
         response &&
         response.success &&
         Array.isArray(response.sectors)
-          ? response.sectors
+          ? response.sectors.filter(Boolean)
           : [];
+
+      window._sectors =
+        remoteSectors.length > 0
+          ? remoteSectors
+          : DEFAULT_SECTORS.slice();
     } finally {
       delete window[callbackName];
       script.remove();
@@ -808,7 +828,7 @@ function loadSectors() {
   };
 
   script.onerror = function() {
-    window._sectors = [];
+    window._sectors = DEFAULT_SECTORS.slice();
     delete window[callbackName];
     script.remove();
     render();
