@@ -648,6 +648,8 @@ function dl(name, content) {
 }
 
 function submit() {
+  if (state.loading || state.submitted) return;
+
   if (!state.consent) {
     showErr('يرجى الموافقة على الإقرار قبل إرسال الطلب.');
     return;
@@ -724,38 +726,24 @@ state.loadingTimer = setInterval(function() {
 
   const submitFrame = document.getElementById('submitFrame');
 
-  submitFrame.onload = function() {
-    if (!state.loading) return;
-
-    state.loading = false;
-    state.submitted = true;
-
-    if (!state.reqNum) {
-      state.reqNum = 'تم تسجيل الطلب';
-    }
-
-    const oldForm = document.getElementById('submitForm');
-    if (oldForm) oldForm.remove();
-
-    render();
-  };
+submitFrame.onload = function() {
+  // لا نعتبر تحميل iframe نجاحًا.
+  // النجاح يعتمد فقط على رسالة تأكيد الخادم.
+};
 
   form.submit();
 
 setTimeout(function() {
-  if (state.loading) {
-    clearInterval(state.loadingTimer);
-    state.loading = false;
-    state.submitted = true;
+  if (!state.loading) return;
 
-      if (!state.reqNum) {
-        state.reqNum = 'تم تسجيل الطلب';
-      }
+  clearInterval(state.loadingTimer);
+  state.loading = false;
 
-      render();
-    }
-  }, 30000);
-}
+  render();
+  showErr(
+    'لم يصل تأكيد نجاح الطلب خلال المهلة. لم نعرض صفحة النجاح؛ تحقق من حالة الطلب قبل إعادة المحاولة.'
+  );
+}, 30000);
 
 function handleSubmitMessage(event) {
   const res = event.data;
@@ -770,16 +758,21 @@ function handleSubmitMessage(event) {
 
   window.removeEventListener('message', handleSubmitMessage);
 
-  if (res.success) {
-    state.submitted = true;
-    state.reqNum = res.reqNum || '';
-    render();
-  } else {
-    render();
-    showErr('حدث خطأ أثناء حفظ الطلب: ' + (res.error || 'يرجى المحاولة مرة أخرى.'));
-  }
+ if (res.success && res.provisioningStatus === 'SUCCESS') {
+  state.submitted = true;
+  state.reqNum = res.reqNum || '';
+  render();
+} else {
+  render();
+  showErr(
+    res.error ||
+    (res.provisioningStatus === 'FAILED'
+      ? 'تم حفظ الطلب، لكن تجهيز ملفات العميل لم يكتمل. لم يتم اعتماد الطلب كناجح.'
+      : 'لم يصل تأكيد نجاح الطلب من الخادم.')
+   );
 }
-  
+}
+
 function reset() {
   Object.assign(state, {
     step:1, company:{name:'',count:'',sector:'',city:''},
