@@ -817,7 +817,7 @@ function loadSectors() {
     } finally {
       delete window[callbackName];
       script.remove();
-      render();
+      if (state.step === 2) render();
     }
   };
 
@@ -825,7 +825,7 @@ function loadSectors() {
     window._sectors = DEFAULT_SECTORS.slice();
     delete window[callbackName];
     script.remove();
-    render();
+    if (state.step === 2) render();
   };
 
   script.src =
@@ -837,6 +837,7 @@ function loadSectors() {
   document.body.appendChild(script);
 }
 
+render();
 loadSectors();
 
 </script>
