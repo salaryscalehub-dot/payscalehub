@@ -512,8 +512,8 @@ function renderSuccess() {
         <path d="M20 6L9 17l-5-5" style="stroke-dasharray:48;animation:check .6s .15s ease both"></path>
       </svg>
     </div>
-    <h2>تم إرسال الطلب بنجاح</h2>
-    <p>تم تسجيل بيانات الشركة واعتماد شركات المقارنة. رقم طلبك: <strong>${state.reqNum}</strong>. سيتواصل معك فريق PayScale Hub لبدء تنفيذ الدراسة.</p>
+    <h2>تم تقديم الطلب بنجاح</h2>
+    <p>تم تسجيل طلبك بنجاح. رقم طلبك: <strong>${state.reqNum}</strong>. سيبدأ فريق PayScale Hub تجهيز الملفات بعد مراجعة الطلب.</p>
     <div class="success-stats">
       <div class="ss-item">
         <div class="ss-key">شركات المقارنة</div>
@@ -822,7 +822,7 @@ function handleSubmitMessage(event) {
 
   window.removeEventListener('message', handleSubmitMessage);
 
- if (res.success && res.provisioningStatus === 'SUCCESS') {
+ if (res.success && ['SUCCESS', 'PENDING', 'QUEUED'].includes(String(res.provisioningStatus || ''))) {
   state.submitted = true;
   state.reqNum = res.reqNum || '';
   render();
