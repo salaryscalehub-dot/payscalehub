@@ -810,9 +810,27 @@ setTimeout(function() {
 }
 
 function handleSubmitMessage(event) {
-  const res = event.data;
+  let res = event.data;
 
-  if (!res || typeof res !== 'object') return;
+  if (typeof res === 'string') {
+    try {
+      res = JSON.parse(res);
+    } catch (error) {
+      return;
+    }
+  }
+
+  if (
+    !res ||
+    typeof res !== 'object' ||
+    (
+      typeof res.success !== 'boolean' &&
+      !res.error &&
+      !res.reqNum
+    )
+  ) {
+    return;
+  }
 
   clearInterval(state.loadingTimer);
   state.loading = false;
@@ -822,19 +840,20 @@ function handleSubmitMessage(event) {
 
   window.removeEventListener('message', handleSubmitMessage);
 
- if (res.success && ['SUCCESS', 'PENDING', 'QUEUED'].includes(String(res.provisioningStatus || ''))) {
-  state.submitted = true;
-  state.reqNum = res.reqNum || '';
-  render();
-} else {
+  if (res.success === true) {
+    state.submitted = true;
+    state.reqNum = res.reqNum || '';
+    render();
+    return;
+  }
+
   render();
   showErr(
     res.error ||
     (res.provisioningStatus === 'FAILED'
       ? 'تم حفظ الطلب، لكن تجهيز ملفات العميل لم يكتمل. لم يتم اعتماد الطلب كناجح.'
       : 'لم يصل تأكيد نجاح الطلب من الخادم.')
-   );
-}
+  );
 }
 
 function reset() {
