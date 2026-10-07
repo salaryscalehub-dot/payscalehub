@@ -387,7 +387,7 @@
       subscriptionStart:"1 سبتمبر 2026",
       subscriptionEnd:"31 أغسطس 2027",
       subscriptionDuration:"سنة واحدة",
-      tools:TOOL_DEFINITIONS.filter(tool => tool.readiness === "preparing").map(tool => ({
+      tools:TOOL_DEFINITIONS.filter(tool => tool.readiness === "preparing" && tool.code !== "PERFORMANCE_MANAGEMENT").map(tool => ({
         code:tool.code,
         status:"ACTIVE",
         url:`https://payscalehub.com/portal.html?preview=1#${tool.code.toLowerCase()}`
