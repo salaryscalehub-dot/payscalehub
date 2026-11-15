@@ -21,6 +21,7 @@
     .loading-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:rgba(247,243,236,.92)}.loading-overlay.visible{display:flex}.loader{text-align:center;color:var(--navy);font-size:12px;font-weight:700}.spinner{width:34px;height:34px;margin:0 auto 11px;border:3px solid rgba(16,47,85,.13);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
     @media(max-width:520px){body{padding:18px}.login-shell{padding:27px 22px;border-radius:18px}}
   </style>
+<link rel="stylesheet" href="assets/css/contact.css">
 </head>
 <body>
   <div id="loadingOverlay" class="loading-overlay" aria-live="polite"><div class="loader"><div class="spinner"></div><div id="loadingText">جارٍ التحقق...</div></div></div>
@@ -57,5 +58,6 @@
     forgotBtn.addEventListener("click",async()=>{const email=document.getElementById("email").value.trim();if(!email){showMessage("error","أدخل بريدك الإلكتروني أولاً ثم اضغط «نسيت كلمة المرور؟».");return}forgotBtn.disabled=true;setLoading(true,"جارٍ إرسال رابط إعادة التعيين...");try{await sendPasswordResetEmail(auth,email);showMessage("success","تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.")}catch(error){showMessage("error",authError(error.code))}finally{setLoading(false);forgotBtn.disabled=false}});
     const q=new URLSearchParams(location.search).get("error");if(q==="profile_missing")showMessage("error","الحساب صحيح، لكنه لم يُفعّل بعد في PayScale Hub.");if(q==="inactive")showMessage("error","اشتراك هذا الحساب غير فعّال.");
   </script>
+<script src="assets/js/contact-widget.js" defer></script>
 </body>
 </html>
