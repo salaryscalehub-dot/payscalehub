@@ -364,7 +364,7 @@ function renderStep1() {
     <div class="err" id="errBox"></div>
     <div class="nav-row">
       <div></div>
-      <button class="btn-primary" onclick="next()">التالي: اختيار منهجية المقارنة ←</button>
+      <button class="btn-primary" onclick="next()"${state.checkingEmail ? ' disabled style="opacity:.7;cursor:wait"' : ''}>${state.checkingEmail ? 'جارٍ التحقق من البريد الإلكتروني…' : 'التالي: اختيار منهجية المقارنة ←'}</button>
     </div>
   </div>`;
 }
@@ -615,11 +615,52 @@ function showErr(msg) {
   if (box) { box.textContent = msg; box.classList.add('show'); }
 }
 
+const RECEIVER_URL = 'https://script.google.com/macros/s/AKfycby1mt4doUKk0whbvpTNyyjbHsf8bir_bcX06RzIGQ62_7_CkpPPP1e5CrPySPlFyfan/exec';
+const DUPLICATE_EMAIL_MSG = 'هذا البريد الإلكتروني مستخدم مسبقًا في طلب أو حساب قائم. استخدم بريدًا إلكترونيًا مختلفًا أو تواصل معنا إذا كنت تريد متابعة الطلب السابق.';
+
+// Asks the Request Receiver whether the email is already used (Requests / Clients / Users).
+// Resolves true / false, or null if the check could not be completed (the server re-checks on submit).
+function checkEmailExists(email) {
+  return new Promise(function(resolve) {
+    const cb = 'pshEmailCheck_' + Date.now();
+    const script = document.createElement('script');
+    let done = false;
+    const finish = function(v) {
+      if (done) return; done = true;
+      clearTimeout(timer); delete window[cb]; script.remove(); resolve(v);
+    };
+    const timer = setTimeout(function() { finish(null); }, 15000);
+    window[cb] = function(res) { finish(res && res.success ? Boolean(res.exists) : null); };
+    script.onerror = function() { finish(null); };
+    script.src = RECEIVER_URL + '?action=checkEmail&email=' + encodeURIComponent(email) +
+      '&callback=' + encodeURIComponent(cb) + '&_=' + Date.now();
+    document.body.appendChild(script);
+  });
+}
+
 function next() {
+  if (state.checkingEmail) return;
   if (state.step === 1) {
     const c = state.company;
     if (!c.name || !c.count || !c.sector || !c.city) {
       showErr('يرجى تعبئة جميع الحقول المطلوبة لمعلومات الشركة (المعلَّمة بـ *).'); return;
+    }
+    const email = String(state.liaison.email || '').trim();
+    if (email) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showErr('يرجى إدخال بريد إلكتروني صحيح.'); return;
+      }
+      if (state.emailCheckedOk !== email.toLowerCase()) {
+        state.checkingEmail = true;
+        render();
+        checkEmailExists(email).then(function(exists) {
+          state.checkingEmail = false;
+          if (exists === true) { render(); showErr(DUPLICATE_EMAIL_MSG); return; }
+          state.emailCheckedOk = email.toLowerCase(); // null = check unavailable; server re-checks on submit
+          next();
+        });
+        return;
+      }
     }
   }
   if (state.step === 2) {
